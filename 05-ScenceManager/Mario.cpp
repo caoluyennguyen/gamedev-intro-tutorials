@@ -26,7 +26,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += MARIO_GRAVITY*dt;
+	vy += MARIO_GRAVITY * dt;
+
+	// Add acceleration
+	if (state == MARIO_STATE_IDLE)
+	{
+		if (vx > MARIO_MIN_WALKING_SPEED) vx -= MARIO_ACCELERATION * dt;
+		else if (vx < -MARIO_MIN_WALKING_SPEED) vx += MARIO_ACCELERATION * dt;
+		else vx = 0;
+	}
+	else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
+	{
+
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -144,9 +156,11 @@ void CMario::Render()
 			if (nx>0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
 			else ani = MARIO_ANI_SMALL_IDLE_LEFT;
 		}
-		else if (vx > 0)
-			ani = MARIO_ANI_SMALL_WALKING_RIGHT;
-		else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+		else
+		{
+			if (nx > 0) ani = MARIO_ANI_SMALL_WALKING_RIGHT;
+			else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+		}	
 	}
 
 	int alpha = 255;
@@ -175,8 +189,8 @@ void CMario::SetState(int state)
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		vy = -MARIO_JUMP_SPEED_Y;
 		break; 
-	case MARIO_STATE_IDLE: 
-		vx = 0;
+	case MARIO_STATE_IDLE:
+		//vx = 0;
 		break;
 	case MARIO_STATE_DIE:
 		vy = -MARIO_DIE_DEFLECT_SPEED;
