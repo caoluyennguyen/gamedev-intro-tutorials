@@ -10,9 +10,10 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	level = MARIO_LEVEL_SMALL;
 	untouchable = 0;
 	SetState(MARIO_STATE_IDLE);
+	isAbleToJump = true;
 
 	start_x = x; 
 	start_y = y; 
@@ -37,7 +38,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
 	{
-
+		if (vx < MARIO_MAX_WALKING_SPEED) vx += MARIO_ACCELERATION * nx * dt;
+		else vx = MARIO_MAX_WALKING_SPEED;
+	}
+	else if (state == MARIO_STATE_JUMP && isAbleToJump)
+	{
+		if (vy > MARIO_MAX_WALKING_SPEED) vy -= MARIO_ACCELERATION * dt;
+		else isAbleToJump = false;
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -153,13 +160,25 @@ void CMario::Render()
 	{
 		if (vx == 0)
 		{
-			if (nx>0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
+			if (nx > 0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
 			else ani = MARIO_ANI_SMALL_IDLE_LEFT;
 		}
 		else
 		{
-			if (nx > 0) ani = MARIO_ANI_SMALL_WALKING_RIGHT;
-			else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+			if (nx > 0) {
+				if (vx < 0)
+				{
+					ani = MARIO_ANI_SMALL_STOP_LEFT;
+				}
+				else ani = MARIO_ANI_SMALL_WALKING_RIGHT;
+			}
+			else {
+				if (vx > 0)
+				{
+					ani = MARIO_ANI_SMALL_STOP_RIGHT;
+				}
+				else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+			}
 		}	
 	}
 
@@ -178,11 +197,11 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALKING_SPEED;
+		//vx = MARIO_WALKING_SPEED;
 		nx = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT: 
-		vx = -MARIO_WALKING_SPEED;
+		//vx = -MARIO_WALKING_SPEED;
 		nx = -1;
 		break;
 	case MARIO_STATE_JUMP:
@@ -191,6 +210,7 @@ void CMario::SetState(int state)
 		break; 
 	case MARIO_STATE_IDLE:
 		//vx = 0;
+		isAbleToJump = true;
 		break;
 	case MARIO_STATE_DIE:
 		vy = -MARIO_DIE_DEFLECT_SPEED;

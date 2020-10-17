@@ -221,7 +221,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"scenes\\textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -281,10 +281,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
+	case DIK_S:
+		if (mario->IsAbleToJump())
+		{
+			mario->SetState(MARIO_STATE_JUMP);
+		}
 		break;
-	case DIK_A: 
+	case DIK_R: 
 		mario->Reset();
 		break;
 	}
@@ -301,6 +304,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_LEFT:
 		mario->SetState(MARIO_STATE_IDLE);
 		break;
+	case DIK_S:
+		mario->SetAbleToJump(false);
+		break;
 	}
 }
 
@@ -308,13 +314,20 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	float vx, vy;
+	mario->GetSpeed(vx, vy);
 
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
+	if (game->IsKeyDown(DIK_RIGHT)) {
 		mario->SetState(MARIO_STATE_WALKING_RIGHT);
-	else if (game->IsKeyDown(DIK_LEFT))
+	}
+	else if (game->IsKeyDown(DIK_LEFT)) {
 		mario->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	else if (game->IsKeyDown(DIK_S)) {
+		if (mario->IsAbleToJump()) mario->SetState(MARIO_STATE_JUMP);
+	}
 	/*else
 		mario->SetState(MARIO_STATE_IDLE);*/
 }
