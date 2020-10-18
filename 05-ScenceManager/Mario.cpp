@@ -7,6 +7,7 @@
 
 #include "Goomba.h"
 #include "Portal.h"
+#include "Brick.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -32,19 +33,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Add acceleration
 	if (state == MARIO_STATE_IDLE)
 	{
-		if (vx > MARIO_MIN_WALKING_SPEED) vx -= MARIO_ACCELERATION * dt;
-		else if (vx < -MARIO_MIN_WALKING_SPEED) vx += MARIO_ACCELERATION * dt;
+		if (vx > MARIO_MIN_WALKING_SPEED) vx -= MARIO_ACCELERATION_WALK * dt;
+		else if (vx < -MARIO_MIN_WALKING_SPEED) vx += MARIO_ACCELERATION_WALK * dt;
 		else vx = 0;
 	}
 	else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
 	{
-		if (vx < MARIO_MAX_WALKING_SPEED) vx += MARIO_ACCELERATION * nx * dt;
+		if (vx < MARIO_MAX_WALKING_SPEED) vx += MARIO_ACCELERATION_WALK * nx * dt;
 		else vx = MARIO_MAX_WALKING_SPEED;
 	}
 	else if (state == MARIO_STATE_JUMP && isAbleToJump)
 	{
-		if (vy > MARIO_MAX_WALKING_SPEED) vy -= MARIO_ACCELERATION * dt;
-		else isAbleToJump = false;
+		vy -= MARIO_ACCELERATION_JUMP * dt;
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -127,6 +127,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			} // if Goomba
+			if (dynamic_cast<CBrick *>(e->obj)) // if e->obj is Goomba 
+			{
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+				// jump on top >> kill Goomba and deflect a bit 
+				if (e->ny < 0)
+				{
+					isAbleToJump = true;
+				}
+			} // if Goomba
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
@@ -206,11 +216,11 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		vy = -MARIO_JUMP_SPEED_Y;
+		if (vy == 0) vy = -MARIO_JUMP_SPEED_Y;
 		break; 
 	case MARIO_STATE_IDLE:
-		//vx = 0;
-		isAbleToJump = true;
+		// vx = 0;
+		// isAbleToJump = true;
 		break;
 	case MARIO_STATE_DIE:
 		vy = -MARIO_DIE_DEFLECT_SPEED;
