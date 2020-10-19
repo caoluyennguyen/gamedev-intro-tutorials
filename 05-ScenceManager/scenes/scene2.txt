@@ -21,6 +21,9 @@
 10013	125	154	140	181	0
 # die 
 10099	215	120	231	135	0
+# stop right
+
+# stop left
 
 # SMALL MARIO
 # idle small right
@@ -37,6 +40,18 @@
 10034	5	0	20	15	0
 # stop left
 10035	425	0	440	15	0
+# jump right
+10036	395	80	411	96	0
+# jump left
+10037	35	80	51	96	0
+# idle hold object right
+10038	246	120	260	136	0
+# idle hold object left
+10039	185	120	199	136	0
+# walk hold object right
+10040	276	120	290	136	0
+# walk hold object left
+10041	155	120	169	136	0
 
 #BRICK
 20001	408	225	424	241	20
@@ -90,7 +105,18 @@
 504	10034	100
 #stop left small
 505	10035	100
-
+#jump right small
+506	10036	100
+#jump left small
+507	10037	100
+#idle small hold right
+508	10038	100
+#idle small hold left
+509	10039	100	10038	100
+#walk small hold right
+510	10040	100
+#walk small hold left
+511	10041	100	10040	100
 
 # ==== BRICK =========
 601	20001	100
@@ -118,7 +144,7 @@
 #
 [ANIMATION_SETS]
 # MARIO
-1	400	401	402	403	500	501	502	503	599	504	505
+1	400	401	402	403	500	501	502	503	599	504	505	506	507	508	509	510	511
 # BRICK 
 2	601
 # QUESTION MARK BRICK 
@@ -172,7 +198,7 @@
 1	432	150	2
 1	448	150	2
 #
-1	240	134	22
+#1	240	134	22
 
 
 # --- SCENE PORTAL ----

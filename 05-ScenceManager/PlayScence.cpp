@@ -287,8 +287,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_JUMP);
 		}
 		break;
-	case DIK_R: 
+	case DIK_R:
 		mario->Reset();
+		break;
+	case DIK_1:
+		mario->SetLevel(MARIO_LEVEL_SMALL);
+		break;
+	case DIK_2:
+		mario->SetLevel(MARIO_LEVEL_BIG);
 		break;
 	}
 }
@@ -298,12 +304,12 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
-	/*case DIK_RIGHT:
+	case DIK_RIGHT:
 		mario->SetState(MARIO_STATE_IDLE);
 		break;
 	case DIK_LEFT:
 		mario->SetState(MARIO_STATE_IDLE);
-		break;*/
+		break;
 	case DIK_S:
 		mario->SetAbleToJump(false);
 		break;
@@ -326,8 +332,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	else if (game->IsKeyDown(DIK_LEFT)) {
 		mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	else
-		mario->SetState(MARIO_STATE_IDLE);
+	/*else
+		mario->SetState(MARIO_STATE_IDLE);*/
 
 	if (game->IsKeyDown(DIK_S)) {
 		if (mario->IsAbleToJump()) mario->SetState(MARIO_STATE_JUMP);

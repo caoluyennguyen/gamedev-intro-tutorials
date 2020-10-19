@@ -3,13 +3,12 @@
 
 #define MARIO_MAX_WALKING_SPEED		0.1f 
 #define MARIO_MIN_WALKING_SPEED		0.0005f 
-#define MARIO_ACCELERATION_WALK		0.0001f
+#define MARIO_ACCELERATION_WALK		0.0002f
 #define MARIO_ACCELERATION_JUMP		0.0002f
-#define MARIO_JUMP_SPEED_Y		0.1f
-#define MARIO_JUMP_DEFLECT_SPEED 0.2f
-#define MARIO_GRAVITY			0.0003f
-#define MARIO_DIE_DEFLECT_SPEED	 0.5f
-#define MARIO_MAX_JUMP_SPEED	 0.2f
+#define MARIO_GRAVITY				0.0005f
+#define MARIO_JUMP_SPEED_Y			0.2f
+#define MARIO_JUMP_DEFLECT_SPEED	0.2f
+#define MARIO_DIE_DEFLECT_SPEED		0.5f
 
 #define MARIO_STATE_IDLE			0
 #define MARIO_STATE_WALKING_RIGHT	100
@@ -32,6 +31,12 @@
 #define MARIO_ANI_DIE						8
 #define MARIO_ANI_SMALL_STOP_RIGHT			9
 #define MARIO_ANI_SMALL_STOP_LEFT			10
+#define MARIO_ANI_SMALL_JUMP_RIGHT			11
+#define MARIO_ANI_SMALL_JUMP_LEFT			12
+#define MARIO_ANI_SMALL_IDLE_HOLD_RIGHT		13
+#define MARIO_ANI_SMALL_IDLE_HOLD_LEFT		14
+#define MARIO_ANI_SMALL_WALK_HOLD_RIGHT		15
+#define MARIO_ANI_SMALL_WALK_HOLD_LEFT		16
 
 //#define MARIO_ANI_BIG_JUMP_UP_RIGHT			9
 //#define MARIO_ANI_BIG_JUMP_UP_LEFT			10
@@ -62,6 +67,7 @@ class CMario : public CGameObject
 	float start_y; 
 
 	bool isAbleToJump;
+	bool isHoldObject;
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);

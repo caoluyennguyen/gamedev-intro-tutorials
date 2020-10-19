@@ -11,10 +11,11 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_SMALL;
+	level = MARIO_LEVEL_BIG;
 	untouchable = 0;
 	SetState(MARIO_STATE_IDLE);
 	isAbleToJump = true;
+	//is = true;
 
 	start_x = x; 
 	start_y = y; 
@@ -39,12 +40,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
 	{
-		if (vx < MARIO_MAX_WALKING_SPEED) vx += MARIO_ACCELERATION_WALK * nx * dt;
-		else vx = MARIO_MAX_WALKING_SPEED;
+		if (nx > 0)
+		{
+			if (vx < MARIO_MAX_WALKING_SPEED) {
+				vx += MARIO_ACCELERATION_WALK * dt;
+			}
+		}
+		else {
+			if (vx > -MARIO_MAX_WALKING_SPEED) {
+				vx -= MARIO_ACCELERATION_WALK * dt;
+			}
+		}
+		DebugOut(L"[INFO] vx: %f\n", vx);
 	}
 	else if (state == MARIO_STATE_JUMP && isAbleToJump)
 	{
-		vy -= MARIO_ACCELERATION_JUMP * dt;
+		if (vy < 0) vy -= MARIO_ACCELERATION_JUMP * dt;
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -86,8 +97,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx*dx + nx*0.4f;
 		y += min_ty*dy + ny*0.4f;
 
-		if (nx!=0) vx = 0;
-		if (ny!=0) vy = 0;
+		// if (nx!=0) vx = 0;
+		// if (ny!=0) vy = 0;
 
 
 		//
@@ -131,10 +142,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-				// jump on top >> kill Goomba and deflect a bit 
 				if (e->ny < 0)
 				{
+					SetState(MARIO_STATE_IDLE);
 					isAbleToJump = true;
+					vy = 0;
 				}
 			} // if Goomba
 			else if (dynamic_cast<CPortal *>(e->obj))
@@ -168,28 +180,36 @@ void CMario::Render()
 	}
 	else if (level == MARIO_LEVEL_SMALL)
 	{
-		if (vx == 0)
+		if (state == MARIO_STATE_JUMP)
 		{
-			if (nx > 0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
-			else ani = MARIO_ANI_SMALL_IDLE_LEFT;
+			if (nx > 0) ani = MARIO_ANI_SMALL_JUMP_RIGHT;
+			else ani = MARIO_ANI_SMALL_JUMP_LEFT;
 		}
-		else
-		{
-			if (nx > 0) {
-				if (vx < 0)
-				{
-					ani = MARIO_ANI_SMALL_STOP_LEFT;
-				}
-				else ani = MARIO_ANI_SMALL_WALKING_RIGHT;
+		else {
+			if (vx == 0)
+			{
+				if (nx > 0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
+				else ani = MARIO_ANI_SMALL_IDLE_LEFT;
 			}
-			else {
-				if (vx > 0)
-				{
-					ani = MARIO_ANI_SMALL_STOP_RIGHT;
+			else
+			{
+				if (nx > 0) {
+					if (vx < 0)
+					{
+						ani = MARIO_ANI_SMALL_STOP_LEFT;
+					}
+					else ani = MARIO_ANI_SMALL_WALKING_RIGHT;
 				}
-				else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+				else {
+					if (vx > 0)
+					{
+						ani = MARIO_ANI_SMALL_STOP_RIGHT;
+					}
+					else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+				}
 			}
-		}	
+		}
+			
 	}
 
 	int alpha = 255;
