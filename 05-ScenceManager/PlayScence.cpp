@@ -296,6 +296,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_2:
 		mario->SetLevel(MARIO_LEVEL_BIG);
 		break;
+	case DIK_A:
+		mario->SetAbleToHoldObject(true);
+		break;
+	case DIK_F1:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
 	}
 }
 
@@ -312,6 +318,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_S:
 		mario->SetAbleToJump(false);
+		break;
+	case DIK_A:
+		mario->SetAbleToHoldObject(false);
 		break;
 	}
 }

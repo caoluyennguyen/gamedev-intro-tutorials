@@ -37,6 +37,8 @@
 #define MARIO_ANI_SMALL_IDLE_HOLD_LEFT		14
 #define MARIO_ANI_SMALL_WALK_HOLD_RIGHT		15
 #define MARIO_ANI_SMALL_WALK_HOLD_LEFT		16
+#define MARIO_ANI_SMALL_HIT_RIGHT			17
+#define MARIO_ANI_SMALL_HIT_LEFT			18
 
 //#define MARIO_ANI_BIG_JUMP_UP_RIGHT			9
 //#define MARIO_ANI_BIG_JUMP_UP_LEFT			10
@@ -54,19 +56,23 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 15
 
-#define MARIO_UNTOUCHABLE_TIME 5000
+#define MARIO_UNTOUCHABLE_TIME	5000
+#define MARIO_HITTING_TIME		500
 
 
 class CMario : public CGameObject
 {
 	int level;
 	int untouchable;
+	int hitting;
 	DWORD untouchable_start;
+	DWORD hitting_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
 
 	bool isAbleToJump;
+	bool isAbleToHoldObject;
 	bool isHoldObject;
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -76,6 +82,7 @@ public:
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void StartHitObject() { hitting = 1; hitting_start = GetTickCount(); }
 
 	void Reset();
 
@@ -83,4 +90,5 @@ public:
 
 	bool IsAbleToJump() { return isAbleToJump; }
 	void SetAbleToJump(bool x) { isAbleToJump = x; }
+	void SetAbleToHoldObject(bool x) { isAbleToHoldObject = x; }
 };

@@ -65,6 +65,7 @@ public:
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
+	void SetSpeedVx(float vx) { this->vx = vx; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
@@ -93,6 +94,7 @@ public:
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
 
+	bool CheckCollision(float left_a, float top_a, float right_a, float bottom_a);
 
 	~CGameObject();
 };

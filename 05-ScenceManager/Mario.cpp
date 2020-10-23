@@ -8,14 +8,15 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "Koopas.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	level = MARIO_LEVEL_SMALL;
 	untouchable = 0;
 	SetState(MARIO_STATE_IDLE);
 	isAbleToJump = true;
-	//is = true;
+	isAbleToHoldObject = false;
 
 	start_x = x; 
 	start_y = y; 
@@ -51,11 +52,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				vx -= MARIO_ACCELERATION_WALK * dt;
 			}
 		}
-		DebugOut(L"[INFO] vx: %f\n", vx);
+		//DebugOut(L"[INFO] vx: %f\n", vx);
 	}
 	else if (state == MARIO_STATE_JUMP && isAbleToJump)
 	{
 		if (vy < 0) vy -= MARIO_ACCELERATION_JUMP * dt;
+	}
+
+	for (int i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+
+		if (dynamic_cast<CKoopas*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+			
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && isAbleToHoldObject) {
+				obj->SetPosition(this->x, this->y);
+				isHoldObject = true;
+			}
+		}
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -72,6 +88,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+	// reset hitting timer if hitting time has passed
+	if ( GetTickCount() - hitting_start > MARIO_HITTING_TIME)
+	{
+		hitting_start = 0;
+		hitting = 0;
 	}
 
 	// No collision occured, proceed normally
@@ -92,14 +114,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
 		//	x += nx*abs(rdx); 
-		
-		// block every object first!
-		x += min_tx*dx + nx*0.4f;
-		y += min_ty*dy + ny*0.4f;
-
-		// if (nx!=0) vx = 0;
-		// if (ny!=0) vy = 0;
-
 
 		//
 		// Collision logic with other objects
@@ -107,6 +121,53 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CKoopas *>(e->obj)) // if e->obj is Goomba 
+			{
+				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+
+				// jump on top >> kill Koopas and deflect a bit 
+				if (e->ny < 0)
+				{
+					if (koopas->GetState()!= KOOPAS_STATE_DIE)
+					{
+						koopas->SetState(KOOPAS_STATE_DIE);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					}
+				}
+				else if (e->nx != 0)
+				{
+					if (koopas->GetState() == KOOPAS_STATE_DIE && !isHoldObject)
+					{
+						if (isAbleToHoldObject)
+						{
+							//koopas->SetPosition(this->x + this->nx * MARIO_SMALL_BBOX_WIDTH, this->y);
+							isHoldObject = true;
+						}
+						else {
+							isHoldObject = false;
+							StartHitObject();
+							koopas->SetSpeedVx(this->nx * 0.1f);
+						}
+					}
+					else {
+						if (untouchable==0)
+						{
+							if (koopas->GetState()!= KOOPAS_STATE_DIE)
+							{
+								if (level > MARIO_LEVEL_SMALL)
+								{
+									level = MARIO_LEVEL_SMALL;
+									StartUntouchable();
+								}
+								else {
+									SetState(MARIO_STATE_DIE);
+								}
+							}
+						}
+					}
+				}
+			}
 
 			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			{
@@ -140,6 +201,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			} // if Goomba
 			if (dynamic_cast<CBrick *>(e->obj)) // if e->obj is Goomba 
 			{
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 				if (e->ny < 0)
@@ -164,54 +228,91 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CMario::Render()
 {
 	int ani = -1;
-	if (state == MARIO_STATE_DIE)
-		ani = MARIO_ANI_DIE;
+	if (state == MARIO_STATE_DIE) ani = MARIO_ANI_DIE;
 	else
-	if (level == MARIO_LEVEL_BIG)
 	{
-		if (vx == 0)
+		if (level == MARIO_LEVEL_BIG)
 		{
-			if (nx>0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
-			else ani = MARIO_ANI_BIG_IDLE_LEFT;
-		}
-		else if (vx > 0) 
-			ani = MARIO_ANI_BIG_WALKING_RIGHT; 
-		else ani = MARIO_ANI_BIG_WALKING_LEFT;
-	}
-	else if (level == MARIO_LEVEL_SMALL)
-	{
-		if (state == MARIO_STATE_JUMP)
-		{
-			if (nx > 0) ani = MARIO_ANI_SMALL_JUMP_RIGHT;
-			else ani = MARIO_ANI_SMALL_JUMP_LEFT;
-		}
-		else {
 			if (vx == 0)
 			{
-				if (nx > 0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
-				else ani = MARIO_ANI_SMALL_IDLE_LEFT;
-			}
-			else
-			{
-				if (nx > 0) {
-					if (vx < 0)
-					{
-						ani = MARIO_ANI_SMALL_STOP_LEFT;
-					}
-					else ani = MARIO_ANI_SMALL_WALKING_RIGHT;
+				if (isHoldObject)
+				{
+					if (nx > 0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
+					else ani = MARIO_ANI_BIG_IDLE_LEFT;
 				}
-				else {
-					if (vx > 0)
+				else
+				{
+					if (nx > 0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
+					else ani = MARIO_ANI_BIG_IDLE_LEFT;
+				}
+
+			}
+			else if (vx > 0)
+				ani = MARIO_ANI_BIG_WALKING_RIGHT;
+			else ani = MARIO_ANI_BIG_WALKING_LEFT;
+		}
+		else if (level == MARIO_LEVEL_SMALL)
+		{
+			if (state == MARIO_STATE_JUMP)
+			{
+				if (nx > 0) ani = MARIO_ANI_SMALL_JUMP_RIGHT;
+				else ani = MARIO_ANI_SMALL_JUMP_LEFT;
+			}
+			else {
+				if (vx == 0)
+				{
+					if (isHoldObject)
 					{
-						ani = MARIO_ANI_SMALL_STOP_RIGHT;
+						if (nx > 0) ani = MARIO_ANI_SMALL_IDLE_HOLD_RIGHT;
+						else ani = MARIO_ANI_SMALL_IDLE_HOLD_LEFT;
 					}
-					else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+					else {
+						if (nx > 0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
+						else ani = MARIO_ANI_SMALL_IDLE_LEFT;
+					}
+
+				}
+				else
+				{
+					if (isHoldObject)
+					{
+						if (nx > 0) {
+							ani = MARIO_ANI_SMALL_WALK_HOLD_RIGHT;
+						}
+						else {
+							ani = MARIO_ANI_SMALL_WALK_HOLD_LEFT;
+						}
+					}
+					else if (hitting == 1)
+					{
+						if (nx > 0) {
+							ani = MARIO_ANI_SMALL_HIT_RIGHT;
+						}
+						else {
+							ani = MARIO_ANI_SMALL_HIT_LEFT;
+						}
+					}
+					else {
+						if (nx > 0) {
+							if (vx < 0)
+							{
+								ani = MARIO_ANI_SMALL_STOP_LEFT;
+							}
+							else ani = MARIO_ANI_SMALL_WALKING_RIGHT;
+						}
+						else {
+							if (vx > 0)
+							{
+								ani = MARIO_ANI_SMALL_STOP_RIGHT;
+							}
+							else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+						}
+					}
 				}
 			}
 		}
-			
 	}
-
+	
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 

@@ -47,11 +47,15 @@
 # idle hold object right
 10038	246	120	260	136	0
 # idle hold object left
-10039	185	120	199	136	0
+10039	186	120	200	136	0
 # walk hold object right
-10040	276	120	290	136	0
+10040	276	120	291	136	0
 # walk hold object left
-10041	155	120	169	136	0
+10041	155	120	170	136	0
+# hit object right
+10042	425	80	441	96	0
+# hit object left
+10043	5	80	21	96	0
 
 #BRICK
 20001	408	225	424	241	20
@@ -76,7 +80,7 @@
 50011	187	191	202	217	30
 50012	170	191	185	217	30
 #die
-50031	152	202	168	217	20
+50031	239	202	255	217	30
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -112,11 +116,15 @@
 #idle small hold right
 508	10038	100
 #idle small hold left
-509	10039	100	10038	100
+509	10039	100
 #walk small hold right
-510	10040	100
+510	10040	100	10038	100
 #walk small hold left
-511	10041	100	10040	100
+511	10041	100	10039	100
+#small hit right
+512	10042	100
+#small hit left
+513	10043	100
 
 # ==== BRICK =========
 601	20001	100
@@ -144,8 +152,8 @@
 #
 [ANIMATION_SETS]
 # MARIO
-1	400	401	402	403	500	501	502	503	599	504	505	506	507	508	509	510	511
-# BRICK 
+1	400	401	402	403	500	501	502	503	599	504	505	506	507	508	509	510	511	512	513
+#s BRICK 
 2	601
 # QUESTION MARK BRICK 
 22	602
@@ -161,7 +169,7 @@
 0	10	0	1
 
 # KOOPAS
-# 3	20	124	4
+3	20	124	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -198,7 +206,7 @@
 1	432	150	2
 1	448	150	2
 #
-#1	240	134	22
+# 1	240	134	22
 
 
 # --- SCENE PORTAL ----
