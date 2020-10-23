@@ -27,15 +27,15 @@
 
 # SMALL MARIO
 # idle small right
-10021	247	0	259	15	0
+10021	245	0	261	15	0
 # walk
 10022	275	0	291	15	0
 10023	306	0	320	15	0
 # idle small left
-10031	187	0	198	15	0
+10031	185	0	201	15	0
 # walk
-10032	155	0	170	15	0
-10033	125	0	139	15	0
+10032	155	0	171	15	0
+10033	125	0	141	15	0
 # stop right
 10034	5	0	20	15	0
 # stop left
@@ -100,9 +100,9 @@
 #walk left big
 501	10011	100	10012	100	10013	100
 #walk right small
-502	10021	100	10022	100	10023	100
+502	10021	50	10022	50	10023	50
 #walk left small
-503	10031	100	10032	100	10033	100
+503	10031	50	10032	50	10033	50
 #die
 599	10099	100
 #stop right small
@@ -165,6 +165,7 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+
 # MARIO
 0	10	0	1
 
@@ -208,8 +209,7 @@
 #
 # 1	240	134	22
 
-
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-# 50	300	98	0	380	150	1
+50	300	98	0	380	150	1
 

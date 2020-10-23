@@ -68,6 +68,7 @@ public:
 	void SetSpeedVx(float vx) { this->vx = vx; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
+	float GetSpeedVx() { return this->vx; }
 
 	int GetState() { return this->state; }
 

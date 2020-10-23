@@ -258,7 +258,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = objects.size() - 1; i > -1; i--)
 		objects[i]->Render();
 }
 
@@ -279,6 +279,14 @@ void CPlayScene::Unload()
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_F1:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+	}
+	if (mario->GetState() == MARIO_STATE_DIE) return;
+
 	switch (KeyCode)
 	{
 	case DIK_S:
@@ -308,6 +316,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	if (mario->GetState() == MARIO_STATE_DIE) return;
+
 	switch (KeyCode)
 	{
 	case DIK_RIGHT:
