@@ -307,8 +307,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		mario->SetAbleToHoldObject(true);
 		break;
-	case DIK_F1:
-		CGame::GetInstance()->SwitchScene(2);
+	case DIK_DOWN:
+		mario->SetState(MARIO_STATE_SIT);
 		break;
 	}
 }
@@ -331,6 +331,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_A:
 		mario->SetAbleToHoldObject(false);
+		break;
+	case DIK_DOWN:
+		mario->SetState(MARIO_STATE_IDLE);
 		break;
 	}
 }

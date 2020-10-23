@@ -8,7 +8,7 @@
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# BIG MARIO 
+# BIG MARIO 1-20 44-50
 # idle right
 10001	246	154	260	181	0
 # walk
@@ -17,15 +17,38 @@
 # idle left
 10011	186	154	200	181	0
 #walk
-10012	155	154	170	181	0
-10013	125	154	140	181	0
+10012	155	154	171	181	0
+10013	125	154	141	181	0
 # die 
 10099	215	120	231	135	0
 # stop right
-
+10014	5	154	21	182	0
 # stop left
+10015	425	154	441	182	0
+# jump up right
+10016	395	275	411	301	0
+# jump up left
+10017	35	275	51	301	0
+# idle hold object right
+10018	335	234	351	261	0
+# idle hold object left
+10019	95	234	111	261	0
+# walk hold object right
+10020	276	314	292	341	0
+10044	305	314	321	341	0
+# walk hold object left
+10045	154	314	170	341	0
+10046	125	314	141	341	0
+# hit object right
+10047	423	274	444	301	0
+# hit object left
+10048	2	274	23	301	0
+# sit right
+10049	425	239	441	257	0
+# sit left
+10050	5	239	21	257	0
 
-# SMALL MARIO
+# SMALL MARIO 21-43
 # idle small right
 10021	245	0	261	15	0
 # walk
@@ -126,6 +149,36 @@
 #small hit left
 513	10043	100
 
+#BIG 514 - 524
+#stop right big
+514	10014	100
+#stop left big
+515	10015	100
+#jump up right big
+516	10016	100
+#jump up left big
+517	10017	100
+#jump down right big
+518	10003	100
+#jump down left big
+519	10013	100
+#idle big hold right
+520	10018	100
+#idle big hold left
+521	10019	100
+#walk big hold right
+522	10020	100	10044	100
+#walk big hold left
+523	10045	100	10046	100
+#big hit right
+524	10047	100
+#big hit left
+525	10048	100
+#big sit right
+526	10049	100
+#big sit left
+527	10050	100
+
 # ==== BRICK =========
 601	20001	100
 
@@ -152,8 +205,8 @@
 #
 [ANIMATION_SETS]
 # MARIO
-1	400	401	402	403	500	501	502	503	599	504	505	506	507	508	509	510	511	512	513
-#s BRICK 
+1	400	401	402	403	500	501	502	503	599	504	505	506	507	508	509	510	511	512	513	514	515	516	517	518	519	520	521	522	523	524	525	526	527
+# BRICK 
 2	601
 # QUESTION MARK BRICK 
 22	602
