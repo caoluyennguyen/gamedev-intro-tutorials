@@ -1,8 +1,8 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	scenes\textures\mario.png	255	255	255
+10	scenes\World1-1.png	255	255	255
 20	scenes\textures\misc.png	176	224	248
-#50	scenes\textures\enemies.png	3	26	110
 30	scenes\textures\enemies-2.png	0	128	128
 
 
@@ -217,50 +217,22 @@
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4= Ground
 
 # MARIO
 0	10	0	1
 
 # KOOPAS
-3	20	124	4
+3	20	390	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
-1	0	150	2
-1	0	135	2
-1	0	120	2
-1	0	104	2
-1	16	150	2
-1	32	150	2
-1	48	150	2
-1	64	150	2
-1	80	150	2
-1	96	150	2
-1	112	150	2
-1	128	150	2
-1	144	150	2
-1	160	150	2
-1	176	150	2
-1	192	150	2
-1	208	150	2
-1	224	150	2
-1	240	150	2
-1	256	150	2
-1	272	150	2
-1	288	150	2
-1	304	150	2
-1	320	150	2
-1	336	150	2
-1	352	150	2
-1	368	150	2
-1	384	150	2
-1	400	150	2
-1	416	150	2
-1	432	150	2
-1	448	150	2
+
 #
 # 1	240	134	22
+
+# GROUND
+4	0	418	0	628	430
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

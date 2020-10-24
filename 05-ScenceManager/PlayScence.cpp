@@ -6,6 +6,8 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "Ground.h"
+#include "TileMap.h"
 
 using namespace std;
 
@@ -31,6 +33,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_GROUND	4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -164,6 +167,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CPortal(x, y, r, b, scene_id);
 		}
 		break;
+	case OBJECT_TYPE_GROUND:
+		{
+			float r = atof(tokens[4].c_str());
+			float b = atof(tokens[5].c_str());
+			//id = atoi(tokens[6].c_str());
+			obj = new CGround(x, y, r, b);
+		}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -176,6 +187,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+
+	tileMap = new CTileMap();
 }
 
 void CPlayScene::Load()
@@ -253,11 +266,12 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
 {
+	tileMap->Render();
 	for (int i = objects.size() - 1; i > -1; i--)
 		objects[i]->Render();
 }

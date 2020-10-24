@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "Koopas.h"
+#include "Ground.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -216,7 +217,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			} // if Goomba
-			else if (dynamic_cast<CBrick *>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CBrick *>(e->obj) || dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
 			{
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
