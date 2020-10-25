@@ -219,8 +219,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			} // if Goomba
 			else if (dynamic_cast<CBrick *>(e->obj) || dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
 			{
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
 
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
@@ -432,19 +432,19 @@ void CMario::Render()
 			if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
-					if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_RIGHT;
-					else ani = MARIO_ANI_BIG_JUMP_DOWN_RIGHT;
+					if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
+					else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
 				}
 				else {
-					if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_LEFT;
-					else ani = MARIO_ANI_BIG_JUMP_DOWN_LEFT;
+					if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_LEFT;
+					else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
 				}
 			}
 			else {
 				if (state == MARIO_STATE_SIT)
 				{
-					if (nx > 0) ani = MARIO_ANI_BIG_SIT_RIGHT;
-					else ani = MARIO_ANI_BIG_SIT_LEFT;
+					if (nx > 0) ani = MARIO_ANI_TAIL_SIT_RIGHT;
+					else ani = MARIO_ANI_TAIL_SIT_LEFT;
 				}
 				else {
 					if (vx == 0)
@@ -478,31 +478,31 @@ void CMario::Render()
 						if (isHoldObject)
 						{
 							if (nx > 0) {
-								ani = MARIO_ANI_BIG_WALK_HOLD_RIGHT;
+								ani = MARIO_ANI_TAIL_WALK_HOLD_RIGHT;
 							}
 							else {
-								ani = MARIO_ANI_BIG_WALK_HOLD_LEFT;
+								ani = MARIO_ANI_TAIL_WALK_HOLD_LEFT;
 							}
 						}
 						else if (hitting == 1)
 						{
 							if (nx > 0) {
-								ani = MARIO_ANI_BIG_HIT_RIGHT;
+								ani = MARIO_ANI_TAIL_HIT_RIGHT;
 							}
 							else {
-								ani = MARIO_ANI_BIG_HIT_LEFT;
+								ani = MARIO_ANI_TAIL_HIT_LEFT;
 							}
 						}
 						else {
 							if (vy != 0 && !isAbleToJump)
 							{
 								if (nx > 0) {
-									if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_RIGHT;
-									else ani = MARIO_ANI_BIG_JUMP_DOWN_RIGHT;
+									if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
+									else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
 								}
 								else {
-									if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_LEFT;
-									else ani = MARIO_ANI_BIG_JUMP_DOWN_LEFT;
+									if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_LEFT;
+									else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
 								}
 							}
 							else {
