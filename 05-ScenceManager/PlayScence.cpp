@@ -266,7 +266,10 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	if (cy > 220.0f) cy = 220.0f;
+	else if (cy < 0) cy = 0;
+	if (cx < 0) cx = 0;
+	if (player->GetState() != MARIO_STATE_DIE) CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
@@ -317,6 +320,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_2:
 		mario->SetLevel(MARIO_LEVEL_BIG);
+		break;
+	case DIK_3:
+		mario->SetLevel(MARIO_LEVEL_TAIL);
 		break;
 	case DIK_A:
 		mario->SetAbleToHoldObject(true);
