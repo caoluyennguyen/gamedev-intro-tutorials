@@ -101,7 +101,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 			
 			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+				y -= y + MARIO_TAIL_BBOX_HEIGHT - kTop + 1.0f;
 			}
 		}
 	}
@@ -526,6 +526,105 @@ void CMario::Render()
 				}
 			}
 		}
+		else if (level == MARIO_LEVEL_FIRE)
+		{
+		if (state == MARIO_STATE_JUMP)
+		{
+			if (nx > 0) {
+				if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
+				else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
+			}
+			else {
+				if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
+				else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
+			}
+		}
+		else {
+			if (state == MARIO_STATE_SIT)
+			{
+				if (nx > 0) ani = MARIO_ANI_FIRE_SIT_RIGHT;
+				else ani = MARIO_ANI_FIRE_SIT_LEFT;
+			}
+			else {
+				if (vx == 0)
+				{
+					if (vy != 0 && !isAbleToJump)
+					{
+						if (nx > 0) {
+							if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
+							else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
+						}
+						else {
+							if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
+							else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
+						}
+					}
+					else
+					{
+						if (isHoldObject)
+						{
+							if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_HOLD_RIGHT;
+							else ani = MARIO_ANI_FIRE_IDLE_HOLD_LEFT;
+						}
+						else {
+							if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_RIGHT;
+							else ani = MARIO_ANI_FIRE_IDLE_LEFT;
+						}
+					}
+				}
+				else
+				{
+					if (isHoldObject)
+					{
+						if (nx > 0) {
+							ani = MARIO_ANI_FIRE_WALK_HOLD_RIGHT;
+						}
+						else {
+							ani = MARIO_ANI_FIRE_WALK_HOLD_LEFT;
+						}
+					}
+					else if (hitting == 1)
+					{
+						if (nx > 0) {
+							ani = MARIO_ANI_FIRE_HIT_RIGHT;
+						}
+						else {
+							ani = MARIO_ANI_FIRE_HIT_LEFT;
+						}
+					}
+					else {
+						if (vy != 0 && !isAbleToJump)
+						{
+							if (nx > 0) {
+								if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
+								else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
+							}
+							else {
+								if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
+								else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
+							}
+						}
+						else {
+							if (nx > 0) {
+								if (vx < 0)
+								{
+									ani = MARIO_ANI_FIRE_STOP_LEFT;
+								}
+								else ani = MARIO_ANI_FIRE_WALKING_RIGHT;
+							}
+							else {
+								if (vx > 0)
+								{
+									ani = MARIO_ANI_FIRE_STOP_RIGHT;
+								}
+								else ani = MARIO_ANI_FIRE_WALKING_LEFT;
+							}
+						}
+					}
+				}
+			}
+		}
+		}
 	}
 	
 	int alpha = 255;
@@ -569,7 +668,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	left = x;
 	top = y; 
 
-	if (level==MARIO_LEVEL_BIG || level == MARIO_LEVEL_TAIL)
+	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
 	{
 		if (state == MARIO_STATE_SIT)
 		{
@@ -580,6 +679,11 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = x + MARIO_BIG_BBOX_WIDTH;
 			bottom = y + MARIO_BIG_BBOX_HEIGHT;
 		}
+	}
+	else if (level == MARIO_LEVEL_TAIL)
+	{
+		right = x + MARIO_TAIL_BBOX_WIDTH;
+		bottom = y + MARIO_TAIL_BBOX_HEIGHT;
 	}
 	else
 	{
