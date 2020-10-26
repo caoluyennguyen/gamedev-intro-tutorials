@@ -333,6 +333,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
 		break;
+	case DIK_LSHIFT:
+		mario->SetAbleToRun(true);
+		break;
 	}
 }
 
@@ -358,6 +361,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);
 		break;
+	case DIK_LSHIFT:
+		mario->SetAbleToRun(false);
+		break;
 	}
 }
 
@@ -372,10 +378,12 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 
 	if (game->IsKeyDown(DIK_RIGHT)) {
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		if (mario->IsAbleToRun()) mario->SetState(MARIO_STATE_RUN_RIGHT);
+		else mario->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT)) {
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
+		if (mario->IsAbleToRun()) mario->SetState(MARIO_STATE_RUN_LEFT);
+		else mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
 	/*else
 		mario->SetState(MARIO_STATE_IDLE);*/

@@ -1,14 +1,19 @@
 #pragma once
 #include "GameObject.h"
 
-#define MARIO_MAX_WALKING_SPEED		0.1f 
-#define MARIO_MIN_WALKING_SPEED		0.0005f 
-#define MARIO_ACCELERATION_WALK		0.0002f
-#define MARIO_ACCELERATION_JUMP		0.0003f
-#define MARIO_GRAVITY				0.0005f
-#define MARIO_JUMP_SPEED_Y			0.15f
-#define MARIO_JUMP_DEFLECT_SPEED	0.2f
-#define MARIO_DIE_DEFLECT_SPEED		0.2f
+#pragma region define
+#define MARIO_MAX_WALKING_SPEED			0.1f 
+#define MARIO_MAX_RUN_SPEED				0.2f 
+#define MARIO_MIN_WALKING_SPEED			0.0005f 
+#define MARIO_ACCELERATION_WALK			0.0002f
+#define MARIO_ACCELERATION_RUN			0.0004f
+#define MARIO_ACCELERATION_JUMP			0.0003f
+#define MARIO_ACCELERATION_JUMP_HIGH	0.0004f
+#define MARIO_GRAVITY					0.0005f
+#define MARIO_JUMP_SPEED_Y				0.15f
+#define MARIO_JUMP_HIGH_SPEED_Y			0.25f
+#define MARIO_JUMP_DEFLECT_SPEED		0.2f
+#define MARIO_DIE_DEFLECT_SPEED			0.2f
 
 #define MARIO_STATE_IDLE			0
 #define MARIO_STATE_WALKING_RIGHT	100
@@ -16,7 +21,9 @@
 #define MARIO_STATE_JUMP			300
 #define MARIO_STATE_DIE				400
 #define MARIO_STATE_SIT				500
-#define MARIO_STATE_FLY				600
+#define MARIO_STATE_RUN_RIGHT		600
+#define MARIO_STATE_RUN_LEFT		700
+#define MARIO_STATE_JUMP_HIGH		800
 
 #define MARIO_ANI_BIG_IDLE_RIGHT			0
 #define MARIO_ANI_BIG_IDLE_LEFT				1
@@ -39,6 +46,12 @@
 #define MARIO_ANI_SMALL_WALK_HOLD_LEFT		16
 #define MARIO_ANI_SMALL_HIT_RIGHT			17
 #define MARIO_ANI_SMALL_HIT_LEFT			18
+#define MARIO_ANI_SMALL_RUN_RIGHT			69
+#define MARIO_ANI_SMALL_RUN_LEFT			70
+#define MARIO_ANI_SMALL_SWIFT_RIGHT			71
+#define MARIO_ANI_SMALL_SWIFT_LEFT			72
+#define MARIO_ANI_SMALL_FLY_RIGHT			73
+#define MARIO_ANI_SMALL_FLY_LEFT			74
 
 #define MARIO_ANI_BIG_STOP_RIGHT			19
 #define MARIO_ANI_BIG_STOP_LEFT				20
@@ -54,6 +67,12 @@
 #define MARIO_ANI_BIG_HIT_LEFT				30
 #define MARIO_ANI_BIG_SIT_RIGHT				31
 #define MARIO_ANI_BIG_SIT_LEFT				32
+#define MARIO_ANI_BIG_RUN_RIGHT				75
+#define MARIO_ANI_BIG_RUN_LEFT				76
+#define MARIO_ANI_BIG_SWIFT_RIGHT			77
+#define MARIO_ANI_BIG_SWIFT_LEFT			78
+#define MARIO_ANI_BIG_FLY_RIGHT				79
+#define MARIO_ANI_BIG_FLY_LEFT				80
 
 #define MARIO_ANI_TAIL_IDLE_RIGHT			33
 #define MARIO_ANI_TAIL_IDLE_LEFT			34
@@ -107,7 +126,7 @@
 #define MARIO_BIG_BBOX_HEIGHT 27
 
 #define MARIO_SMALL_BBOX_WIDTH  13
-#define MARIO_SMALL_BBOX_HEIGHT 15
+#define MARIO_SMALL_BBOX_HEIGHT 16
 
 #define MARIO_TAIL_BBOX_WIDTH  15
 #define MARIO_TAIL_BBOX_HEIGHT 29
@@ -117,10 +136,11 @@
 
 #define MARIO_UNTOUCHABLE_TIME	5000
 #define MARIO_HITTING_TIME		200
-
+#pragma endregion
 
 class CMario : public CGameObject
 {
+	float a; // 
 	int level;
 	int untouchable;
 	int hitting;
@@ -133,6 +153,8 @@ class CMario : public CGameObject
 	bool isAbleToJump;
 	bool isAbleToHoldObject;
 	bool isHoldObject;
+	bool isAbleToRun;
+	bool isAbleToJumpHigh;
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -148,6 +170,8 @@ public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 
 	bool IsAbleToJump() { return isAbleToJump; }
+	bool IsAbleToRun() { return isAbleToRun; }
 	void SetAbleToJump(bool x) { isAbleToJump = x; }
 	void SetAbleToHoldObject(bool x) { isAbleToHoldObject = x; }
+	void SetAbleToRun(bool x) { isAbleToRun = x; }
 };
