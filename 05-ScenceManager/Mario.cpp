@@ -507,12 +507,19 @@ void CMario::Render()
 			if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
-					if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
-					else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
+					if (isAbleToJumpHigh) ani = MARIO_ANI_TAIL_JUMP_HIGH_RIGHT;
+					else {
+						if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
+						else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
+					}
 				}
 				else {
-					if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_LEFT;
-					else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
+					if (isAbleToJumpHigh) ani = MARIO_ANI_TAIL_JUMP_HIGH_LEFT;
+					else {
+						if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_LEFT;
+						else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
+					}
+					
 				}
 			}
 			else {
@@ -586,14 +593,30 @@ void CMario::Render()
 									{
 										ani = MARIO_ANI_TAIL_STOP_LEFT;
 									}
-									else ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+									else {
+										if (state == MARIO_STATE_RUN_RIGHT)
+										{
+											if (vx < MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+											else if (vx < MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_TAIL_RUN_RIGHT;
+											else ani = MARIO_ANI_TAIL_SWIFT_RIGHT;
+										}
+										else ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+									}
 								}
 								else {
 									if (vx > 0)
 									{
 										ani = MARIO_ANI_TAIL_STOP_RIGHT;
 									}
-									else ani = MARIO_ANI_TAIL_WALKING_LEFT;
+									else {
+										if (state == MARIO_STATE_RUN_LEFT)
+										{
+											if (vx > -MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_LEFT;
+											else if (vx > -MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_TAIL_RUN_LEFT;
+											else ani = MARIO_ANI_TAIL_SWIFT_LEFT;
+										}
+										else ani = MARIO_ANI_TAIL_WALKING_LEFT;
+									}
 								}
 							}
 						}
@@ -603,71 +626,32 @@ void CMario::Render()
 		}
 		else if (level == MARIO_LEVEL_FIRE)
 		{
-		if (state == MARIO_STATE_JUMP)
-		{
-			if (nx > 0) {
-				if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
-				else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
-			}
-			else {
-				if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
-				else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
-			}
-		}
-		else {
-			if (state == MARIO_STATE_SIT)
+			if (state == MARIO_STATE_JUMP)
 			{
-				if (nx > 0) ani = MARIO_ANI_FIRE_SIT_RIGHT;
-				else ani = MARIO_ANI_FIRE_SIT_LEFT;
-			}
-			else {
-				if (vx == 0)
-				{
-					if (vy != 0 && !isAbleToJump)
-					{
-						if (nx > 0) {
-							if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
-							else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
-						}
-						else {
-							if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
-							else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
-						}
-					}
-					else
-					{
-						if (isHoldObject)
-						{
-							if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_HOLD_RIGHT;
-							else ani = MARIO_ANI_FIRE_IDLE_HOLD_LEFT;
-						}
-						else {
-							if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_RIGHT;
-							else ani = MARIO_ANI_FIRE_IDLE_LEFT;
-						}
+				if (nx > 0) {
+					if (isAbleToJumpHigh) ani = MARIO_ANI_FIRE_FLY_RIGHT;
+					else {
+						if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
+						else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
 					}
 				}
-				else
-				{
-					if (isHoldObject)
-					{
-						if (nx > 0) {
-							ani = MARIO_ANI_FIRE_WALK_HOLD_RIGHT;
-						}
-						else {
-							ani = MARIO_ANI_FIRE_WALK_HOLD_LEFT;
-						}
-					}
-					else if (hitting == 1)
-					{
-						if (nx > 0) {
-							ani = MARIO_ANI_FIRE_HIT_RIGHT;
-						}
-						else {
-							ani = MARIO_ANI_FIRE_HIT_LEFT;
-						}
-					}
+				else {
+					if (isAbleToJumpHigh) ani = MARIO_ANI_FIRE_FLY_LEFT;
 					else {
+						if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
+						else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
+					}
+				}
+			}
+			else {
+				if (state == MARIO_STATE_SIT)
+				{
+					if (nx > 0) ani = MARIO_ANI_FIRE_SIT_RIGHT;
+					else ani = MARIO_ANI_FIRE_SIT_LEFT;
+				}
+				else {
+					if (vx == 0)
+					{
 						if (vy != 0 && !isAbleToJump)
 						{
 							if (nx > 0) {
@@ -679,26 +663,87 @@ void CMario::Render()
 								else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
 							}
 						}
-						else {
-							if (nx > 0) {
-								if (vx < 0)
-								{
-									ani = MARIO_ANI_FIRE_STOP_LEFT;
-								}
-								else ani = MARIO_ANI_FIRE_WALKING_RIGHT;
+						else
+						{
+							if (isHoldObject)
+							{
+								if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_HOLD_RIGHT;
+								else ani = MARIO_ANI_FIRE_IDLE_HOLD_LEFT;
 							}
 							else {
-								if (vx > 0)
-								{
-									ani = MARIO_ANI_FIRE_STOP_RIGHT;
+								if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_RIGHT;
+								else ani = MARIO_ANI_FIRE_IDLE_LEFT;
+							}
+						}
+					}
+					else
+					{
+						if (isHoldObject)
+						{
+							if (nx > 0) {
+								ani = MARIO_ANI_FIRE_WALK_HOLD_RIGHT;
+							}
+							else {
+								ani = MARIO_ANI_FIRE_WALK_HOLD_LEFT;
+							}
+						}
+						else if (hitting == 1)
+						{
+							if (nx > 0) {
+								ani = MARIO_ANI_FIRE_HIT_RIGHT;
+							}
+							else {
+								ani = MARIO_ANI_FIRE_HIT_LEFT;
+							}
+						}
+						else {
+							if (vy != 0 && !isAbleToJump)
+							{
+								if (nx > 0) {
+									if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
+									else ani = MARIO_ANI_FIRE_JUMP_DOWN_RIGHT;
 								}
-								else ani = MARIO_ANI_FIRE_WALKING_LEFT;
+								else {
+									if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_LEFT;
+									else ani = MARIO_ANI_FIRE_JUMP_DOWN_LEFT;
+								}
+							}
+							else {
+								if (nx > 0) {
+									if (vx < 0)
+									{
+										ani = MARIO_ANI_FIRE_STOP_LEFT;
+									}
+									else {
+										if (state == MARIO_STATE_RUN_RIGHT)
+										{
+											if (vx < MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_FIRE_WALKING_RIGHT;
+											else if (vx < MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_FIRE_RUN_RIGHT;
+											else ani = MARIO_ANI_FIRE_SWIFT_RIGHT;
+										}
+										else ani = MARIO_ANI_FIRE_WALKING_RIGHT;
+									}
+								}
+								else {
+									if (vx > 0)
+									{
+										ani = MARIO_ANI_FIRE_STOP_RIGHT;
+									}
+									else {
+										if (state == MARIO_STATE_RUN_LEFT)
+										{
+											if (vx > -MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_FIRE_WALKING_LEFT;
+											else if (vx > -MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_FIRE_RUN_LEFT;
+											else ani = MARIO_ANI_FIRE_SWIFT_LEFT;
+										}
+										else ani = MARIO_ANI_FIRE_WALKING_LEFT;
+									}
+								}
 							}
 						}
 					}
 				}
 			}
-		}
 		}
 	}
 	
@@ -763,8 +808,15 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
-		right = x + MARIO_TAIL_BBOX_WIDTH;
-		bottom = y + MARIO_TAIL_BBOX_HEIGHT;
+		if (state == MARIO_STATE_SIT)
+		{
+			right = x + MARIO_SIT_BBOX_WIDTH;
+			bottom = y + MARIO_SIT_BBOX_HEIGHT;
+		}
+		else {
+			right = x + MARIO_TAIL_BBOX_WIDTH;
+			bottom = y + MARIO_TAIL_BBOX_HEIGHT;
+		}
 	}
 	else
 	{
