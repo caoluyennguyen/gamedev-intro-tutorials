@@ -643,6 +643,11 @@ void CMario::Render()
 					}
 				}
 			}
+			else if (state == MARIO_STATE_HIT)
+			{
+				if (nx > 0) ani = MARIO_ANI_FIRE_HIT_RIGHT;
+				else ani = MARIO_ANI_FIRE_HIT_LEFT;
+			}
 			else {
 				if (state == MARIO_STATE_SIT)
 				{

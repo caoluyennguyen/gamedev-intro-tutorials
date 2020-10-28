@@ -329,6 +329,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A:
 		mario->SetAbleToHoldObject(true);
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
+		{
+			mario->SetState(MARIO_STATE_HIT);
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);

@@ -131,8 +131,8 @@
 #define MARIO_ANI_FIRE_FLY_LEFT				98
 #define MARIO_ANI_FIRE_HIT_RIGHT			99
 #define MARIO_ANI_FIRE_HIT_LEFT				100
-#define MARIO_ANI_FIRE_HIT_RIGHT			101
-#define MARIO_ANI_FIRE_HIT_LEFT				102
+#define MARIO_ANI_FIRE_JUMP_HIT_RIGHT		101
+#define MARIO_ANI_FIRE_JUMP_HIT_LEFT		102
 
 //#define MARIO_ANI_BIG_JUMP_UP_RIGHT			9
 //#define MARIO_ANI_BIG_JUMP_UP_LEFT			10
@@ -184,6 +184,7 @@ public:
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
+	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartHitObject() { hitting = 1; hitting_start = GetTickCount(); }
 
