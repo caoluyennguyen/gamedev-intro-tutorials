@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "FireBall.h"
 
 #pragma region define
 #define MARIO_MAX_WALKING_SPEED			0.1f 
@@ -10,10 +11,12 @@
 #define MARIO_ACCELERATION_JUMP			0.0003f
 #define MARIO_ACCELERATION_JUMP_HIGH	0.0004f
 #define MARIO_GRAVITY					0.0005f
-#define MARIO_JUMP_SPEED_Y				0.15f
-#define MARIO_JUMP_HIGH_SPEED_Y			0.25f
+#define MARIO_GRAVITY_SLOW_FALL			0.0001f
+#define MARIO_JUMP_SPEED				0.15f
+#define MARIO_JUMP_HIGH_SPEED			0.2f
 #define MARIO_JUMP_DEFLECT_SPEED		0.2f
 #define MARIO_DIE_DEFLECT_SPEED			0.2f
+#define MARIO_MIN_JUMP_SPEED			0.1f
 
 #define MARIO_STATE_IDLE			0
 #define MARIO_STATE_WALKING_RIGHT	100
@@ -26,6 +29,7 @@
 #define MARIO_STATE_JUMP_HIGH		800
 #define MARIO_STATE_HIT				900
 #define MARIO_STATE_FLY				1000
+#define MARIO_STATE_SLOW_FALL		1100
 
 #define MARIO_ANI_BIG_IDLE_RIGHT			0
 #define MARIO_ANI_BIG_IDLE_LEFT				1
@@ -150,7 +154,7 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 16
 
-#define MARIO_TAIL_BBOX_WIDTH  15
+#define MARIO_TAIL_BBOX_WIDTH  24
 #define MARIO_TAIL_BBOX_HEIGHT 29
 
 #define MARIO_SIT_BBOX_WIDTH  16
@@ -158,6 +162,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME	5000
 #define MARIO_HITTING_TIME		200
+#define MARIO_FLYING_TIME		4000
 #pragma endregion
 
 class CMario : public CGameObject
@@ -166,35 +171,55 @@ class CMario : public CGameObject
 	int level;
 	int untouchable;
 	int hitting;
+	bool flying;
 	DWORD untouchable_start;
 	DWORD hitting_start;
+	DWORD flying_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
 
-	bool isAbleToJump;
-	bool isAbleToHoldObject;
-	bool isHoldObject;
-	bool isAbleToRun;
-	bool isAbleToJumpHigh;
+	bool isAbleToJump;			// check if mario can jump
+	bool isAbleToHoldObject;	// check if mario can hold object
+	bool isHoldObject;			// check if mario is holding object
+	bool isAbleToRun;			// check if mario can run
+	bool isAbleToJumpHigh;		// check if mario can jump high
+	bool isAbleToShoot;			// check if mario can shoot
+	bool isAbleToSlowFall;		// check if mario can fall slowloy
+	bool isAbleToFly;			// check if mario can fly
+	//bool isJumping;				// check if mario is in the air
+	bool isSlowFall;
+
+	FireBall* fireball;
 public: 
+	
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 
 	void SetState(int state);
-	void SetLevel(int l) { level = l; }
+	void SetLevel(int l);
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartHitObject() { hitting = 1; hitting_start = GetTickCount(); }
+	void StartFly() { flying = true; flying_start = GetTickCount(); }
 
 	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 
 	bool IsAbleToJump() { return isAbleToJump; }
+	bool IsAbleToJumpHigh() { return isAbleToJumpHigh; }
 	bool IsAbleToRun() { return isAbleToRun; }
+	bool IsAbleToShoot() { return isAbleToShoot; }
+	bool IsAbleToSlowFall() { return isAbleToSlowFall; }
+	bool IsFlying() { return flying; }
 	void SetAbleToJump(bool x) { isAbleToJump = x; }
 	void SetAbleToHoldObject(bool x) { isAbleToHoldObject = x; }
 	void SetAbleToRun(bool x) { isAbleToRun = x; }
+	void SetAbleToJumpHigh(bool x) { isAbleToJumpHigh = x; }
+	void SetIsSlowFall(bool x) { isSlowFall = x; }
+	void StartShoot();
+	//void SetIsJumping(bool x) { isJumping = x; }
+	void SetNx(int nx) { this->nx = nx; }
 };

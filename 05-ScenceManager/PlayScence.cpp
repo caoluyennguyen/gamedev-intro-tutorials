@@ -34,6 +34,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
 #define OBJECT_TYPE_GROUND	4
+#define OBJECT_TYPE_FIREBALL	5
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -152,7 +153,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -307,9 +308,22 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		if (mario->IsAbleToJump())
+		if (mario->IsAbleToJump() && !mario->IsFlying())
 		{
 			mario->SetState(MARIO_STATE_JUMP);
+		}
+		else if (mario->IsAbleToSlowFall() && !mario->IsFlying())
+		{
+			mario->SetIsSlowFall(true);
+			mario->SetState(MARIO_STATE_SLOW_FALL);
+		}
+		if (mario->IsAbleToJumpHigh() && !mario->IsFlying() && mario->GetLevel() == MARIO_LEVEL_TAIL)
+		{
+			mario->StartFly();
+		}
+		if (mario->IsFlying())
+		{
+			mario->SetState(MARIO_STATE_FLY);
 		}
 		break;
 	case DIK_R:
@@ -328,17 +342,27 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetLevel(MARIO_LEVEL_FIRE);
 		break;
 	case DIK_A:
+		// mario can run
+		mario->SetAbleToRun(true);
+		// mario can hold object
 		mario->SetAbleToHoldObject(true);
 		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
 		{
-			mario->SetState(MARIO_STATE_HIT);
+			if (mario->IsAbleToShoot())
+			{
+				mario->StartShoot();
+				mario->SetState(MARIO_STATE_HIT);
+			}
 		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_LSHIFT:
-		mario->SetAbleToRun(true);
+		if (mario->GetState() == MARIO_STATE_FLY)
+		{
+
+		}
 		break;
 	}
 }
@@ -358,15 +382,22 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_S:
 		mario->SetAbleToJump(false);
+		if (mario->IsAbleToSlowFall())
+		{
+			mario->SetIsSlowFall(false);
+		}
 		break;
 	case DIK_A:
 		mario->SetAbleToHoldObject(false);
+		mario->SetAbleToRun(false);
+		mario->SetAbleToJumpHigh(false);
+		//mario->SetAbleToShoot(false);
+		//mario->SetState(MARIO_STATE_IDLE);
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);
 		break;
 	case DIK_LSHIFT:
-		mario->SetAbleToRun(false);
 		break;
 	}
 }
