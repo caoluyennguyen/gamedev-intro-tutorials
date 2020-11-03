@@ -354,6 +354,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 				mario->SetState(MARIO_STATE_HIT);
 			}
 		}
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+		{
+			if (mario->IsAbleToShoot())
+			{
+				mario->SetState(MARIO_STATE_HIT);
+			}
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);

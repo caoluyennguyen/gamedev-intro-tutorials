@@ -296,10 +296,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		fireball->SetEnable(true);
 	}*/
-	if (abs(fireball->GetPositionX() - this->x) > 200) {
+	if (abs(fireball->GetPositionX() - this->x) > 200 || !fireball->IsEnable()) {
 		fireball->SetEnable(false);
 		isAbleToShoot = true;
-		//vy = 0;
 	}
 
 	if (fireball->IsEnable())
@@ -612,6 +611,19 @@ void CMario::Render()
 					else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
 				}
 			}
+			else if (state == MARIO_STATE_HIT)
+			{
+				if (nx > 0)  {
+					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_RIGHT;
+					else ani = MARIO_ANI_TAIL_IDLE_RIGHT;
+				}
+					
+				else {
+					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_LEFT;
+					else ani = MARIO_ANI_TAIL_IDLE_LEFT;
+				}
+					
+			}
 			else {
 				if (state == MARIO_STATE_SIT)
 				{
@@ -762,8 +774,15 @@ void CMario::Render()
 			}
 			else if (state == MARIO_STATE_HIT)
 			{
-				if (nx > 0) ani = MARIO_ANI_FIRE_HIT_RIGHT;
-				else ani = MARIO_ANI_FIRE_HIT_LEFT;
+				if (nx > 0) {
+					if (hitting == 1) ani = MARIO_ANI_FIRE_HIT_RIGHT;
+					else ani = MARIO_ANI_FIRE_IDLE_RIGHT;
+				}
+
+				else {
+					if (hitting == 1) ani = MARIO_ANI_FIRE_HIT_LEFT;
+					else ani = MARIO_ANI_FIRE_IDLE_LEFT;
+				}
 			}
 			else {
 				if (state == MARIO_STATE_SIT)
@@ -893,11 +912,12 @@ void CMario::Render()
 	if (untouchable) alpha = 128;
 
 	// Error render Mario hit
-	if (state == MARIO_STATE_HIT)
+	/*if (state == MARIO_STATE_HIT)
 	{
 		animation_set->at(ani)->RenderOneTime(x, y, alpha);
 	}
-	else animation_set->at(ani)->Render(x, y, alpha);
+	else */
+	animation_set->at(ani)->Render(x, y, alpha);
 
 	RenderBoundingBox();
 }
@@ -946,6 +966,10 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_SLOW_FALL:
 		vy = 0.01f;
+		break;
+	case MARIO_STATE_HIT:
+		hitting = 1;
+		hitting_start = GetTickCount();
 		break;
 	}
 }
@@ -1003,6 +1027,7 @@ void CMario::StartShoot()
 	fireball->SetEnable(true);
 	fireball->SetPosition(this->x, this->y);
 	fireball->nx = this->nx;
+	
 }
 
 void CMario::SetLevel(int l)

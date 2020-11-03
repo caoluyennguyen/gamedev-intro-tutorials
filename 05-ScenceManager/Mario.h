@@ -161,7 +161,7 @@
 #define MARIO_SIT_BBOX_HEIGHT 18
 
 #define MARIO_UNTOUCHABLE_TIME	5000
-#define MARIO_HITTING_TIME		200
+#define MARIO_HITTING_TIME		300
 #define MARIO_FLYING_TIME		4000
 #pragma endregion
 
@@ -175,6 +175,7 @@ class CMario : public CGameObject
 	DWORD untouchable_start;
 	DWORD hitting_start;
 	DWORD flying_start;
+	DWORD minimize_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
