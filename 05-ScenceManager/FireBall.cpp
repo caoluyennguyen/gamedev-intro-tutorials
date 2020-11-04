@@ -58,8 +58,8 @@ void FireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (koopas->GetState() != KOOPAS_STATE_DIE)
 					{
 						koopas->SetState(KOOPAS_STATE_DIE);
-						enable = false;
 					}
+					enable = false;
 				}
 			}
 			else if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 

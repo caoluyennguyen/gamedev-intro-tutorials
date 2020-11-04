@@ -19,7 +19,7 @@
 10012	155	154	171	181	0
 10013	125	154	141	181	0
 # die 
-10099	215	120	231	135	0
+10999	215	120	231	135	0
 # stop right
 10014	5	154	21	182	0
 # stop left
@@ -273,7 +273,7 @@
 #walk left small
 503	10031	75	10033	75
 #die
-599	10099	100
+599	10999	100
 #stop right small
 504	10034	100
 #stop left small
@@ -456,10 +456,10 @@
 592	10121	100
 #fly left
 593	10122	100
-#hit right
-594	10123	50	10071	50
-#hit left
-595	10124	50	10074	50
+#throw fire right
+594	10123	100	10071	100
+#throw fire left
+595	10124	100	10074	100
 #jump hit right
 596	10021	50	10125	50
 #jump hit left
@@ -515,7 +515,7 @@
 0	10	0	1
 
 # KOOPAS
-#3	20	390	4
+3	20	390	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -525,7 +525,7 @@
 
 # GROUND
 4	0	418	0	1000	430
-4	0	200	0	200	430
+#4	0	200	0	200	430
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

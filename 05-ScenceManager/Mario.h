@@ -133,15 +133,10 @@
 #define MARIO_ANI_FIRE_SWIFT_LEFT			94
 #define MARIO_ANI_FIRE_FLY_RIGHT			97
 #define MARIO_ANI_FIRE_FLY_LEFT				98
-#define MARIO_ANI_FIRE_HIT_RIGHT			99
-#define MARIO_ANI_FIRE_HIT_LEFT				100
+#define MARIO_ANI_FIRE_THROW_BALL_RIGHT		99
+#define MARIO_ANI_FIRE_THROW_BALL_LEFT		100
 #define MARIO_ANI_FIRE_JUMP_HIT_RIGHT		101
 #define MARIO_ANI_FIRE_JUMP_HIT_LEFT		102
-
-//#define MARIO_ANI_BIG_JUMP_UP_RIGHT			9
-//#define MARIO_ANI_BIG_JUMP_UP_LEFT			10
-//#define MARIO_ANI_BIG_JUMP_DOWN_RIGHT		11
-//#define MARIO_ANI_BIG_JUMP_DOWN_RIGHT		12
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -162,6 +157,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME	5000
 #define MARIO_HITTING_TIME		300
+#define MARIO_SHOOTING_TIME		200
 #define MARIO_FLYING_TIME		4000
 #pragma endregion
 
@@ -172,10 +168,12 @@ class CMario : public CGameObject
 	int untouchable;
 	int hitting;
 	bool flying;
+	bool shooting;
 	DWORD untouchable_start;
 	DWORD hitting_start;
 	DWORD flying_start;
 	DWORD minimize_start;
+	DWORD shooting_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
@@ -202,7 +200,8 @@ public:
 	void SetLevel(int l);
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
-	void StartHitObject() { hitting = 1; hitting_start = GetTickCount(); }
+	void StartShootingObject() { shooting = 1; shooting_start = GetTickCount(); }
+	void StartHittingObject() { hitting = 1; hitting_start = GetTickCount(); }
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 
 	void Reset();

@@ -45,6 +45,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else*/ 
 	vy += MARIO_GRAVITY * dt;
+	if (state == MARIO_STATE_DIE) {
+		y += dy;
+		return;
+	}
 
 	// Add acceleration
 	if (state == MARIO_STATE_IDLE || state == MARIO_STATE_SIT)
@@ -126,7 +130,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					isHoldObject = false;
 					if (obj->GetState() == KOOPAS_STATE_DIE)
 					{
-						StartHitObject();
+						StartShootingObject();
 						obj->SetSpeedVx(this->nx * 0.2f);
 					}
 				}
@@ -148,8 +152,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != MARIO_STATE_DIE)
-		CalcPotentialCollisions(coObjects, coEvents);
+	CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -157,17 +160,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	// reset hitting timer if hitting time has passed
-	if ( GetTickCount() - hitting_start > MARIO_HITTING_TIME)
+	// reset shooting timer if hitting time has passed
+	if ( GetTickCount() - shooting_start > MARIO_SHOOTING_TIME)
 	{
-		hitting_start = 0;
-		hitting = 0;
+		shooting_start = 0;
+		shooting = 0;
 	}
-	// reset hitting timer if hitting time has passed
+	// reset flying timer if hitting time has passed
 	if ( GetTickCount() - flying_start > MARIO_FLYING_TIME)
 	{
 		flying_start = 0;
 		flying = false;
+	}
+	// reset hitting timer if hitting time has passed
+	if ( GetTickCount() - hitting_start > MARIO_HITTING_TIME)
+	{
+		hitting_start = 0;
+		hitting = false;
 	}
 
 	// No collision occured, proceed normally
@@ -384,7 +393,7 @@ void CMario::Render()
 								ani = MARIO_ANI_BIG_WALK_HOLD_LEFT;
 							}
 						}
-						else if (hitting == 1)
+						else if (shooting == 1)
 						{
 							if (nx > 0) {
 								ani = MARIO_ANI_BIG_HIT_RIGHT;
@@ -493,7 +502,7 @@ void CMario::Render()
 							ani = MARIO_ANI_SMALL_WALK_HOLD_LEFT;
 						}
 					}
-					else if (hitting == 1)
+					else if (shooting == 1)
 					{
 						if (nx > 0) {
 							ani = MARIO_ANI_SMALL_HIT_RIGHT;
@@ -675,7 +684,7 @@ void CMario::Render()
 								ani = MARIO_ANI_TAIL_WALK_HOLD_LEFT;
 							}
 						}
-						else if (hitting == 1)
+						else if (shooting == 1)
 						{
 							if (nx > 0) {
 								ani = MARIO_ANI_TAIL_HIT_RIGHT;
@@ -775,12 +784,12 @@ void CMario::Render()
 			else if (state == MARIO_STATE_HIT)
 			{
 				if (nx > 0) {
-					if (hitting == 1) ani = MARIO_ANI_FIRE_HIT_RIGHT;
+					if (hitting == 1) ani = MARIO_ANI_FIRE_THROW_BALL_RIGHT;
 					else ani = MARIO_ANI_FIRE_IDLE_RIGHT;
 				}
 
 				else {
-					if (hitting == 1) ani = MARIO_ANI_FIRE_HIT_LEFT;
+					if (hitting == 1) ani = MARIO_ANI_FIRE_THROW_BALL_LEFT;
 					else ani = MARIO_ANI_FIRE_IDLE_LEFT;
 				}
 			}
@@ -835,7 +844,7 @@ void CMario::Render()
 								ani = MARIO_ANI_FIRE_WALK_HOLD_LEFT;
 							}
 						}
-						else if (hitting == 1)
+						else if (shooting == 1)
 						{
 							if (nx > 0) {
 								ani = MARIO_ANI_FIRE_HIT_RIGHT;
@@ -968,8 +977,11 @@ void CMario::SetState(int state)
 		vy = 0.01f;
 		break;
 	case MARIO_STATE_HIT:
-		hitting = 1;
-		hitting_start = GetTickCount();
+		if (state == MARIO_LEVEL_TAIL)
+		{
+			StartHittingObject();
+		}
+		else StartShootingObject();
 		break;
 	}
 }
@@ -1027,7 +1039,6 @@ void CMario::StartShoot()
 	fireball->SetEnable(true);
 	fireball->SetPosition(this->x, this->y);
 	fireball->nx = this->nx;
-	
 }
 
 void CMario::SetLevel(int l)
