@@ -149,15 +149,13 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 16
 
-#define MARIO_TAIL_BBOX_WIDTH  24
-#define MARIO_TAIL_BBOX_HEIGHT 29
-
 #define MARIO_SIT_BBOX_WIDTH  16
 #define MARIO_SIT_BBOX_HEIGHT 18
 
 #define MARIO_UNTOUCHABLE_TIME	5000
-#define MARIO_HITTING_TIME		300
+#define MARIO_HITTING_TIME		500
 #define MARIO_SHOOTING_TIME		200
+#define MARIO_THROWING_TIME		200
 #define MARIO_FLYING_TIME		4000
 #pragma endregion
 
@@ -168,12 +166,14 @@ class CMario : public CGameObject
 	int untouchable;
 	int hitting;
 	bool flying;
-	bool shooting;
+	int shooting;
+	int throwing;
 	DWORD untouchable_start;
 	DWORD hitting_start;
 	DWORD flying_start;
 	DWORD minimize_start;
 	DWORD shooting_start;
+	DWORD throwing_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
@@ -202,6 +202,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartShootingObject() { shooting = 1; shooting_start = GetTickCount(); }
 	void StartHittingObject() { hitting = 1; hitting_start = GetTickCount(); }
+	void StartThrowingObject() { throwing = 1; throwing_start = GetTickCount(); StartShoot(); }
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 
 	void Reset();

@@ -51,7 +51,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	// Add acceleration
-	if (state == MARIO_STATE_IDLE || state == MARIO_STATE_SIT)
+	if (state == MARIO_STATE_IDLE || state == MARIO_STATE_SIT || state == MARIO_STATE_HIT)
 	{
 		if (vx > MARIO_MIN_WALKING_SPEED) vx -= MARIO_ACCELERATION_WALK * dt;
 		else if (vx < -MARIO_MIN_WALKING_SPEED) vx += MARIO_ACCELERATION_WALK * dt;
@@ -136,12 +136,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 			}
 		}
-		else if ((dynamic_cast<CBrick*>(obj) || dynamic_cast<CGround*>(obj)) && state != MARIO_STATE_DIE) {
+		else if (dynamic_cast<CGround*>(obj) && state != MARIO_STATE_DIE) {
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 			
 			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				y -= y + MARIO_TAIL_BBOX_HEIGHT - kTop + 1.0f;
+				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
 			}
 		}
 	}
@@ -176,7 +176,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if ( GetTickCount() - hitting_start > MARIO_HITTING_TIME)
 	{
 		hitting_start = 0;
-		hitting = false;
+		hitting = 0;
+	}
+	// reset throwing timer if hitting time has passed
+	if ( GetTickCount() - throwing_start > MARIO_THROWING_TIME)
+	{
+		throwing_start = 0;
+		throwing = 0;
 	}
 
 	// No collision occured, proceed normally
@@ -268,7 +274,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			} // if Goomba
-			else if (dynamic_cast<CBrick *>(e->obj) || dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CBrick *>(e->obj))
 			{
 				x += min_tx * dx + nx * 0.2f;
 				y += min_ty * dy + ny * 0.2f;
@@ -287,8 +293,39 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					//isAbleToSlowFall = false;
 					vy = 0;
 				}
+				else
+				{
+					vy += 0.1f;
+					isAbleToJump = false;
+					if (brick->GetState() != BRICK_STATE_UNAVAILABLE)
+					{
+						brick->SetState(BRICK_STATE_UNAVAILABLE);
+					} 
+				}
+			}
+			else if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
+			{
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
 
-			} // if Goomba
+				if (e->nx != 0)
+				{
+					vx = 0;
+				}
+
+				if (e->ny < 0)
+				{
+					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
+					isAbleToJump = true;
+					vy = 0;
+				}
+				else
+				{
+					vy += 0.1f;
+					isAbleToJump = true;
+				}
+
+			}
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
@@ -705,6 +742,9 @@ void CMario::Render()
 									else {
 										if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
 										else ani = MARIO_ANI_TAIL_FLY_RIGHT;
+
+										/*if (vy < MARIO_MIN_JUMP_SPEED && flying == 1) ani = MARIO_ANI_TAIL_FLY_RIGHT;
+										else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;*/
 									}
 										
 								}
@@ -716,6 +756,9 @@ void CMario::Render()
 									else {
 										if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
 										else ani = MARIO_ANI_TAIL_FLY_LEFT;
+
+										/*if (vy < MARIO_MIN_JUMP_SPEED && flying == 1) ani = MARIO_ANI_TAIL_FLY_LEFT;
+										else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;*/
 									}
 								}
 							}
@@ -784,12 +827,12 @@ void CMario::Render()
 			else if (state == MARIO_STATE_HIT)
 			{
 				if (nx > 0) {
-					if (hitting == 1) ani = MARIO_ANI_FIRE_THROW_BALL_RIGHT;
+					if (throwing == 1) ani = MARIO_ANI_FIRE_THROW_BALL_RIGHT;
 					else ani = MARIO_ANI_FIRE_IDLE_RIGHT;
 				}
 
 				else {
-					if (hitting == 1) ani = MARIO_ANI_FIRE_THROW_BALL_LEFT;
+					if (throwing == 1) ani = MARIO_ANI_FIRE_THROW_BALL_LEFT;
 					else ani = MARIO_ANI_FIRE_IDLE_LEFT;
 				}
 			}
@@ -977,11 +1020,11 @@ void CMario::SetState(int state)
 		vy = 0.01f;
 		break;
 	case MARIO_STATE_HIT:
-		if (state == MARIO_LEVEL_TAIL)
+		if (level == MARIO_LEVEL_TAIL)
 		{
 			StartHittingObject();
 		}
-		else StartShootingObject();
+		else StartThrowingObject();
 		break;
 	}
 }
@@ -1011,8 +1054,19 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = y + MARIO_SIT_BBOX_HEIGHT;
 		}
 		else {
-			right = x + MARIO_TAIL_BBOX_WIDTH;
-			bottom = y + MARIO_TAIL_BBOX_HEIGHT;
+			/*if (nx > 0)
+			{
+				right = x + MARIO_BIG_BBOX_WIDTH;
+				bottom = y + MARIO_BIG_BBOX_HEIGHT;
+			}
+			else {
+				left = x + 8;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+				bottom = top + MARIO_BIG_BBOX_HEIGHT;
+			}*/
+			left = x + 8;
+			right = left + MARIO_BIG_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
 	else

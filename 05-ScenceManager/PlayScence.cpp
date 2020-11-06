@@ -158,7 +158,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -346,18 +346,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetAbleToRun(true);
 		// mario can hold object
 		mario->SetAbleToHoldObject(true);
-		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE || mario->GetLevel() == MARIO_LEVEL_TAIL)
 		{
 			if (mario->IsAbleToShoot())
 			{
-				mario->StartShoot();
-				mario->SetState(MARIO_STATE_HIT);
-			}
-		}
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
-		{
-			if (mario->IsAbleToShoot())
-			{
+				//mario->StartShoot();
 				mario->SetState(MARIO_STATE_HIT);
 			}
 		}
@@ -365,12 +358,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
 		break;
-	case DIK_LSHIFT:
+	/*case DIK_LSHIFT:
 		if (mario->GetState() == MARIO_STATE_FLY)
 		{
 
 		}
-		break;
+		break;*/
 	}
 }
 
@@ -404,8 +397,8 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);
 		break;
-	case DIK_LSHIFT:
-		break;
+	/*case DIK_LSHIFT:
+		break;*/
 	}
 }
 
