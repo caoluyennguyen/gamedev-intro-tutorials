@@ -193,8 +193,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			float r = atof(tokens[4].c_str());
 			float b = atof(tokens[5].c_str());
-			//id = atoi(tokens[6].c_str());
-			obj = new CGround(x, y, r, b);
+			id = atoi(tokens[6].c_str());
+			obj = new CGround(x, y, r, b, id);
 		}
 		break;
 	default:

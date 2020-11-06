@@ -28,12 +28,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	x += dx;
 	y += dy;
 
-	if (vx < 0 && x < 0) {
-		x = 0; vx = -vx;
+	if (vx < 0 && x < 508) {
+		x = 508; vx = -vx;
 	}
 
-	if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
+	if (vx > 0 && x > 604) {
+		x = 604; vx = -vx;
 	}
 }
 

@@ -136,12 +136,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 			}
 		}
-		else if (dynamic_cast<CGround*>(obj) && state != MARIO_STATE_DIE) {
-			float kLeft, kTop, kRight, kBottom;
-			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
-			
-			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+		else if (dynamic_cast<CGround*>(obj)&& state != MARIO_STATE_DIE) {
+			CGround* ground = dynamic_cast<CGround*>(obj);
+
+			if (ground->GetId() == GROUND_TYPE_NORMAL)
+			{
+				float kLeft, kTop, kRight, kBottom;
+				obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+				if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+				}
 			}
 		}
 	}
@@ -256,10 +261,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						goomba->SetState(GOOMBA_STATE_DIE);
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 					}
+					else
+					{
+						if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
+						isAbleToJump = true;
+						vy = 0;
+						y += min_ty * dy + ny * 0.2f;
+					}
 				}
 				else if (e->nx != 0)
 				{
-					if (untouchable==0)
+					if (untouchable == 0)
 					{
 						if (goomba->GetState()!=GOOMBA_STATE_DIE)
 						{
@@ -305,8 +317,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
 			{
+				CGround* ground = dynamic_cast<CGround*>(e->obj);
+
 				x += min_tx * dx + nx * 0.2f;
-				y += min_ty * dy + ny * 0.2f;
 
 				if (e->nx != 0)
 				{
@@ -318,11 +331,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
 					isAbleToJump = true;
 					vy = 0;
+					y += min_ty * dy + ny * 0.2f;
 				}
-				else
+				else if (e->ny > 0)
 				{
-					vy += 0.1f;
-					isAbleToJump = true;
+					if (ground->GetId() == GROUND_TYPE_NORMAL) y += min_ty * dy + ny * 0.2f;
+					else y += dy;
 				}
 
 			}
