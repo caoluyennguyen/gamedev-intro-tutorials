@@ -293,7 +293,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					//isAbleToSlowFall = false;
 					vy = 0;
 				}
-				else
+				else if (e->ny > 0)
 				{
 					vy += 0.1f;
 					isAbleToJump = false;

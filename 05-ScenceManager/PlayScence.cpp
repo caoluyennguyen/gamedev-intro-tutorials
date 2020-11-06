@@ -23,6 +23,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 */
 
 #define SCENE_SECTION_UNKNOWN -1
+#define SCENE_SECTION_TILEMAP 1
 #define SCENE_SECTION_TEXTURES 2
 #define SCENE_SECTION_SPRITES 3
 #define SCENE_SECTION_ANIMATIONS 4
@@ -40,6 +41,26 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define MAX_SCENE_LINE 1024
 
+
+void CPlayScene::_ParseSection_TILEMAP(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 5) return; // skip invalid lines
+
+	int pixel = atoi(tokens[0].c_str());
+	wstring img_path = ToWSTR(tokens[1]);
+	wstring file_path = ToWSTR(tokens[2]);
+	int numCol = atoi(tokens[3].c_str());
+	int numRow = atoi(tokens[4].c_str());
+	int numColToRead = atoi(tokens[5].c_str());
+	int numRowToRead = atoi(tokens[6].c_str());
+	int idCell = atoi(tokens[7].c_str());
+	mapWidth = atoi(tokens[8].c_str());
+
+	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
+	tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
+}
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
@@ -189,7 +210,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 
-	tileMap = new CTileMap();
+	//tileMap = new CTileMap();
 }
 
 void CPlayScene::Load()
@@ -209,6 +230,7 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
+		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; }
 		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
 		if (line == "[SPRITES]") { 
 			section = SCENE_SECTION_SPRITES; continue; }
@@ -225,6 +247,7 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{ 
+			case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP(line); break;
 			case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
 			case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
 			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
@@ -267,15 +290,16 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	if (cy > 220.0f) cy = 220.0f;
+	if (cy > 215.0f) cy = 215.0f;
 	else if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
-	if (player->GetState() != MARIO_STATE_DIE) CGame::GetInstance()->SetCamPos(cx, cy);
+	if (player->GetState() != MARIO_STATE_DIE) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 }
 
 void CPlayScene::Render()
 {
-	tileMap->Render();
+	//tileMap->Render();
+	tileMap->Render(player->x);
 	for (int i = objects.size() - 1; i > -1; i--)
 		objects[i]->Render();
 }

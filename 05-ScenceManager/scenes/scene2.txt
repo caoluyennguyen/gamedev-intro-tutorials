@@ -1,3 +1,7 @@
+#pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth
+[TILEMAP]
+16	scenes\\map\\1.png	scenes\\map\\1.txt	175	26	20	13	0	2816
+
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	scenes\textures\mario.png	255	255	255
@@ -230,7 +234,7 @@
 40001	300	117	316	133	20
 40002	318	117	334	133	20
 40003	336	117	352	133	20
-40004	355	117	370	133	20
+40004	354	117	370	133	20
 40005	372	117	388	133	20
 
 #KOOPAS
@@ -472,7 +476,7 @@
 601	20001	100
 
 # ==== QUESTION MARK BRICK =========
-602	40001	100	40001	100	40002	100	40003	100	40004	100
+602	40001	100	40002	100	40003	100	40004	100
 605	40005	100
 
 # ==== GOOMBA  =========
@@ -522,13 +526,16 @@
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
-
-#
-1	240	340	22
+1	174	348	22
+1	190	348	22
+1	222	300	22
+1	238	300	22
+1	414	316	22
 
 # GROUND
-4	0	418	0	1000	430
-#4	0	200	0	200	430
+4	0	412	0	622	430
+4	622	396	0	1085	430
+4	350	364	0	381	430
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
