@@ -10,19 +10,25 @@
 
 #define KOOPAS_STATE_WALKING 100
 #define KOOPAS_STATE_DIE 200
-#define KOOPAS_STATE_ROLL 300
+#define KOOPAS_STATE_ROLLING 300
+#define KOOPAS_STATE_DIE_NGUA 400
 
 #define KOOPAS_ANI_WALKING_LEFT 0
 #define KOOPAS_ANI_WALKING_RIGHT 1
 #define KOOPAS_ANI_DIE 2
+#define KOOPAS_ANI_DIE_NGUA 3
+#define KOOPAS_ANI_ROLLING 4
+
+#define KOOPAS_GRAVITY 0.0005f
 
 class CKoopas : public CGameObject
 {
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
-	virtual void Render();
 
 public:
 	CKoopas();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
+	virtual void Render();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+	void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 };

@@ -173,7 +173,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x,y); 
+		//obj = CMario::GetInstance();
+		obj = new CMario();
 		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object created!\n");

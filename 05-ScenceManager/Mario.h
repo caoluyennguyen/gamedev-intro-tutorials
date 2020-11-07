@@ -106,8 +106,8 @@
 #define MARIO_ANI_TAIL_JUMP_HIGH_LEFT		86
 #define MARIO_ANI_TAIL_FLY_RIGHT			87
 #define MARIO_ANI_TAIL_FLY_LEFT				88
-#define MARIO_ANI_TAIL_HIT_RIGHT			89
-#define MARIO_ANI_TAIL_HIT_LEFT				90
+#define MARIO_ANI_TAIL_HIT_TAIL_RIGHT		89
+#define MARIO_ANI_TAIL_HIT_TAIL_LEFT		90
 
 #define MARIO_ANI_FIRE_IDLE_RIGHT			51
 #define MARIO_ANI_FIRE_IDLE_LEFT			52
@@ -168,6 +168,7 @@ class CMario : public CGameObject
 	bool flying;
 	int shooting;
 	int throwing;
+	int countBall;
 	DWORD untouchable_start;
 	DWORD hitting_start;
 	DWORD flying_start;
@@ -189,12 +190,16 @@ class CMario : public CGameObject
 	//bool isJumping;				// check if mario is in the air
 	bool isSlowFall;
 
+	vector<FireBall*> fireBalls;
 	FireBall* fireball;
+
+	static CMario* __instance;
 public: 
 	
-	CMario(float x = 0.0f, float y = 0.0f);
+	CMario();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
+	void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 
 	void SetState(int state);
 	void SetLevel(int l);
@@ -206,6 +211,7 @@ public:
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 
 	void Reset();
+	void Clear();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 
@@ -223,4 +229,7 @@ public:
 	void StartShoot();
 	//void SetIsJumping(bool x) { isJumping = x; }
 	void SetNx(int nx) { this->nx = nx; }
+	void ResetBall() { countBall++ ; }
+
+	static CMario* CMario::GetInstance();
 };

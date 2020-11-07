@@ -3,6 +3,8 @@
 #include "Ground.h"
 #include "Goomba.h"
 #include "Brick.h"
+#include "Mario.h"
+#include "PlayScence.h"
 
 FireBall::FireBall()
 {
@@ -72,8 +74,8 @@ void FireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (goomba->GetState() != GOOMBA_STATE_DIE)
 					{
 						goomba->SetState(GOOMBA_STATE_DIE);
-						enable = false;
 					}
+					enable = false;
 				}
 			} // if Goomba
 			else if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 

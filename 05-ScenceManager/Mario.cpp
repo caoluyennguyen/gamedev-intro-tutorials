@@ -11,7 +11,15 @@
 #include "Koopas.h"
 #include "Ground.h"
 
-CMario::CMario(float x, float y) : CGameObject()
+CMario* CMario::__instance = NULL;
+
+CMario* CMario::GetInstance()
+{
+	if (__instance == NULL) __instance = new CMario();
+	return __instance;
+}
+
+CMario::CMario() : CGameObject()
 {
 	level = MARIO_LEVEL_SMALL;
 	untouchable = 0;
@@ -22,15 +30,87 @@ CMario::CMario(float x, float y) : CGameObject()
 	isAbleToRun = false;
 	isAbleToJumpHigh = false;
 	isAbleToShoot = false;
+	countBall = 1;
 
 	a = MARIO_ACCELERATION_WALK;
 
-	start_x = x; 
+	/*start_x = x; 
 	start_y = y; 
 	this->x = x; 
-	this->y = y; 
+	this->y = y;*/ 
 
 	fireball = new FireBall();
+
+	/*for (int i = 0; i < 2; i++)
+	{
+		fireball = new FireBall();
+		fireBalls.push_back(fireball);
+	}*/
+}
+
+void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
+{
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+
+		if (e->t > 0 && e->t <= 1.0f)
+			coEvents.push_back(e);
+		else
+			delete e;
+
+		// Check AABB collision
+		LPGAMEOBJECT obj = coObjects->at(i);
+
+		if (dynamic_cast<CKoopas*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
+			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
+				if (level == MARIO_LEVEL_TAIL && hitting == 1)
+				{
+					obj->SetState(KOOPAS_STATE_DIE_NGUA);
+				}
+				else if (isAbleToHoldObject)
+				{
+					isHoldObject = true;
+					//int direction = (x - kLeft) < 0 ? 1 : -1;
+					if (level > MARIO_LEVEL_SMALL)
+					{
+						obj->SetPosition(this->x + this->nx * 10.0f, this->y + 10.0f);
+					}
+					else {
+						obj->SetPosition(this->x + this->nx * 10.0f, this->y);
+					}
+				}
+				else {
+					isHoldObject = false;
+					if (obj->GetState() == KOOPAS_STATE_DIE || obj->GetState() == KOOPAS_STATE_DIE_NGUA)
+					{
+						StartShootingObject();
+						obj->nx = this->nx;
+						obj->SetState(KOOPAS_STATE_ROLLING);
+					}
+				}
+			}
+		}
+		else if (dynamic_cast<CGround*>(obj)) {
+			CGround* ground = dynamic_cast<CGround*>(obj);
+
+			if (ground->GetId() == GROUND_TYPE_NORMAL)
+			{
+				float kLeft, kTop, kRight, kBottom;
+				obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+				if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+				}
+			}
+		}
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -38,12 +118,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
-	// Simple fall down
-	/*if (isSlowFall)
-	{
-		vy += MARIO_GRAVITY_SLOW_FALL * dt;
-	}
-	else*/ 
 	vy += MARIO_GRAVITY * dt;
 	if (state == MARIO_STATE_DIE) {
 		y += dy;
@@ -102,52 +176,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isAbleToSlowFall = true;
 			}
 			else isAbleToSlowFall = false;
-		}
-	}
-
-	for (int i = 0; i < coObjects->size(); i++)
-	{
-		LPGAMEOBJECT obj = coObjects->at(i);
-
-		if (dynamic_cast<CKoopas*>(obj)) {
-			float kLeft, kTop, kRight, kBottom;
-			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
-			
-			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				if (isAbleToHoldObject)
-				{
-					isHoldObject = true;
-					//int direction = (x - kLeft) < 0 ? 1 : -1;
-					if (level > MARIO_LEVEL_SMALL)
-					{
-						obj->SetPosition(this->x + this->nx * 10.0f, this->y + 10.0f);
-					}
-					else {
-						obj->SetPosition(this->x + this->nx * 10.0f, this->y);
-					}
-				}
-				else {
-					isHoldObject = false;
-					if (obj->GetState() == KOOPAS_STATE_DIE)
-					{
-						StartShootingObject();
-						obj->SetSpeedVx(this->nx * 0.2f);
-					}
-				}
-			}
-		}
-		else if (dynamic_cast<CGround*>(obj)&& state != MARIO_STATE_DIE) {
-			CGround* ground = dynamic_cast<CGround*>(obj);
-
-			if (ground->GetId() == GROUND_TYPE_NORMAL)
-			{
-				float kLeft, kTop, kRight, kBottom;
-				obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
-
-				if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
-					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
-				}
-			}
 		}
 	}
 
@@ -233,9 +261,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->nx != 0)
 				{
-					if (untouchable == 0)
+					if (untouchable == 0 && hitting == 0)
 					{
-						if (koopas->GetState() != KOOPAS_STATE_DIE || (koopas->GetState() == KOOPAS_STATE_DIE && koopas->GetSpeedVx() != 0))
+						if ((koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA) ||
+							(koopas->GetState() == KOOPAS_STATE_DIE && koopas->GetSpeedVx() != 0))
 						{
 							if (level > MARIO_LEVEL_SMALL)
 							{
@@ -249,7 +278,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-			else if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			{
 				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
 
@@ -286,7 +315,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			} // if Goomba
-			else if (dynamic_cast<CBrick *>(e->obj))
+			if (dynamic_cast<CBrick *>(e->obj))
 			{
 				x += min_tx * dx + nx * 0.2f;
 				y += min_ty * dy + ny * 0.2f;
@@ -315,16 +344,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					} 
 				}
 			}
-			else if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
+			if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
 			{
 				CGround* ground = dynamic_cast<CGround*>(e->obj);
 
-				x += min_tx * dx + nx * 0.2f;
-
-				if (e->nx != 0)
+				if (e->nx != 0 && ground->GetId() == GROUND_TYPE_NORMAL)
 				{
+					x += min_tx * dx + nx * 0.2f;
 					vx = 0;
 				}
+				else x += dx;
 
 				if (e->ny < 0)
 				{
@@ -340,7 +369,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 
 			}
-			else if (dynamic_cast<CPortal *>(e->obj))
+			if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
@@ -351,11 +380,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	// error set enable fireball
-	/*if (isAbleToShoot)
+	/*for (int i = 0; i < 2; i++)
 	{
-		fireball->SetEnable(true);
+		if (abs(fireBalls[i]->GetPositionX() - this->x) > 200) {
+			fireBalls[i]->SetEnable(false);
+			isAbleToShoot = true;
+			fireBalls[i]->SetPosition(x, y);
+			countBall++;
+		}
+
+		if (fireBalls[i]->IsEnable())
+		{
+			fireBalls[i]->Update(dt, coObjects);
+		}
 	}*/
+
 	if (abs(fireball->GetPositionX() - this->x) > 200 || !fireball->IsEnable()) {
 		fireball->SetEnable(false);
 		isAbleToShoot = true;
@@ -674,12 +713,12 @@ void CMario::Render()
 			else if (state == MARIO_STATE_HIT)
 			{
 				if (nx > 0)  {
-					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_RIGHT;
+					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_TAIL_RIGHT;
 					else ani = MARIO_ANI_TAIL_IDLE_RIGHT;
 				}
 					
 				else {
-					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_LEFT;
+					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_TAIL_LEFT;
 					else ani = MARIO_ANI_TAIL_IDLE_LEFT;
 				}
 					
@@ -783,6 +822,11 @@ void CMario::Render()
 										ani = MARIO_ANI_TAIL_STOP_LEFT;
 									}
 									else {
+										/*if (hitting == 1)
+										{
+											ani == MARIO_ANI_TAIL_HIT_TAIL_RIGHT;
+										}
+										else */
 										if (state == MARIO_STATE_RUN_RIGHT)
 										{
 											if (vx < MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_RIGHT;
@@ -801,6 +845,11 @@ void CMario::Render()
 										ani = MARIO_ANI_TAIL_STOP_RIGHT;
 									}
 									else {
+										/*if (hitting == 1)
+										{
+											ani == MARIO_ANI_TAIL_HIT_TAIL_LEFT;
+										}
+										else */
 										if (state == MARIO_STATE_RUN_LEFT)
 										{
 											if (vx > -MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_LEFT;
@@ -973,16 +1022,17 @@ void CMario::Render()
 		fireball->Render();
 	}
 	
+	/*for (int i = 0; i < 2; i++)
+	{
+		if (fireBalls[i]->IsEnable())
+			fireBalls[i]->Render();
+	}*/
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
 	// Error render Mario hit
-	/*if (state == MARIO_STATE_HIT)
-	{
-		animation_set->at(ani)->RenderOneTime(x, y, alpha);
-	}
-	else */
+	
 	animation_set->at(ani)->Render(x, y, alpha);
 
 	RenderBoundingBox();
@@ -1068,19 +1118,18 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = y + MARIO_SIT_BBOX_HEIGHT;
 		}
 		else {
-			/*if (nx > 0)
+			if (nx > 0)
 			{
 				right = x + MARIO_BIG_BBOX_WIDTH;
 				bottom = y + MARIO_BIG_BBOX_HEIGHT;
 			}
 			else {
-				left = x + 8;
 				right = left + MARIO_BIG_BBOX_WIDTH;
 				bottom = top + MARIO_BIG_BBOX_HEIGHT;
-			}*/
-			left = x + 8;
+			}
+			/*left = x + 8;
 			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_BBOX_HEIGHT;
+			bottom = top + MARIO_BIG_BBOX_HEIGHT;*/
 		}
 	}
 	else
@@ -1101,12 +1150,31 @@ void CMario::Reset()
 	SetSpeed(0, 0);
 }
 
+void CMario::Clear()
+{
+	for (int i = 0; i < 2; i++)
+	{
+		delete fireBalls[i];
+	}
+	fireBalls.clear();
+}
+
+
+
 void CMario::StartShoot()
 {
-	isAbleToShoot = false;
 	fireball->SetEnable(true);
 	fireball->SetPosition(this->x, this->y);
 	fireball->nx = this->nx;
+	isAbleToShoot = false;
+	/*if (countBall > 0)
+	{
+		fireBalls[countBall]->SetEnable(true);
+		fireBalls[countBall]->SetPosition(this->x, this->y);
+		fireBalls[countBall]->nx = this->nx;
+	}
+	countBall--;
+	if (countBall < 0) isAbleToShoot = false;*/
 }
 
 void CMario::SetLevel(int l)
