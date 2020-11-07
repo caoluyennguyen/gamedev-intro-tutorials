@@ -20,23 +20,23 @@ class CTileMap
 {
 	CTileMap* _instance;
 
-	int pixel = 32;
+	int pixel;
 	int idCell;
-	int x = 0;				// toa do x cua sprite dau tien tren cung
-	int y = 0;				// toa do y cua sprite dau tien tren cung
+	int x;				// toa do x cua sprite dau tien tren cung
+	int y;				// toa do y cua sprite dau tien tren cung
 
-	int numCol = 48;		// so cot can de ve
-	int numColToRead = 17;		// so cot can de ve
+	int numCol;				// so cot can de ve
+	int numColToRead;		// so cot can de ve
 	//int numCol = 16;		// so cot can de ve
-	int numRow = 10;		// so hang can de ve
-	int numRowToRead = 4;		// so hang can de ve
+	int numRow;				// so hang can de ve
+	int numRowToRead;		// so hang can de ve
 	//int numRow = 12;		// so hang can de ve
 
 	int mapWidth;			// chieu rong cua map
 	int mapHeight;			// chieu cao cua map
 
-	int cellWidth = 32;		// chieu rong cua mot o
-	int cellHeight = 32;	// chieu cao cua mot o
+	int cellWidth;			// chieu rong cua mot o
+	int cellHeight;			// chieu cao cua mot o
 
 	vector<vector<int>> cellId;
 

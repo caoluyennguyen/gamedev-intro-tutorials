@@ -31,6 +31,7 @@ CMario::CMario() : CGameObject()
 	isAbleToJumpHigh = false;
 	isAbleToShoot = false;
 	countBall = 1;
+	ani = -1;
 
 	a = MARIO_ACCELERATION_WALK;
 
@@ -408,7 +409,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CMario::Render()
 {
-	int ani = -1;
 	if (state == MARIO_STATE_DIE) ani = MARIO_ANI_DIE;
 	else
 	{
@@ -822,20 +822,22 @@ void CMario::Render()
 										ani = MARIO_ANI_TAIL_STOP_LEFT;
 									}
 									else {
-										/*if (hitting == 1)
+										if (hitting == 1)
 										{
 											ani == MARIO_ANI_TAIL_HIT_TAIL_RIGHT;
 										}
-										else */
-										if (state == MARIO_STATE_RUN_RIGHT)
+										else
 										{
-											if (vx < MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_RIGHT;
-											else if (vx < MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_TAIL_RUN_RIGHT;
-											else ani = MARIO_ANI_TAIL_SWIFT_RIGHT;
-										}
-										else {
-											if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
-											else ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+											if (state == MARIO_STATE_RUN_RIGHT)
+											{
+												if (vx < MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+												else if (vx < MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_TAIL_RUN_RIGHT;
+												else ani = MARIO_ANI_TAIL_SWIFT_RIGHT;
+											}
+											else {
+												if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
+												else ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+											}
 										}
 									}
 								}
@@ -845,20 +847,22 @@ void CMario::Render()
 										ani = MARIO_ANI_TAIL_STOP_RIGHT;
 									}
 									else {
-										/*if (hitting == 1)
+										if (hitting == 1)
 										{
 											ani == MARIO_ANI_TAIL_HIT_TAIL_LEFT;
 										}
-										else */
-										if (state == MARIO_STATE_RUN_LEFT)
+										else
 										{
-											if (vx > -MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_LEFT;
-											else if (vx > -MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_TAIL_RUN_LEFT;
-											else ani = MARIO_ANI_TAIL_SWIFT_LEFT;
-										}
-										else {
-											if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
-											else ani = MARIO_ANI_TAIL_WALKING_LEFT;
+											if (state == MARIO_STATE_RUN_LEFT)
+											{
+												if (vx > -MARIO_MAX_WALKING_SPEED) ani = MARIO_ANI_TAIL_WALKING_LEFT;
+												else if (vx > -MARIO_MAX_RUN_SPEED) ani = MARIO_ANI_TAIL_RUN_LEFT;
+												else ani = MARIO_ANI_TAIL_SWIFT_LEFT;
+											}
+											else {
+												if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
+												else ani = MARIO_ANI_TAIL_WALKING_LEFT;
+											}
 										}
 									}
 								}
@@ -1120,12 +1124,29 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		else {
 			if (nx > 0)
 			{
-				right = x + MARIO_BIG_BBOX_WIDTH;
-				bottom = y + MARIO_BIG_BBOX_HEIGHT;
+				if (hitting == 1)
+				{
+					right = left + MARIO_BIG_BBOX_WIDTH + 8.0f;
+					bottom = top + MARIO_BIG_BBOX_HEIGHT;
+				}
+				else
+				{
+					right = x + MARIO_BIG_BBOX_WIDTH;
+					bottom = y + MARIO_BIG_BBOX_HEIGHT;
+				}
 			}
 			else {
-				right = left + MARIO_BIG_BBOX_WIDTH;
-				bottom = top + MARIO_BIG_BBOX_HEIGHT;
+				if (hitting == 1)
+				{
+					left -= 8.0f;
+					right = left + MARIO_BIG_BBOX_WIDTH;
+					bottom = top + MARIO_BIG_BBOX_HEIGHT;
+				}
+				else
+				{
+					right = left + MARIO_BIG_BBOX_WIDTH;
+					bottom = top + MARIO_BIG_BBOX_HEIGHT;
+				}
 			}
 			/*left = x + 8;
 			right = left + MARIO_BIG_BBOX_WIDTH;

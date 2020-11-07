@@ -169,6 +169,7 @@ class CMario : public CGameObject
 	int shooting;
 	int throwing;
 	int countBall;
+	int ani;
 	DWORD untouchable_start;
 	DWORD hitting_start;
 	DWORD flying_start;
