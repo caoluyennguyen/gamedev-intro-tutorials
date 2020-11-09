@@ -1,7 +1,8 @@
 #include "Items.h"
 
-CItems::CItems()
+CItems::CItems(int type)
 {
+	this->type = type;
 	SetState(ITEM_TYPE_COIN);
 }
 
@@ -19,19 +20,7 @@ void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 
-	//
-	// TO-DO: make sure Goomba can interact with the world and to each of them too!
-	// 
-
 	vy += dy;
-
-	if (vx < 0 && x < 382) {
-		x = 382; vx = -vx;
-	}
-
-	if (vx > 0 && x > 620) {
-		x = 620; vx = -vx;
-	}
 }
 
 void CItems::Render()
@@ -43,7 +32,7 @@ void CItems::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CItems::SetState(int state)

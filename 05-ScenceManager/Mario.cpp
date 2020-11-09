@@ -10,6 +10,7 @@
 #include "Brick.h"
 #include "Koopas.h"
 #include "Ground.h"
+#include "Items.h"
 
 CMario* CMario::__instance = NULL;
 
@@ -374,6 +375,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			}
+			if (dynamic_cast<CItems *>(e->obj))
+			{
+				x += dx;
+				y += dy;
+				e->obj->SetEnable(false);
 			}
 		}
 	}

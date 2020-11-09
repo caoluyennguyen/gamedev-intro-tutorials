@@ -10,7 +10,6 @@
 
 class FireBall : public CGameObject
 {
-	int enable;
 public:
 	FireBall();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
@@ -18,8 +17,6 @@ public:
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
-	bool IsEnable() { return enable; }
-	void SetEnable(bool x) { enable = x; };
 	float GetPositionX() { return this->x; };
 };
 

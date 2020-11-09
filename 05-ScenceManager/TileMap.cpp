@@ -85,6 +85,7 @@ void CTileMap::Render(int x)
 		finish = start + 29;
 	}*/
 
+	// fix start and finish
 	start = x / pixel - 12;
 	finish = start + 29;
 

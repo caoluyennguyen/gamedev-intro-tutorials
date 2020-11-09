@@ -54,9 +54,11 @@ public:
 	float vx;
 	float vy;
 
-	int nx;	 
+	int nx;
 
 	int state;
+
+	bool enable;
 
 	DWORD dt; 
 
@@ -67,9 +69,11 @@ public:
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void SetSpeedVx(float vx) { this->vx = vx; }
 	void SetSpeedVy(float vy) { this->vy = vy; }
+	void SetEnable(bool enable) { this->enable = enable; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 	float GetSpeedVx() { return this->vx; }
+	bool IsEnable() { return enable; }
 
 	int GetState() { return this->state; }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Items.h"
 
 #define BRICK_BBOX_WIDTH  16
 #define BRICK_BBOX_HEIGHT 16
@@ -14,13 +15,16 @@
 
 class CBrick : public CGameObject
 {
+	int initialPosX;
 	int initialPosY;
 	bool freeze;
+	CItems* item;
 public:
-	CBrick(int initialPosY);
+	CBrick(int initialPosX, int initialPosY, int itemType = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
 
 	void SetState(int state);
+	void InitItem(int itemType);
 };

@@ -1,9 +1,12 @@
 #include "Brick.h"
 
-CBrick::CBrick(int initialPosY)
+CBrick::CBrick(int initialPosX, int initialPosY, int itemType)
 {
+	this->initialPosX = initialPosX;
 	this->initialPosY = initialPosY;
 	freeze = false;
+
+	InitItem(itemType);
 }
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -24,6 +27,11 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y = initialPosY;
 		freeze = true;
 	}
+
+	if (state == BRICK_STATE_UNAVAILABLE)
+	{
+		item->Update(dt, coObjects);
+	}
 }
 
 void CBrick::Render()
@@ -34,6 +42,7 @@ void CBrick::Render()
 	}
 	else {
 		animation_set->at(BRICK_ANI_UNAVAILABLE)->Render(x, y);
+		item->Render();
 	}
 	RenderBoundingBox();
 }
@@ -55,9 +64,21 @@ void CBrick::SetState(int state)
 	case BRICK_STATE_AVAILABLE:
 		break;
 	case BRICK_STATE_UNAVAILABLE:
+		item->SetEnable(true);
 		vy = -0.2f;
 		break;
 	default:
 		break;
 	}
+}
+
+void CBrick::InitItem(int itemType)
+{
+	item = new CItems(itemType);
+	item->SetEnable(false);
+	item->SetPosition(initialPosX, initialPosY - 16.0f);
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(ITEM_ANIM_SET_ID);
+
+	item->SetAnimationSet(ani_set);
 }

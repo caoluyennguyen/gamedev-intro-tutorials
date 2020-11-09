@@ -8,6 +8,7 @@
 #include "Portal.h"
 #include "Ground.h"
 #include "TileMap.h"
+#include "Items.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_KOOPAS	3
 #define OBJECT_TYPE_GROUND	4
 #define OBJECT_TYPE_FIREBALL	5
+#define OBJECT_TYPE_ITEM	6
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -180,7 +182,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(y); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -196,6 +198,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			float b = atof(tokens[5].c_str());
 			id = atoi(tokens[6].c_str());
 			obj = new CGround(x, y, r, b, id);
+		}
+		break;
+	case OBJECT_TYPE_ITEM:
+		{
+			id = atoi(tokens[4].c_str());
+			obj = new CItems(id);
 		}
 		break;
 	default:
@@ -272,7 +280,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
@@ -302,7 +310,7 @@ void CPlayScene::Render()
 	//tileMap->Render();
 	tileMap->Render(player->x);
 	for (int i = objects.size() - 1; i > -1; i--)
-		objects[i]->Render();
+		if (objects[i]->IsEnable()) objects[i]->Render();
 }
 
 /*
