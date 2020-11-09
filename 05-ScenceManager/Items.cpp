@@ -4,6 +4,8 @@ CItems::CItems(int type)
 {
 	this->type = type;
 	SetState(ITEM_TYPE_COIN);
+	ani = ITEM_ANI_COIN;
+	effect = new CEffect();
 }
 
 void CItems::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -18,21 +20,40 @@ void CItems::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	if (enable)
+	{
+		CGameObject::Update(dt, coObjects);
 
-	vy += dy;
+		if (vy != 0)
+		{
+			vy += ITEM_COIN_GRAVITY * dt;
+			if (y > startY)
+			{
+				this->enable = false;
+				effect->StartTimeAppear();
+			}
+		}
+
+		y += dy;
+	}
+
+	effect->Update(dt);
 }
 
 void CItems::Render()
 {
-	int ani = ITEM_ANI_COIN;
-	if (state == ITEM_TYPE_COIN) {
-		ani = ITEM_ANI_COIN;
+	if (enable)
+	{
+		if (state == ITEM_TYPE_COIN) {
+			ani = ITEM_ANI_COIN;
+		}
+
+		animation_set->at(ani)->Render(x, y);
+
+		RenderBoundingBox();
 	}
 
-	animation_set->at(ani)->Render(x, y);
-
-	RenderBoundingBox();
+	effect->Render();
 }
 
 void CItems::SetState(int state)
@@ -45,4 +66,11 @@ void CItems::SetState(int state)
 		vy = 0;
 		break;
 	}
+}
+
+void CItems::SetPosition(float x, float y)
+{
+	CGameObject::SetPosition(x, y);
+	startY = y;
+	effect->SetPosition(x, y);
 }

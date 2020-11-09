@@ -65,6 +65,7 @@ void CBrick::SetState(int state)
 		break;
 	case BRICK_STATE_UNAVAILABLE:
 		item->SetEnable(true);
+		item->SetSpeedVy(-0.2f);
 		vy = -0.2f;
 		break;
 	default:
@@ -76,7 +77,7 @@ void CBrick::InitItem(int itemType)
 {
 	item = new CItems(itemType);
 	item->SetEnable(false);
-	item->SetPosition(initialPosX, initialPosY - 16.0f);
+	item->SetPosition(initialPosX + 3.0f, initialPosY - 16.0f); // hard code
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(ITEM_ANIM_SET_ID);
 

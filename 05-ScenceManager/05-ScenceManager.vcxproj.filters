@@ -81,6 +81,9 @@
     <ClCompile Include="Items.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -138,6 +141,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Items.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

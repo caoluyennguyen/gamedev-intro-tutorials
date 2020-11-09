@@ -277,6 +277,10 @@
 70002	321	99	331	115	20
 70003	339	99	349	115	20
 
+#EFFECT
+#SCORE 100
+80001	458	223	469	231	20
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -524,6 +528,9 @@
 901	70001	100	70002	100	70003	100
 902	70001	100
 
+# === EFFECT ===
+101	80001	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -540,9 +547,12 @@
 4	801	802	803	804	805
 # FIREBALL
 5	603	604
-#ITEM
+# ITEM
 #COIN
 6	901
+# EFFECT
+#SCORE 100
+7	101
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
@@ -555,7 +565,7 @@
 2	384	396	3
 
 # KOOPAS
-3	10	390	4
+# 3	10	390	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
