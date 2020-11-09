@@ -1,6 +1,6 @@
 #pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth
 [TILEMAP]
-16	scenes\\map\\1.png	scenes\\map\\1.txt	175	26	20	13	0	2816
+16	scenes\\map\\1.png	scenes\\map\\1.txt	175	40	20	6	0	2808
 
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
