@@ -299,7 +299,7 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	if (cy > 215.0f) cy = 215.0f;
+	if (cy > 230.0f) cy = 230.0f;
 	else if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
 	if (player->GetState() != MARIO_STATE_DIE) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
