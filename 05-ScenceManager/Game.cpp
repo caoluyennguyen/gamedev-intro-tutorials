@@ -214,7 +214,6 @@ void CGame::SweptAABB(
 	float sl, float st, float sr, float sb,
 	float &t, float &nx, float &ny)
 {
-
 	float dx_entry, dx_exit, tx_entry, tx_exit;
 	float dy_entry, dy_exit, ty_entry, ty_exit;
 
@@ -235,7 +234,6 @@ void CGame::SweptAABB(
 
 	if (br < sl || bl > sr || bb < st || bt > sb) return;
 
-
 	if (dx == 0 && dy == 0) return;		// moving object is not moving > obvious no collision
 
 	if (dx > 0)
@@ -248,7 +246,6 @@ void CGame::SweptAABB(
 		dx_entry = sr - ml;
 		dx_exit = sl- mr;
 	}
-
 
 	if (dy > 0)
 	{
@@ -282,7 +279,6 @@ void CGame::SweptAABB(
 		ty_entry = dy_entry / dy;
 		ty_exit = dy_exit / dy;
 	}
-	
 
 	if (  (tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
 
@@ -303,7 +299,6 @@ void CGame::SweptAABB(
 		nx = 0.0f;
 		dy > 0?ny = -1.0f:ny = 1.0f;
 	}
-
 }
 
 CGame *CGame::GetInstance()

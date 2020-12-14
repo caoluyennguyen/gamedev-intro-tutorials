@@ -21,37 +21,23 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 		bottom = y + KOOPAS_BBOX_HEIGHT;
 }
 
-void CKoopas::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
-{
-	for (UINT i = 0; i < coObjects->size(); i++)
-	{
-		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-
-		if (e->t > 0 && e->t <= 1.0f)
-			coEvents.push_back(e);
-		else
-			delete e;
-
-		// Check AABB collision
-		LPGAMEOBJECT obj = coObjects->at(i);
-
-		if (dynamic_cast<CGround*>(obj)) {
-			CGround* ground = dynamic_cast<CGround*>(obj);
-
-			if (ground->GetId() == GROUND_TYPE_NORMAL)
-			{
-				float kLeft, kTop, kRight, kBottom;
-				obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
-
-				if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
-					y -= 1.0f;
-				}
-			}
-		}
-	}
-
-	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
-}
+//void CKoopas::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
+//{
+//	for (UINT i = 0; i < coObjects->size(); i++)
+//	{
+//		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+//
+//		if (e->t > 0 && e->t <= 1.0f)
+//			coEvents.push_back(e);
+//		else
+//			delete e;
+//
+//		// Check AABB collision
+//		LPGAMEOBJECT obj = coObjects->at(i);
+//	}
+//
+//	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+//}
 
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -65,11 +51,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//vy += KOOPAS_GRAVITY * dt;
 	if (x < 0) vx = abs(vx);
 
-	x += dx;
-	if (state == KOOPAS_STATE_DIE_NGUA)
-	{
-		vy += KOOPAS_GRAVITY * dt;
-	}
+	vy += KOOPAS_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -82,8 +64,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		/*dx = vx * dt;
-		dy = vy * dt;*/
+		x += dx;
 		y += dy;
 	}
 	else
@@ -108,43 +89,21 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vx = -vx;
 					x += min_tx * dx + nx * 0.5f;
 				}
-				if (e->ny < 0)
+				if (e->ny != 0)
 				{
-					y += min_ty * dy + ny * 0.2f;
-					if (state == KOOPAS_STATE_WALKING) vy = 0;
+					vy = 0;
 				}
-			}
-			else if (dynamic_cast<CKoopas*>(e->obj))
-			{
-				x += dx;
-				y += dy;
 			}
 			else if (dynamic_cast<CMario*>(e->obj))
 			{
-				/*CMario* mario = dynamic_cast<CMario*>(e->obj);
-				if (mario->GetLevel() == MARIO_LEVEL_TAIL)
-				{
-					x += dx;
-					y += dy;
-				}*/
 				x += dx;
-				y += dy;
+				//y += dy;
 			}
 		}
 	}
 
-	//// clean up collision events
-	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
-	/*x += vx * dt;
-
-	if (vx < 0 && x < 508) {
-		x = 508; vx = -vx;
-	}
-
-	if (vx > 0 && x > 604) {
-		x = 604; vx = -vx;
-	}*/
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void CKoopas::Render()

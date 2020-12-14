@@ -19,7 +19,7 @@
 #define KOOPAS_ANI_DIE_NGUA 3
 #define KOOPAS_ANI_ROLLING 4
 
-#define KOOPAS_GRAVITY 0.0005f
+#define KOOPAS_GRAVITY 0.0001f
 
 class CKoopas : public CGameObject
 {
@@ -30,5 +30,5 @@ public:
 	virtual void Render();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
+	//void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 };

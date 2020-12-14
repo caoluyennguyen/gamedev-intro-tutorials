@@ -8,6 +8,7 @@
 10	scenes\World1-1.png	255	255	255
 20	scenes\textures\misc.png	176	224	248
 30	scenes\textures\enemies-2.png	0	128	128
+40	scenes\textures\mario-tail.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -118,10 +119,12 @@
 10057	5	633	21	663	0
 # stop left
 10058	425	633	441	663	0
-# jump up right
-10059	392	754	415	781	0
-# jump up left
-10060	25	754	54	781	0
+# jump right
+10059	27	54	50	82	40
+10131	52	54	76	82	40
+# jump left
+10060	52	14	75	42	40
+10132	26	14	50	42	40
 # idle hold object right
 10061	242	794	264	822	0
 # idle hold object left
@@ -156,10 +159,10 @@
 10111	91	714	115	742	0
 10112	61	714	85	742	0
 10128	61	754	85	781	0
-#hit right
+# hit right
 10113	209	633	237	662	0
 10129	331	634	359	662	0
-#hit left
+# hit left
 10114	209	674	237	702	0
 10130	85	634	115	662	0
 
@@ -396,9 +399,9 @@
 #jump up left 
 535	10060	100
 #jump down right 
-536	10053	100
+536	10131	100
 #jump down left 
-537	10056	100
+537	10132	100
 #idle hold right
 538	10061	100
 #idle hold left
@@ -565,7 +568,7 @@
 2	384	400	3
 
 # KOOPAS
-# 3	10	390	4
+3	50	300	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

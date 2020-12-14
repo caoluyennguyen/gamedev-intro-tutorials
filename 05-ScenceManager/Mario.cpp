@@ -801,7 +801,8 @@ void CMario::Render()
 									}
 									else {
 										if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
-										else ani = MARIO_ANI_TAIL_FLY_RIGHT;
+										else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
+										//else ani = MARIO_ANI_TAIL_FLY_RIGHT;
 
 										/*if (vy < MARIO_MIN_JUMP_SPEED && flying == 1) ani = MARIO_ANI_TAIL_FLY_RIGHT;
 										else ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;*/
@@ -815,7 +816,8 @@ void CMario::Render()
 									}
 									else {
 										if (vy > MARIO_MIN_JUMP_SPEED) ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
-										else ani = MARIO_ANI_TAIL_FLY_LEFT;
+										else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
+										//else ani = MARIO_ANI_TAIL_FLY_LEFT;
 
 										/*if (vy < MARIO_MIN_JUMP_SPEED && flying == 1) ani = MARIO_ANI_TAIL_FLY_LEFT;
 										else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;*/
