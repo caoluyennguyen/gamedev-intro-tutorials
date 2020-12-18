@@ -562,13 +562,13 @@
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4= Ground
 
 # MARIO
-0	10	0	1
+0	10	300	1
 
 # GOOMBA
 2	384	400	3
 
 # KOOPAS
-3	50	300	4
+3	100	100	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

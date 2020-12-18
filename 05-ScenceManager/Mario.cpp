@@ -86,7 +86,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 						obj->SetPosition(this->x + this->nx * 10.0f, this->y);
 					}
 				}
-				else {
+				/*else {
 					isHoldObject = false;
 					if (obj->GetState() == KOOPAS_STATE_DIE || obj->GetState() == KOOPAS_STATE_DIE_NGUA)
 					{
@@ -94,7 +94,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 						obj->nx = this->nx;
 						obj->SetState(KOOPAS_STATE_ROLLING);
 					}
-				}
+				}*/
 			}
 		}
 		else if (dynamic_cast<CGround*>(obj)) {
@@ -255,13 +255,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				// jump on top >> kill Koopas and deflect a bit 
 				if (e->ny < 0)
 				{
-					if (koopas->GetState()!= KOOPAS_STATE_DIE)
+					if (koopas->GetState() != KOOPAS_STATE_DIE)
 					{
 						koopas->SetState(KOOPAS_STATE_DIE);
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						y += min_ty * dy + ny * 0.2f;
+
 					}
 				}
-				else if (e->nx != 0)
+				else if (e->ny > 0)
+				{
+					isHoldObject = false;
+					if (koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
+					{
+						StartShootingObject();
+						koopas->nx = this->nx;
+						koopas->SetState(KOOPAS_STATE_ROLLING);
+					}
+				}
+				
+				if (e->nx != 0)
 				{
 					if (untouchable == 0 && hitting == 0)
 					{
@@ -275,6 +288,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							}
 							else {
 								SetState(MARIO_STATE_DIE);
+							}
+						}
+						else
+						{
+							isHoldObject = false;
+							if (koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
+							{
+								StartShootingObject();
+								koopas->nx = this->nx;
+								koopas->SetState(KOOPAS_STATE_ROLLING);
 							}
 						}
 					}

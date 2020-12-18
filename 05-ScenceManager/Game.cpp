@@ -218,7 +218,7 @@ void CGame::SweptAABB(
 	float dy_entry, dy_exit, ty_entry, ty_exit;
 
 	float t_entry; 
-	float t_exit; 
+	float t_exit;
 
 	t = -1.0f;			// no collision
 	nx = ny = 0;
@@ -297,7 +297,7 @@ void CGame::SweptAABB(
 	else 
 	{
 		nx = 0.0f;
-		dy > 0?ny = -1.0f:ny = 1.0f;
+		dy > 0 ? ny = -1.0f : ny = 1.0f;
 	}
 }
 

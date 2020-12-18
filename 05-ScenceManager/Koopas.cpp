@@ -14,6 +14,8 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 	left = x;
 	top = y;
 	right = x + KOOPAS_BBOX_WIDTH;
+	//bottom = y + KOOPAS_BBOX_HEIGHT;
+
 
 	if (state == KOOPAS_STATE_DIE || state == KOOPAS_STATE_DIE_NGUA || state == KOOPAS_STATE_ROLLING)
 		bottom = y + KOOPAS_BBOX_HEIGHT_DIE;
@@ -48,7 +50,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	CGameObject::Update(dt);
 
-	//vy += KOOPAS_GRAVITY * dt;
 	if (x < 0) vx = abs(vx);
 
 	vy += KOOPAS_GRAVITY * dt;
@@ -98,6 +99,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				x += dx;
 				//y += dy;
+				if (e->ny != 0)
+				{
+					vy = 0;
+				}
 			}
 		}
 	}
@@ -133,18 +138,15 @@ void CKoopas::SetState(int state)
 	switch (state)
 	{
 	case KOOPAS_STATE_DIE:
-		y += KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE + 1;
 		vx = 0;
 		vy = 0;
 		break;
 	case KOOPAS_STATE_DIE_NGUA:
-		//y += KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE + 1;
-		//vx = -nx * 0.01f;
 		vx = 0;
 		vy = -0.1f;
 		break;
 	case KOOPAS_STATE_WALKING:
-		vx = KOOPAS_WALKING_SPEED;
+		//vx = KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_ROLLING:
 		vx = nx * 0.2f;
