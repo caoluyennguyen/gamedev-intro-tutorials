@@ -84,6 +84,9 @@
     <ClCompile Include="Effect.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Tail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Tail.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

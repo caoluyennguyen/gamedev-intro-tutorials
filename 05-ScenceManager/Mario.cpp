@@ -260,7 +260,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						koopas->SetState(KOOPAS_STATE_DIE);
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 						y += min_ty * dy + ny * 0.2f;
-
 					}
 				}
 				else if (e->ny > 0)
