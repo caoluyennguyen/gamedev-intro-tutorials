@@ -42,6 +42,7 @@ CMario::CMario() : CGameObject()
 	this->y = y;*/ 
 
 	fireball = new FireBall();
+	tail = new Tail();
 
 	/*for (int i = 0; i < 2; i++)
 	{
@@ -97,7 +98,8 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				}*/
 			}
 		}
-		else if (dynamic_cast<CGround*>(obj)) {
+		
+		if (dynamic_cast<CGround*>(obj)) {
 			CGround* ground = dynamic_cast<CGround*>(obj);
 
 			if (ground->GetId() == GROUND_TYPE_NORMAL)
@@ -212,6 +214,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		hitting_start = 0;
 		hitting = 0;
+		this->tail->SetEnable(false);
 	}
 	// reset throwing timer if hitting time has passed
 	if ( GetTickCount() - throwing_start > MARIO_THROWING_TIME)
@@ -262,7 +265,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += min_ty * dy + ny * 0.2f;
 					}
 				}
-				else if (e->ny > 0)
+				/*else if (e->ny > 0)
 				{
 					isHoldObject = false;
 					if (koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
@@ -271,7 +274,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						koopas->nx = this->nx;
 						koopas->SetState(KOOPAS_STATE_ROLLING);
 					}
-				}
+				}*/
 				
 				if (e->nx != 0)
 				{
@@ -433,6 +436,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (fireball->IsEnable())
 	{
 		fireball->Update(dt, coObjects);
+	}
+
+	if (tail->IsEnable())
+	{
+		if (this->nx < 1)
+		{
+			tail->SetPosition(this->x - 10, this->y + 15);
+		}
+		else
+		{
+			tail->SetPosition(this->x + 20, this->y + 15);
+		}
+		tail->Update(dt, coObjects);
 	}
 }
 
@@ -700,9 +716,9 @@ void CMario::Render()
 					{
 						if (nx > 0)
 						{
-							ani = MARIO_ANI_TAIL_FLY_RIGHT;
+							ani = MARIO_ANI_TAIL_SLOW_FALL_RIGHT ;
 						}
-						else ani = MARIO_ANI_TAIL_FLY_LEFT;
+						else ani = MARIO_ANI_TAIL_SLOW_FALL_LEFT;
 					}
 					else {
 						if (nx > 0)
@@ -744,13 +760,16 @@ void CMario::Render()
 				if (nx > 0)  {
 					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_TAIL_RIGHT;
 					else ani = MARIO_ANI_TAIL_IDLE_RIGHT;
-				}
-					
+				}			
 				else {
 					if (hitting == 1) ani = MARIO_ANI_TAIL_HIT_TAIL_LEFT;
 					else ani = MARIO_ANI_TAIL_IDLE_LEFT;
 				}
-					
+				
+				if (this->tail->IsEnable())
+				{
+					this->tail->Render();
+				}
 			}
 			else {
 				if (state == MARIO_STATE_SIT)
@@ -1121,6 +1140,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_HIT:
 		if (level == MARIO_LEVEL_TAIL)
 		{
+			this->tail->SetEnable(true);
+			this->tail->SetNx(nx);
 			StartHittingObject();
 		}
 		else StartThrowingObject();
@@ -1153,35 +1174,8 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = y + MARIO_SIT_BBOX_HEIGHT;
 		}
 		else {
-			if (nx > 0)
-			{
-				if (hitting == 1)
-				{
-					right = left + MARIO_BIG_BBOX_WIDTH + 8.0f;
-					bottom = top + MARIO_BIG_BBOX_HEIGHT;
-				}
-				else
-				{
-					right = x + MARIO_BIG_BBOX_WIDTH;
-					bottom = y + MARIO_BIG_BBOX_HEIGHT;
-				}
-			}
-			else {
-				if (hitting == 1)
-				{
-					left -= 8.0f;
-					right = left + MARIO_BIG_BBOX_WIDTH;
-					bottom = top + MARIO_BIG_BBOX_HEIGHT;
-				}
-				else
-				{
-					right = left + MARIO_BIG_BBOX_WIDTH;
-					bottom = top + MARIO_BIG_BBOX_HEIGHT;
-				}
-			}
-			/*left = x + 8;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_BBOX_HEIGHT;*/
+			right = x + MARIO_BIG_BBOX_WIDTH;
+			bottom = y + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
 	else

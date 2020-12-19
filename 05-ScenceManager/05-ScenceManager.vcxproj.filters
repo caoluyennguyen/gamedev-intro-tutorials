@@ -69,9 +69,6 @@
     <ClCompile Include="Koopas.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -85,7 +82,10 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Tail.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickPiece.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,9 +119,6 @@
     <ClInclude Include="TileMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="FireBall.h">
       <Filter>Mario</Filter>
     </ClInclude>
@@ -133,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="Koopas.h">
       <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>Objects</Filter>
@@ -150,7 +144,13 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Tail.h">
-      <Filter>Header Files</Filter>
+      <Filter>Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickPiece.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

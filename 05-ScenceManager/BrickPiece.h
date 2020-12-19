@@ -1,5 +1,6 @@
 #pragma once
-class Wall
+class BrickPiece
 {
+
 };
 

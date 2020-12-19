@@ -14,7 +14,6 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 	left = x;
 	top = y;
 	right = x + KOOPAS_BBOX_WIDTH;
-	//bottom = y + KOOPAS_BBOX_HEIGHT;
 
 
 	if (state == KOOPAS_STATE_DIE || state == KOOPAS_STATE_DIE_NGUA || state == KOOPAS_STATE_ROLLING)
@@ -84,6 +83,18 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
 			if (dynamic_cast<CGround*>(e->obj))
+			{
+				if (e->nx != 0)
+				{
+					vx = -vx;
+					x += min_tx * dx + nx * 0.5f;
+				}
+				if (e->ny != 0)
+				{
+					vy = 0;
+				}
+			}
+			else if (dynamic_cast<CGround*>(e->obj))
 			{
 				if (e->nx != 0)
 				{

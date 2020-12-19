@@ -36,7 +36,11 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBrick::Render()
 {
-	if (state == BRICK_STATE_AVAILABLE)
+	if (state == BRICK_STATE_BREAK)
+	{
+		animation_set->at(BRICK_ANI_BREAK)->Render(x, y);
+	}
+	else if (state == BRICK_STATE_AVAILABLE)
 	{
 		animation_set->at(BRICK_ANI_AVAILABLE)->Render(x, y);
 	}

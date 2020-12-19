@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "FireBall.h"
+#include "Tail.h"
 
 #pragma region define
 #define MARIO_MAX_WALKING_SPEED			0.1f 
@@ -108,6 +109,8 @@
 #define MARIO_ANI_TAIL_FLY_LEFT				88
 #define MARIO_ANI_TAIL_HIT_TAIL_RIGHT		89
 #define MARIO_ANI_TAIL_HIT_TAIL_LEFT		90
+#define MARIO_ANI_TAIL_SLOW_FALL_RIGHT		103
+#define MARIO_ANI_TAIL_SLOW_FALL_LEFT		104
 
 #define MARIO_ANI_FIRE_IDLE_RIGHT			51
 #define MARIO_ANI_FIRE_IDLE_LEFT			52
@@ -161,7 +164,7 @@
 
 class CMario : public CGameObject
 {
-	float a; // 
+	float a;
 	int level;
 	int untouchable;
 	int hitting;
@@ -193,6 +196,7 @@ class CMario : public CGameObject
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
+	Tail* tail;
 
 	static CMario* __instance;
 public: 
@@ -207,7 +211,7 @@ public:
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartShootingObject() { shooting = 1; shooting_start = GetTickCount(); }
-	void StartHittingObject() { hitting = 1; hitting_start = GetTickCount(); }
+	void StartHittingObject() { hitting = 1; hitting_start = GetTickCount();}
 	void StartThrowingObject() { throwing = 1; throwing_start = GetTickCount(); StartShoot(); }
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 
