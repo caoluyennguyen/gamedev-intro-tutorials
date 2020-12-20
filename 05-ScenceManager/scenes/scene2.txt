@@ -1,6 +1,6 @@
 #pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth
 [TILEMAP]
-16	scenes\\map\\1.png	scenes\\map\\1.txt	175	40	20	6	0	2808
+16	scenes\map\1.png	scenes\map\1.txt	175	40	20	6	0	2808
 
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
@@ -8,7 +8,6 @@
 10	scenes\World1-1.png	255	255	255
 20	scenes\textures\misc.png	176	224	248
 30	scenes\textures\enemies-2.png	0	128	128
-40	scenes\textures\mario-tail.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -660,3 +659,5 @@
 # type	l	t	ani_set_id	r	b	scene_id
 # 50	300	98	0	380	150	1
 
+[GRID]
+scenes\map\grid1.txt

@@ -30,6 +30,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
+#define SCENE_SECTION_GRID	7
 
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
@@ -63,6 +64,17 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 
 	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 	tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
+}
+
+void CPlayScene::_ParseSection_GRID(string line)
+{
+	vector<string> tokens = split(line);
+
+	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
+
+	LPCWSTR path = ToLPCWSTR(tokens[0]);
+
+	grid = new CGrid(path, &objects);
 }
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -225,8 +237,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
-
-	//tileMap = new CTileMap();
 }
 
 void CPlayScene::Load()
@@ -256,6 +266,8 @@ void CPlayScene::Load()
 			section = SCENE_SECTION_ANIMATION_SETS; continue; }
 		if (line == "[OBJECTS]") { 
 			section = SCENE_SECTION_OBJECTS; continue; }
+		if (line == "[GRID]") {
+			section = SCENE_SECTION_GRID; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -269,6 +281,7 @@ void CPlayScene::Load()
 			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_GRID: _ParseSection_GRID(line); break;
 		}
 	}
 
@@ -284,11 +297,14 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 0; i < objects.size(); i++)
+	float cx, cy;
+	player->GetPosition(cx, cy);
+	grid->GetListObject(&coObjects, cx, cy);
+
+	/*for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
-	}
+	}*/
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -299,8 +315,6 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
@@ -316,8 +330,10 @@ void CPlayScene::Render()
 {
 	//tileMap->Render();
 	tileMap->Render(player->x);
-	for (int i = objects.size() - 1; i > -1; i--)
-		if (objects[i]->IsEnable()) objects[i]->Render();
+	/*for (int i = objects.size() - 1; i > -1; i--)
+		if (objects[i]->IsEnable()) objects[i]->Render();*/
+	for (int i = coObjects.size() - 1; i > -1; i--)
+		coObjects[i]->Render();
 }
 
 /*

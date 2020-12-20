@@ -4,11 +4,10 @@
 
 class Cell
 {
-	vector<int> listObjectId;
-	vector<CGameObject*> listObjects;
+	vector<LPGAMEOBJECT> listObjects;
 public:
-	void Add(CGameObject* obj, int id) { listObjects.push_back(obj); listObjectId.push_back(id); }
-	vector<CGameObject*> GetListObjects() { return listObjects; }
+	void Add(CGameObject* obj, int id) { listObjects.push_back(obj); }
+	vector<LPGAMEOBJECT> GetListObjects() { return listObjects; }
 	void Unload() { listObjects.clear(); }
 };
 

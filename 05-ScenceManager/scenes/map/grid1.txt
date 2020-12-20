@@ -1,0 +1,11 @@
+[SETTINGS]
+#cell_size	num_col_cells	num_row_cells
+192	3	2
+[OBJECTS]
+#index_col	index_row	object_id
+0	0	2	4	5	6	7	8	11	14
+0	1	0	9
+1	0	2	15
+1	1	0	1	9	10	12	13
+2	0	16	17
+2	1	0	9
