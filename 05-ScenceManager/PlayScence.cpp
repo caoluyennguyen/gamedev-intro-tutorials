@@ -38,6 +38,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_GROUND	4
 #define OBJECT_TYPE_FIREBALL	5
 #define OBJECT_TYPE_ITEM	6
+#define OBJECT_TYPE_BREAKABLE_BRICK	7
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -204,6 +205,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			id = atoi(tokens[4].c_str());
 			obj = new CItems(id);
+		}
+		break;
+	case OBJECT_TYPE_BREAKABLE_BRICK:
+		{
+			obj = new CBrick(x,y);
+			obj->SetState(BRICK_STATE_BREAKABLE);
 		}
 		break;
 	default:

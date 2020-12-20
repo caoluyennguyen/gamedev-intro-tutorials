@@ -344,31 +344,43 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			} // if Goomba
 			if (dynamic_cast<CBrick *>(e->obj))
 			{
-				x += min_tx * dx + nx * 0.2f;
-				y += min_ty * dy + ny * 0.2f;
-
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-				if (e->nx != 0)
+				if (e->obj->GetState() == BRICK_STATE_BREAK)
 				{
-					vx = 0;
+					x += dx;
+					y += dy;
 				}
+				else
+				{
+					x += min_tx * dx + nx * 0.2f;
+					y += min_ty * dy + ny * 0.2f;
 
-				if (e->ny < 0)
-				{
-					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
-					isAbleToJump = true;
-					//isAbleToSlowFall = false;
-					vy = 0;
-				}
-				else if (e->ny > 0)
-				{
-					vy += 0.1f;
-					isAbleToJump = false;
-					if (brick->GetState() != BRICK_STATE_UNAVAILABLE)
+					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+					if (e->nx != 0)
 					{
-						brick->SetState(BRICK_STATE_UNAVAILABLE);
-					} 
+						vx = 0;
+					}
+
+					if (e->ny < 0)
+					{
+						if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
+						isAbleToJump = true;
+						//isAbleToSlowFall = false;
+						vy = 0;
+					}
+					else if (e->ny > 0)
+					{
+						vy += 0.1f;
+						isAbleToJump = false;
+						if (brick->GetState() == BRICK_STATE_AVAILABLE)
+						{
+							brick->SetState(BRICK_STATE_UNAVAILABLE);
+						}
+						else if (brick->GetState() == BRICK_STATE_BREAKABLE)
+						{
+							brick->SetState(BRICK_STATE_BREAK);
+						}
+					}
 				}
 			}
 			if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 

@@ -5,12 +5,19 @@ CBrick::CBrick(int initialPosX, int initialPosY, int itemType)
 	this->initialPosX = initialPosX;
 	this->initialPosY = initialPosY;
 	freeze = false;
+	breakable = false;
 
 	InitItem(itemType);
 }
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state == BRICK_STATE_BREAK)
+	{
+		if (pieces != NULL) pieces->Update(dt);
+		return;
+	}
+
 	CGameObject::Update(dt);
 
 	if (!freeze)
@@ -38,16 +45,35 @@ void CBrick::Render()
 {
 	if (state == BRICK_STATE_BREAK)
 	{
-		animation_set->at(BRICK_ANI_BREAK)->Render(x, y);
+		if (breakable == true && pieces != NULL)
+		{
+			if (pieces->GetStartTimeRender() == 0)
+				pieces->SetStartTimeRender(GetTickCount());
+			else if (GetTickCount() - pieces->GetStartTimeRender() > 2000)
+			{
+				delete pieces;
+				pieces = NULL;
+				return;
+			}
+
+			pieces->Render();
+		}
+		return;
 	}
-	else if (state == BRICK_STATE_AVAILABLE)
+
+	if (state == BRICK_STATE_AVAILABLE)
 	{
 		animation_set->at(BRICK_ANI_AVAILABLE)->Render(x, y);
 	}
-	else {
+	else if (state == BRICK_ANI_UNAVAILABLE) {
 		animation_set->at(BRICK_ANI_UNAVAILABLE)->Render(x, y);
 		item->Render();
 	}
+	else if (state == BRICK_STATE_BREAKABLE)
+	{
+		animation_set->at(BRICK_ANI_BREAKABLE)->Render(x, y);
+	}
+
 	RenderBoundingBox();
 }
 
@@ -72,6 +98,10 @@ void CBrick::SetState(int state)
 		item->SetSpeedVy(-0.2f);
 		vy = -0.2f;
 		break;
+	case BRICK_STATE_BREAKABLE:
+		InitPieces();
+		breakable = true;
+		break;
 	default:
 		break;
 	}
@@ -86,4 +116,9 @@ void CBrick::InitItem(int itemType)
 	LPANIMATION_SET ani_set = animation_sets->Get(ITEM_ANIM_SET_ID);
 
 	item->SetAnimationSet(ani_set);
+}
+
+void CBrick::InitPieces()
+{
+	pieces = new BrickPieces(this->initialPosX, this->initialPosY);
 }
