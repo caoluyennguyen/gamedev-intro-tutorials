@@ -1,14 +1,3 @@
-//#pragma once
-//#include <d3dx9.h>
-//#include <algorithm>
-//
-//class CTileMap
-//{
-//public:
-//	CTileMap();
-//	void Render();;
-//};
-
 #pragma once
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -27,10 +16,9 @@ class CTileMap
 
 	int numCol;				// so cot can de ve
 	int numColToRead;		// so cot can de ve
-	//int numCol = 16;		// so cot can de ve
+
 	int numRow;				// so hang can de ve
 	int numRowToRead;		// so hang can de ve
-	//int numRow = 12;		// so hang can de ve
 
 	int mapWidth;			// chieu rong cua map
 	int mapHeight;			// chieu cao cua map
