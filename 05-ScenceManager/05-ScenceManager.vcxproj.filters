@@ -94,7 +94,7 @@
       <Filter>Space Partitioning</Filter>
     </ClCompile>
     <ClCompile Include="Cell.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Space Partitioning</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +165,7 @@
       <Filter>Space Partitioning</Filter>
     </ClInclude>
     <ClInclude Include="Cell.h">
-      <Filter>Header Files</Filter>
+      <Filter>Space Partitioning</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

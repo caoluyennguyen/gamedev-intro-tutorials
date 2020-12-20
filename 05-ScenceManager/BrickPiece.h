@@ -31,6 +31,6 @@ public:
 	void Update(DWORD dt);
 	void Render();
 
-	DWORD GetStartTimeRender() { return startTime; }
-	void SetStartTimeRender(DWORD x) { startTime = x; }
+	DWORD GetStartTimeAppear() { return startTime; }
+	void SetStartTimeAppear(DWORD x) { startTime = x; }
 };

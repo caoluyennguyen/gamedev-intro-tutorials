@@ -14,7 +14,18 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == BRICK_STATE_BREAK)
 	{
-		if (pieces != NULL) pieces->Update(dt);
+		if (breakable == true && pieces != NULL)
+		{
+			if (pieces->GetStartTimeAppear() == 0) pieces->SetStartTimeAppear(GetTickCount());
+			else if (GetTickCount() - pieces->GetStartTimeAppear() > 2000)
+			{
+				delete pieces;
+				pieces = NULL;
+				return;
+			}
+
+			pieces->Update(dt);
+		}
 		return;
 	}
 
@@ -45,19 +56,7 @@ void CBrick::Render()
 {
 	if (state == BRICK_STATE_BREAK)
 	{
-		if (breakable == true && pieces != NULL)
-		{
-			if (pieces->GetStartTimeRender() == 0)
-				pieces->SetStartTimeRender(GetTickCount());
-			else if (GetTickCount() - pieces->GetStartTimeRender() > 2000)
-			{
-				delete pieces;
-				pieces = NULL;
-				return;
-			}
-
-			pieces->Render();
-		}
+		if (pieces != NULL) pieces->Render();
 		return;
 	}
 
