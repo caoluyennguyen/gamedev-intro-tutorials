@@ -22,6 +22,9 @@
     <Filter Include="Enemies">
       <UniqueIdentifier>{bc890dab-54f6-42a8-9e0f-73eca7602c6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Space Partitioning">
+      <UniqueIdentifier>{5bdf11c6-09fa-4456-ae86-b7021fcf82b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -87,6 +90,12 @@
     <ClCompile Include="BrickPiece.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Space Partitioning</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -151,6 +160,12 @@
     </ClInclude>
     <ClInclude Include="BrickPiece.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Space Partitioning</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
