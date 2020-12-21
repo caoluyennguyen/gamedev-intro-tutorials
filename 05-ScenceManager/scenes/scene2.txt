@@ -5,7 +5,7 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	scenes\textures\mario.png	255	255	255
-10	scenes\World1-1.png	255	255	255
+10	scenes\textures\hud.png		255	255	255
 20	scenes\textures\misc.png	176	224	248
 30	scenes\textures\enemies-2.png	0	128	128
 
@@ -438,9 +438,9 @@
 #jump high left
 581	10111	0
 #fly right
-582	10109	100	10110	100	10127	100
+582	10109	50	10110	50	10127	50
 #fly left
-583	10111	100	10112	100	10128	100
+583	10111	50	10112	50	10128	50
 #hit right
 584	10129	100	10113	100	10130	100	10114	100	10129	100
 #hit left
@@ -659,5 +659,5 @@
 # type	l	t	ani_set_id	r	b	scene_id
 # 50	300	98	0	380	150	1
 
-[GRID]
-scenes\map\grid1.txt
+#[GRID]
+#scenes\map\grid1.txt

@@ -25,17 +25,19 @@
 #include "Goomba.h"
 
 #include "PlayScence.h"
+#include "HUD.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 300
+#define SCREEN_HEIGHT 270
 
 #define MAX_FRAME_RATE 120
 
 CGame *game;
+HUD* hud;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -76,6 +78,7 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		CGame::GetInstance()->GetCurrentScene()->Render();
+		hud->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -180,6 +183,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->InitKeyboard();
 
 	game->Load(L"mario-sample.txt");
+
+	hud = new HUD();
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH*2, SCREEN_HEIGHT*2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

@@ -25,6 +25,9 @@
     <Filter Include="Space Partitioning">
       <UniqueIdentifier>{5bdf11c6-09fa-4456-ae86-b7021fcf82b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{e5a13de7-5c3f-4de7-9231-58b11a76c1b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -81,9 +84,6 @@
     <ClCompile Include="Items.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Tail.cpp">
       <Filter>Mario</Filter>
     </ClCompile>
@@ -95,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="Cell.cpp">
       <Filter>Space Partitioning</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +155,6 @@
     <ClInclude Include="Items.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Tail.h">
       <Filter>Mario</Filter>
     </ClInclude>
@@ -166,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="Cell.h">
       <Filter>Space Partitioning</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

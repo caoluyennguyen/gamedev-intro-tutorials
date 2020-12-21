@@ -294,33 +294,33 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
+	coObjects.clear();
+	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	float cx, cy;
-	player->GetPosition(cx, cy);
-	grid->GetListObject(&coObjects, cx, cy);
+	//grid->GetListObject(&coObjects, cx, cy);
 
-	/*for (size_t i = 0; i < objects.size(); i++)
+	for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
-	}*/
+	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
-
 	// Update camera to follow mario
-
+	float cx, cy;
+	player->GetPosition(cx, cy);
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	if (cy > 230.0f) cy = 230.0f;
+	if (cy > 150.0f) cy = 230.0f;
 	else if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
 	if (player->GetState() != MARIO_STATE_DIE) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
@@ -328,12 +328,12 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//tileMap->Render();
 	tileMap->Render(player->x);
-	/*for (int i = objects.size() - 1; i > -1; i--)
-		if (objects[i]->IsEnable()) objects[i]->Render();*/
-	for (int i = coObjects.size() - 1; i > -1; i--)
-		coObjects[i]->Render();
+
+	for (int i = objects.size() - 1; i > -1; i--)
+		if (objects[i]->IsEnable()) objects[i]->Render();
+	/*for (int i = coObjects.size() - 1; i > -1; i--)
+		coObjects[i]->Render();*/
 }
 
 /*
@@ -345,6 +345,7 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+	if (grid) grid->Unload();
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
