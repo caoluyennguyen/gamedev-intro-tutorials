@@ -318,12 +318,23 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(cx, cy);
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
+	cy -= game->GetScreenHeight() / 3;
 
-	if (cy > 150.0f) cy = 230.0f;
-	else if (cy < 0) cy = 0;
+	//if (cy > 150.0f) cy = 230.0f;
+	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
-	if (player->GetState() != MARIO_STATE_DIE) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
+	if (player->GetState() != MARIO_STATE_DIE)
+	{
+		if (player->IsAbleToJumpHigh() || player->IsFlying())
+		{
+			if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
+			else CGame::GetInstance()->SetCamPos(int(cx), 230);
+		}
+		else
+		{
+			 CGame::GetInstance()->SetCamPos(int(cx), 230);
+		}
+	}
 }
 
 void CPlayScene::Render()

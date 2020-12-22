@@ -5,9 +5,14 @@
 
 class HUD
 {
-	vector<LPSPRITE> speed;
+	RECT rect;
+	LPDIRECT3DTEXTURE9 bbox;
+
+	int marioSpeed;
+	vector<LPSPRITE> speedUp;
+	vector<LPSPRITE> speedDown;
 public:
-	HUD() {};
+	HUD() { marioSpeed = 3; };
 	~HUD() {};
 
 	void LoadResource();
