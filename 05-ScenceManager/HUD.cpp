@@ -13,9 +13,9 @@ void HUD::Render()
 
 	float l, t, r, b;
 
-	rect.left = 11;
-	rect.top = 127;
-	rect.right = 164;
+	rect.left = 0;
+	rect.top = 120;
+	rect.right = 264;
 	rect.bottom = 157;
 
 	CGame::GetInstance()->Draw(0, 200, bbox, rect.left, rect.top, rect.right, rect.bottom, 255, 0);
