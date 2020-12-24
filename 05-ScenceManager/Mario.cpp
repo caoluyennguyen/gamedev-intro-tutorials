@@ -276,7 +276,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}*/
 				
-				if (e->nx != 0)
+				if (e->nx != 0 && !isAbleToHoldObject)
 				{
 					if (untouchable == 0 && hitting == 0)
 					{
