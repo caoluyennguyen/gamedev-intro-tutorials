@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "Utils.h"
+#include "HUD.h"
 
 #include "PlayScence.h"
 
@@ -380,8 +381,9 @@ void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
-	scenes[current_scene]->Unload();;
+	scenes[current_scene]->Unload();
 
+	HUD::GetInstance()->UnLoadResource();
 	CTextures::GetInstance()->Clear();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
@@ -389,5 +391,6 @@ void CGame::SwitchScene(int scene_id)
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
-	s->Load();	
+	s->Load();
+	HUD::GetInstance()->LoadResource();
 }
