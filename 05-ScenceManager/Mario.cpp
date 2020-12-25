@@ -263,7 +263,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				// jump on top >> kill Koopas and deflect a bit 
 				if (e->ny < 0)
 				{
-					if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_ROLLING || koopas->GetState() == KOOPAS_STATE_ROLLING_NGUA)
+					if (koopas->GetState() == KOOPAS_STATE_FLY)
+					{
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						koopas->SetState(KOOPAS_STATE_WALKING);
+						y += min_ty * dy + ny * 0.2f;
+						koopas->ScoreUp();
+					}
+					else if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_ROLLING
+						|| koopas->GetState() == KOOPAS_STATE_ROLLING_NGUA)
 					{
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 						koopas->SetState(KOOPAS_STATE_DIE);
@@ -324,7 +332,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				// jump on top >> kill Goomba and deflect a bit 
 				if (e->ny < 0)
 				{
-					if (goomba->GetState()!= GOOMBA_STATE_DIE)
+					if (goomba->GetState() == GOOMBA_STATE_FLY)
+					{
+						goomba->SetState(GOOMBA_STATE_WALKING);
+						goomba->ScoreUp();
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					}
+					else if (goomba->GetState() == GOOMBA_STATE_WALKING)
 					{
 						goomba->SetState(GOOMBA_STATE_DIE);
 						goomba->ScoreUp();
