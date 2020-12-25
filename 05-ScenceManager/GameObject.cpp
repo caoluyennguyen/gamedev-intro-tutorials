@@ -43,7 +43,7 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
 
 	// (rdx, rdy) is RELATIVE movement distance/velocity 
 	float rdx = this->dx - sdx;
-	float rdy = this->dy + sdy;
+	float rdy = this->dy - sdy;
 
 	GetBoundingBox(ml, mt, mr, mb);
 

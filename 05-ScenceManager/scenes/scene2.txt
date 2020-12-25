@@ -603,7 +603,8 @@
 2	384	400	3
 
 # KOOPAS
-3	100	100	4
+3	100	200	4
+3	50	200	4
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

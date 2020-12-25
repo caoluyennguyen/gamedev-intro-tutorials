@@ -1,6 +1,7 @@
 #include "Koopas.h"
 #include "Ground.h"
 #include "Mario.h"
+#include "Brick.h"
 #include <algorithm>
 
 
@@ -94,12 +95,20 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vy = 0;
 				}
 			}
-			else if (dynamic_cast<CGround*>(e->obj))
+			if (dynamic_cast<CBrick*>(e->obj))
 			{
 				if (e->nx != 0)
 				{
 					vx = -vx;
 					x += min_tx * dx + nx * 0.5f;
+					if (e->obj->GetState() == BRICK_STATE_AVAILABLE)
+					{
+						e->obj->SetState(BRICK_STATE_UNAVAILABLE);
+					}
+					else if (e->obj->GetState() == BRICK_STATE_BREAKABLE)
+					{
+						e->obj->SetState(BRICK_STATE_BREAK);
+					}
 				}
 				if (e->ny != 0)
 				{
@@ -109,11 +118,17 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CMario*>(e->obj))
 			{
 				x += dx;
-				//y += dy;
+				
 				if (e->ny != 0)
 				{
 					vy = 0;
 				}
+			}
+			else if (dynamic_cast<CKoopas*>(e->obj))
+			{
+				x += dx;
+
+				if (state == KOOPAS_STATE_WALKING) this->SetState(KOOPAS_STATE_DIE_NGUA);
 			}
 		}
 	}
@@ -135,6 +150,10 @@ void CKoopas::Render()
 	{
 		ani = KOOPAS_ANI_ROLLING;
 	}
+	else if (state == KOOPAS_STATE_ROLLING_NGUA)
+	{
+		ani = KOOPAS_ANI_ROLLING_NGUA;
+	}
 	else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
 
@@ -154,13 +173,13 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_DIE_NGUA:
 		vx = 0;
-		vy = -0.1f;
+		vy = -0.2f;
 		break;
 	case KOOPAS_STATE_WALKING:
 		//vx = KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_ROLLING:
-		vx = nx * 0.2f;
+		vx = nx * 0.4f;
 		break;
 	}
 
