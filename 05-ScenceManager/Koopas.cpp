@@ -17,7 +17,7 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 	right = x + KOOPAS_BBOX_WIDTH;
 
 
-	if (state == KOOPAS_STATE_DIE || state == KOOPAS_STATE_DIE_NGUA || state == KOOPAS_STATE_ROLLING)
+	if (state == KOOPAS_STATE_DIE || state == KOOPAS_STATE_DIE_NGUA || state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA)
 		bottom = y + KOOPAS_BBOX_HEIGHT_DIE;
 	else
 		bottom = y + KOOPAS_BBOX_HEIGHT;
@@ -93,6 +93,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (e->ny != 0)
 				{
 					vy = 0;
+					if (state == KOOPAS_STATE_DIE_NGUA)
+					{
+						vx = 0;
+					}
 				}
 			}
 			if (dynamic_cast<CBrick*>(e->obj))
@@ -174,11 +178,15 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_DIE_NGUA:
 		vx = 0;
 		vy = -0.2f;
+		vx = nx * 0.01f;
 		break;
 	case KOOPAS_STATE_WALKING:
 		//vx = KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_ROLLING:
+		vx = nx * 0.4f;
+		break;
+	case KOOPAS_STATE_ROLLING_NGUA:
 		vx = nx * 0.4f;
 		break;
 	}

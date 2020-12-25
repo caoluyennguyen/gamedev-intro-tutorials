@@ -8,6 +8,7 @@
 10	scenes\textures\hud.png		255	255	255
 20	scenes\textures\misc.png	176	224	248
 30	scenes\textures\enemies-2.png	0	128	128
+40	scenes\textures\enemies-3.png	0	128	128
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -252,6 +253,8 @@
 30005	256	108	272	124	30
 #die
 30006	222	115	238	124	30
+#die ngua
+30007	279	292	295	308	40
 
 #brick with question mark animation
 40001	300	117	316	133	20
@@ -283,6 +286,11 @@
 50021	256	202	272	217	30
 50022	273	202	289	217	30
 50023	290	202	306	217	30
+#rolling ngua
+50024	228	198	244	214	40
+50025	245	198	261	214	40
+50026	262	198	278	214	40
+50027	279	198	295	214	40
 
 #FIREBALL
 #RIGHT
@@ -543,6 +551,8 @@
 701	30004	100	30005	100
 # die
 702	30006	100
+#die ngua
+703	30007	100
 
 # ==== KOOPAS  =========
 #walk left
@@ -555,6 +565,8 @@
 804	50032	100
 #rolling
 805	50031	100	50021	100	50022	100	50023	100
+#rolling ngua
+806	50024	100	50025	100	50026	100	50027	100
 
 # === ITEM ===
 # COIN
@@ -578,9 +590,9 @@
 # QUESTION MARK BRICK 
 22	602	605	606	607
 # GOOMBA
-3	701	702
+3	701	702	703
 # KOOPAS
-4	801	802	803	804	805
+4	801	802	803	804	805	806
 # FIREBALL
 5	603	604
 # ITEM
@@ -601,6 +613,7 @@
 
 # GOOMBA
 2	384	400	3
+2	50	200	3
 
 # KOOPAS
 3	100	200	4

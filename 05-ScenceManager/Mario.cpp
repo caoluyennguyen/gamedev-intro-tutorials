@@ -269,28 +269,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						koopas->SetState(KOOPAS_STATE_DIE);
 						y += min_ty * dy + ny * 0.2f;
 					}
+					/*else if (koopas->GetState() == KOOPAS_STATE_ROLLING_NGUA)
+					{
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						koopas->SetState(KOOPAS_STATE_DIE_NGUA);
+						y += min_ty * dy + ny * 0.2f;
+					}*/
 					else
 					{
-						/*isHoldObject = false;
-						if (koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
-						{
-							StartShootingObject();
-							koopas->nx = this->nx;
-							koopas->SetState(KOOPAS_STATE_ROLLING);
-						}*/
 						y += dy;
 					}
 				}
-				/*else if (e->ny > 0)
-				{
-					isHoldObject = false;
-					if (koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
-					{
-						StartShootingObject();
-						koopas->nx = this->nx;
-						koopas->SetState(KOOPAS_STATE_ROLLING);
-					}
-				}*/
 				
 				if (e->nx != 0 && !isAbleToHoldObject)
 				{
@@ -311,11 +300,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						else
 						{
 							isHoldObject = false;
-							if (koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
+							if (koopas->GetState() == KOOPAS_STATE_DIE)
 							{
 								StartShootingObject();
 								koopas->nx = this->nx;
 								koopas->SetState(KOOPAS_STATE_ROLLING);
+							}
+							else if (koopas->GetState() == KOOPAS_STATE_DIE_NGUA)
+							{
+								StartShootingObject();
+								koopas->nx = this->nx;
+								koopas->SetState(KOOPAS_STATE_ROLLING_NGUA);
 							}
 						}
 					}
