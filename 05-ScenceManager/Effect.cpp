@@ -32,6 +32,6 @@ void CEffect::Render()
 {
 	if (appear)
 	{
-		ani_set->at(EFFECT_TYPE_SCORE)->Render(x, y);
+		ani_set->at(EFFECT_TYPE_SCORE_100)->Render(x, y);
 	}
 }

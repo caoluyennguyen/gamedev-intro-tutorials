@@ -3,10 +3,12 @@
 #include "Mario.h"
 #include "Brick.h"
 #include <algorithm>
+#include "Goomba.h"
 
 
 CKoopas::CKoopas()
 {
+	CEnemy::CEnemy();
 	SetState(KOOPAS_STATE_WALKING);
 }
 
@@ -23,32 +25,14 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 		bottom = y + KOOPAS_BBOX_HEIGHT;
 }
 
-//void CKoopas::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
-//{
-//	for (UINT i = 0; i < coObjects->size(); i++)
-//	{
-//		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-//
-//		if (e->t > 0 && e->t <= 1.0f)
-//			coEvents.push_back(e);
-//		else
-//			delete e;
-//
-//		// Check AABB collision
-//		LPGAMEOBJECT obj = coObjects->at(i);
-//	}
-//
-//	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
-//}
-
-
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	//
 	// TO-DO: make sure Koopas can interact with the world and to each of them too!
 	// 
 
-	CGameObject::Update(dt);
+	//CGameObject::Update(dt);
+	CEnemy::Update(dt);
 
 	if (x < 0) vx = abs(vx);
 
@@ -128,6 +112,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vy = 0;
 				}
 			}
+			else if (dynamic_cast<CGoomba*>(e->obj))
+			{
+				x += dx;
+
+				if (state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA) e->obj->SetState(GOOMBA_STATE_DIE_NGUA);
+			}
 			else if (dynamic_cast<CKoopas*>(e->obj))
 			{
 				x += dx;
@@ -143,6 +133,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CKoopas::Render()
 {
+	CEnemy::Render();
+
 	int ani = KOOPAS_ANI_WALKING_LEFT;
 	if (state == KOOPAS_STATE_DIE) {
 		ani = KOOPAS_ANI_DIE;
@@ -162,8 +154,6 @@ void CKoopas::Render()
 	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
 
 	animation_set->at(ani)->Render(x, y);
-
-	RenderBoundingBox();
 }
 
 void CKoopas::SetState(int state)
@@ -176,7 +166,6 @@ void CKoopas::SetState(int state)
 		vy = 0;
 		break;
 	case KOOPAS_STATE_DIE_NGUA:
-		vx = 0;
 		vy = -0.2f;
 		vx = nx * 0.01f;
 		break;
@@ -190,5 +179,4 @@ void CKoopas::SetState(int state)
 		vx = nx * 0.4f;
 		break;
 	}
-
 }

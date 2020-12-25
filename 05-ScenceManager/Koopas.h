@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Enemy.h"
 
 #define KOOPAS_WALKING_SPEED 0.03f;
 
@@ -23,14 +23,12 @@
 
 #define KOOPAS_GRAVITY 0.0005f
 
-class CKoopas : public CGameObject
+class CKoopas : public CEnemy
 {
-
 public:
 	CKoopas();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	//void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 };

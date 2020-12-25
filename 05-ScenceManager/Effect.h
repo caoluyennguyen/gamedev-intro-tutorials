@@ -1,7 +1,7 @@
 #pragma once
 #include "Animations.h"
 
-#define EFFECT_TYPE_SCORE	0
+#define EFFECT_TYPE_SCORE_100	0
 
 #define EFFECT_SCORE_ANI_SET	7
 
