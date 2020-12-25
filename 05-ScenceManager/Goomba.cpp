@@ -42,7 +42,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (GetTickCount() - jump > TIME_JUMP_HIGH)
 	{
 		isAbleToJump = true;
-		jump = GetTickCount();
 	}
 
 	CEnemy::Update(dt);
@@ -96,14 +95,22 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				if (e->ny != 0)
 				{
-					/*vy = 0;
-					y += min_ty * dy + ny * 0.2f;*/
-					if (isAbleToJump)
+					
+					if (state == GOOMBA_STATE_FLY)
 					{
-						vy = -0.2f;
-						isAbleToJump = false;
+						if (isAbleToJump)
+						{
+							vy = -0.2f;
+							isAbleToJump = false;
+							jump = GetTickCount();
+						}
+						else vy = -0.1f;
 					}
-					else vy = -0.1f;
+					else
+					{
+						vy = 0;
+						y += min_ty * dy + ny * 0.2f;
+					}
 				}
 			}
 			else if (dynamic_cast<CBrick*>(e->obj))
