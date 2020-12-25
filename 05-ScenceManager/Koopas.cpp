@@ -69,10 +69,19 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CGround*>(e->obj))
 			{
+				CGround* ground = dynamic_cast<CGround*>(e->obj);
 				if (e->nx != 0)
 				{
-					vx = -vx;
-					x += min_tx * dx + nx * 0.5f;
+					if (ground->GetId() == GROUND_TYPE_NORMAL)
+					{
+						vx = -vx;
+						x += min_tx * dx + nx * 0.5f;
+					}
+					else
+					{
+						x += dx;
+					}
+					
 				}
 				if (e->ny != 0)
 				{
@@ -83,7 +92,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-			if (dynamic_cast<CBrick*>(e->obj))
+			else if (dynamic_cast<CBrick*>(e->obj))
 			{
 				if (e->nx != 0)
 				{

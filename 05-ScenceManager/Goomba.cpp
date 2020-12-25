@@ -85,7 +85,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += min_ty * dy + ny * 0.2f;
 				}
 			}
-			if (dynamic_cast<CBrick*>(e->obj))
+			else if (dynamic_cast<CBrick*>(e->obj))
 			{
 				if (e->nx != 0)
 				{
