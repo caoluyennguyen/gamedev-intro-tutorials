@@ -160,10 +160,15 @@ void CKoopas::Render()
 	{
 		ani = KOOPAS_ANI_ROLLING_NGUA;
 	}
+	else if (state == KOOPAS_STATE_FLY)
+	{
+		if (vx > 0) ani = KOOPAS_ANI_FLY_RIGHT;
+		else ani = KOOPAS_ANI_FLY_LEFT;
+	}
 	else
 	{
 		if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
-		else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
+		else ani = KOOPAS_ANI_WALKING_LEFT;
 	}
 	/*else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;*/
