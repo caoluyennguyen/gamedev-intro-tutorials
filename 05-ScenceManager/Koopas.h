@@ -13,6 +13,7 @@
 #define KOOPAS_STATE_ROLLING 300
 #define KOOPAS_STATE_DIE_NGUA 400
 #define KOOPAS_STATE_ROLLING_NGUA 500
+#define KOOPAS_STATE_FLY 600
 
 #define KOOPAS_ANI_WALKING_LEFT 0
 #define KOOPAS_ANI_WALKING_RIGHT 1
@@ -20,13 +21,16 @@
 #define KOOPAS_ANI_DIE_NGUA 3
 #define KOOPAS_ANI_ROLLING 4
 #define KOOPAS_ANI_ROLLING_NGUA 5
+#define KOOPAS_ANI_FLY_LEFT 6
+#define KOOPAS_ANI_FLY_RIGHT 7
 
 #define KOOPAS_GRAVITY 0.0005f
 
 class CKoopas : public CEnemy
 {
+	DWORD jump;
 public:
-	CKoopas();
+	CKoopas(int state);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 	virtual void SetState(int state);

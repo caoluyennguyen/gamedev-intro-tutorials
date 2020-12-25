@@ -6,10 +6,9 @@
 #include "Goomba.h"
 
 
-CKoopas::CKoopas()
+CKoopas::CKoopas(int state) : CEnemy()
 {
-	CEnemy::CEnemy();
-	SetState(KOOPAS_STATE_WALKING);
+	SetState(state);
 }
 
 void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -85,11 +84,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				if (e->ny != 0)
 				{
-					vy = 0;
-					if (state == KOOPAS_STATE_DIE_NGUA)
+					if (state == KOOPAS_STATE_FLY) vy = -0.2f;
+					else if (state == KOOPAS_STATE_DIE_NGUA)
 					{
 						vx = 0;
 					}
+					else vy = 0;
 				}
 			}
 			else if (dynamic_cast<CBrick*>(e->obj))
@@ -145,6 +145,7 @@ void CKoopas::Render()
 	CEnemy::Render();
 
 	int ani = KOOPAS_ANI_WALKING_LEFT;
+
 	if (state == KOOPAS_STATE_DIE) {
 		ani = KOOPAS_ANI_DIE;
 	}
@@ -159,8 +160,13 @@ void CKoopas::Render()
 	{
 		ani = KOOPAS_ANI_ROLLING_NGUA;
 	}
-	else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
-	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
+	else
+	{
+		if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
+		else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
+	}
+	/*else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
+	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;*/
 
 	animation_set->at(ani)->Render(x, y);
 }

@@ -1230,8 +1230,6 @@ void CMario::Clear()
 	fireBalls.clear();
 }
 
-
-
 void CMario::StartShoot()
 {
 	fireball->SetEnable(true);

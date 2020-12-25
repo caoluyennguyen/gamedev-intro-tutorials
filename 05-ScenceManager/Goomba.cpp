@@ -4,10 +4,10 @@
 #include "Mario.h"
 #include "Koopas.h"
 
-CGoomba::CGoomba()
+CGoomba::CGoomba(int state) : CEnemy()
 {
-	CEnemy::CEnemy();
-	SetState(GOOMBA_STATE_WALKING);
+	disappear = 0;
+	SetState(state);
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -30,6 +30,21 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// 
 
 	//CGameObject::Update(dt);
+
+	if (disappear)
+	{
+		if (GetTickCount() - disappear > TIME_APPEAR)
+		{
+			enable = false;
+		}
+	}
+
+	if (GetTickCount() - jump > TIME_JUMP_HIGH)
+	{
+		isAbleToJump = true;
+		jump = GetTickCount();
+	}
+
 	CEnemy::Update(dt);
 
 	if (x < 0) vx = abs(vx);
@@ -81,8 +96,14 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				if (e->ny != 0)
 				{
-					vy = 0;
-					y += min_ty * dy + ny * 0.2f;
+					/*vy = 0;
+					y += min_ty * dy + ny * 0.2f;*/
+					if (isAbleToJump)
+					{
+						vy = -0.2f;
+						isAbleToJump = false;
+					}
+					else vy = -0.1f;
 				}
 			}
 			else if (dynamic_cast<CBrick*>(e->obj))
@@ -117,6 +138,9 @@ void CGoomba::Render()
 	else if (state == GOOMBA_STATE_DIE_NGUA) {
 		ani = GOOMBA_ANI_DIE_NGUA;
 	}
+	else if (state == GOOMBA_STATE_FLY) {
+		ani = GOOMBA_ANI_FLY;
+	}
 
 	animation_set->at(ani)->Render(x,y);
 
@@ -129,9 +153,9 @@ void CGoomba::SetState(int state)
 	switch (state)
 	{
 		case GOOMBA_STATE_DIE:
-			//y += GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE + 1;
 			vx = 0;
 			vy = 0;
+			StartDisappear();
 			break;
 		case GOOMBA_STATE_WALKING: 
 			//vx = -GOOMBA_WALKING_SPEED;
@@ -139,6 +163,10 @@ void CGoomba::SetState(int state)
 		case GOOMBA_STATE_DIE_NGUA:
 			vy = -0.2f;
 			vx = nx * 0.01f;
+			StartDisappear();
+			break;
+		case GOOMBA_STATE_FLY:
+			jump = GetTickCount();
 			break;
 	}
 }

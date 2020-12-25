@@ -59,7 +59,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void Update(DWORD dt)
 {
 	CGame::GetInstance()->GetCurrentScene()->Update(dt);
-	HUD::GetInstance()->Update(dt);
+	//HUD::GetInstance()->Update(dt);
 }
 
 /*
@@ -79,7 +79,7 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		CGame::GetInstance()->GetCurrentScene()->Render();
-		HUD::GetInstance()->Render();
+		//HUD::GetInstance()->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();

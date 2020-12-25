@@ -149,5 +149,5 @@ bool CGameObject::CheckCollision(float left_a, float top_a, float right_a, float
 
 CGameObject::~CGameObject()
 {
-
+	
 }
