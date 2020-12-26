@@ -15,6 +15,8 @@ CVenus::CVenus(int state, int start_y) : CEnemy()
 	startShoot = 0;
 
 	SetState(state);
+	fireball = new FireBall();
+	fireball->SetState(FIREBALL_STATE_VENUS);
 }
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -28,6 +30,7 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	CEnemy::Update(dt);
+	fireball->Update(dt); // handle update ball when reach out screen
 
 	y += dy;
 
@@ -39,18 +42,6 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (mario->x > this->x) nx = 1;
 	else nx = -1;
 
-	/*if (isMoving && GetTickCount() - startMove > VENUS_MOVE_TIME)
-	{
-		if (state == VENUS_STATE_RED)
-		{
-			SetState(VENUS_STATE_RED_SHOOT);
-		}
-		else if (state == VENUS_STATE_GREEN)
-		{
-			SetState(VENUS_STATE_GREEN_SHOOT);
-		}
-	}*/
-
 	if (isMoving)
 	{
 		if (y > start_y)
@@ -58,13 +49,13 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			direction = -1;
 			if (state == VENUS_STATE_RED) SetState(VENUS_STATE_RED_SHOOT);
 			else if (state == VENUS_STATE_GREEN) SetState(VENUS_STATE_GREEN_SHOOT);
-			//fireball->Render();
 		}
 		else if (y < start_y - VENUS_BBOX_HEIGHT)
 		{
 			direction = 1;
 			if (state == VENUS_STATE_RED) SetState(VENUS_STATE_RED_SHOOT);
 			else if (state == VENUS_STATE_GREEN) SetState(VENUS_STATE_GREEN_SHOOT);
+			StartShoot();
 		}
 	}
 	else if (isShooting && GetTickCount() - startShoot > VENUS_SHOOT_TIME)
@@ -138,6 +129,7 @@ void CVenus::Render()
 	animation_set->at(ani)->Render(x, y);
 
 	CEnemy::Render();
+	fireball->Render();
 }
 
 void CVenus::SetState(int state)
@@ -147,7 +139,7 @@ void CVenus::SetState(int state)
 	switch (state)
 	{
 	case VENUS_STATE_RED:
-		vy = direction * 0.01f;
+		vy = direction * VENUS_MOVE_SPEED;
 		isMoving = true;
 		isShooting = false;
 		break;
@@ -182,4 +174,11 @@ void CVenus::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		right = left + VENUS_BBOX_WIDTH;
 		bottom = top + VENUS_BBOX_HEIGHT;
 	}
+}
+
+void CVenus::StartShoot()
+{
+	fireball->SetPosition(this->x, this->y);
+	if (isUp) fireball->SetSpeed(nx * 0.02f, -0.02f);
+	else fireball->SetSpeed(nx * 0.02f, 0.02f);
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "FireBall.h"
 
 #pragma region define
 #define VENUS_STATE_RED			100
@@ -31,6 +32,8 @@
 #define VENUS_SHOOT_TIME	2000
 #define VENUS_DIE_TIME		500
 
+#define VENUS_MOVE_SPEED	0.01f
+
 #define VENUS_BBOX_HEIGHT	32
 #define VENUS_BBOX_WIDTH	16
 #define PIRANHA_BBOX_HEIGHT	23
@@ -50,11 +53,15 @@ class CVenus : public CEnemy
 
 	DWORD startShoot;
 	DWORD startDisappear;
+
+	FireBall* fireball;
 public:
 	CVenus(int state, int start_y = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	void StartShoot();
 };
 

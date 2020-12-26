@@ -16,14 +16,22 @@ FireBall::FireBall()
 
 	SetAnimationSet(ani_set);
 	enable = false;
+	state = FIREBALL_STATE_NORMAL;
 }
 
 void FireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	this->dt = dt;
 	dx = vx * nx * dt;
-	vy += FIREBALL_GRAVITY * dt;
 	dy = vy * dt;
+	if (state == FIREBALL_STATE_VENUS)
+	{
+		x += dx;
+		y += dy;
+		return;
+	}
+
+	vy += FIREBALL_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -56,7 +64,6 @@ void FireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 
-				// jump on top >> kill Koopas and deflect a bit 
 				if (e->ny != 0 || e->nx != 0)
 				{
 					if (koopas->GetState() != KOOPAS_STATE_DIE)

@@ -8,6 +8,9 @@
 #define FIREBALL_GRAVITY		0.001f
 #define FIREBALL_ANIM_SET_ID	5
 
+#define FIREBALL_STATE_NORMAL	0
+#define FIREBALL_STATE_VENUS	1
+
 class FireBall : public CGameObject
 {
 public:

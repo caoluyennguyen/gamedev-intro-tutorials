@@ -63,9 +63,6 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="FireBall.cpp">
-      <Filter>Mario</Filter>
-    </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Mario</Filter>
     </ClCompile>
@@ -111,6 +108,9 @@
     <ClCompile Include="Pipe.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -142,9 +142,6 @@
     </ClInclude>
     <ClInclude Include="TileMap.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FireBall.h">
-      <Filter>Mario</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Mario</Filter>
@@ -192,6 +189,9 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Pipe.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
