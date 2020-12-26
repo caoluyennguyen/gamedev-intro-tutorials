@@ -11,6 +11,7 @@
 #include "Koopas.h"
 #include "Ground.h"
 #include "Items.h"
+#include "Pipe.h"
 
 CMario* CMario::__instance = NULL;
 
@@ -105,7 +106,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 			}
 		}
 		
-		if (dynamic_cast<CGround*>(obj)) {
+		else if (dynamic_cast<CGround*>(obj)) {
 			CGround* ground = dynamic_cast<CGround*>(obj);
 
 			if (ground->GetId() == GROUND_TYPE_NORMAL)
@@ -116,6 +117,15 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
 					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
 				}
+			}
+		}
+
+		else if (dynamic_cast<CPipe*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+				x -= 1.0f * nx;
 			}
 		}
 	}
@@ -325,7 +335,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			{
 				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
 
@@ -369,7 +379,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			} // if Goomba
-			if (dynamic_cast<CBrick *>(e->obj))
+			else if (dynamic_cast<CBrick *>(e->obj))
 			{
 				if (e->obj->GetState() == BRICK_STATE_BREAK)
 				{
@@ -410,7 +420,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-			if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
 			{
 				CGround* ground = dynamic_cast<CGround*>(e->obj);
 
@@ -435,12 +445,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 
 			}
-			if (dynamic_cast<CPortal *>(e->obj))
+			else if (dynamic_cast<CPipe*>(e->obj)) // if e->obj is Goomba 
+			{
+				//CGround* ground = dynamic_cast<CGround*>(e->obj);
+
+				if (e->nx != 0)
+				{
+					x += min_tx * dx + nx * 0.4f;
+					vx = 0;
+				}
+
+				if (e->ny != 0)
+				{
+					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
+					isAbleToJump = true;
+					vy = 0;
+					y += min_ty * dy + ny * 0.2f;
+				}
+			}
+			else if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
-			if (dynamic_cast<CItems *>(e->obj))
+			else if (dynamic_cast<CItems *>(e->obj))
 			{
 				x += dx;
 				y += dy;

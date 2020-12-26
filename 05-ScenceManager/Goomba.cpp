@@ -113,6 +113,33 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
+			else if (dynamic_cast<CPipe*>(e->obj))
+			{
+				if (e->nx != 0)
+				{
+					vx = -vx;
+					x += min_tx * dx + nx * 0.5f;
+				}
+				if (e->ny != 0)
+				{
+					
+					if (state == GOOMBA_STATE_FLY)
+					{
+						if (isAbleToJump)
+						{
+							vy = -0.2f;
+							isAbleToJump = false;
+							jump = GetTickCount();
+						}
+						else vy = -0.1f;
+					}
+					else
+					{
+						vy = 0;
+						y += min_ty * dy + ny * 0.2f;
+					}
+				}
+			}
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{
 				if (e->nx != 0)

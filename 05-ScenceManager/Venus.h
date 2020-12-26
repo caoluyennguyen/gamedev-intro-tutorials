@@ -36,9 +36,13 @@ class CVenus : public CEnemy
 	float start_x;			// initial position of Venus at scene
 	float start_y;
 
-	bool isUp;
+	bool isUp;			// look at mario?
 
-	DWORD shoot;
+	bool isMoving;		// is moving up and down
+	bool isShooting;	// is shooting
+
+	DWORD startShoot;
+	DWORD startMove;
 public:
 	CVenus(int state);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

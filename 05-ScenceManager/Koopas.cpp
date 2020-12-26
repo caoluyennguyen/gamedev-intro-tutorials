@@ -92,6 +92,23 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					else vy = 0;
 				}
 			}
+			else if (dynamic_cast<CPipe*>(e->obj))
+			{
+				if (e->nx != 0)
+				{
+					vx = -vx;
+					x += min_tx * dx + nx * 0.5f;
+				}
+				if (e->ny != 0)
+				{
+					if (state == KOOPAS_STATE_FLY) vy = -0.2f;
+					else if (state == KOOPAS_STATE_DIE_NGUA)
+					{
+						vx = 0;
+					}
+					else vy = 0;
+				}
+			}
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{
 				if (e->nx != 0)

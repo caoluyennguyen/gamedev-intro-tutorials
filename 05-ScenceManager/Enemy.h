@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Effect.h"
+#include "Pipe.h"
 
 class CEnemy : public CGameObject
 {

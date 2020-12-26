@@ -108,6 +108,9 @@
     <ClCompile Include="Venus.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Venus.h">
       <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

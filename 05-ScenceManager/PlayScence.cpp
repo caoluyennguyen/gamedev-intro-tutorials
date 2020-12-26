@@ -9,6 +9,8 @@
 #include "Ground.h"
 #include "TileMap.h"
 #include "Items.h"
+#include "Venus.h"
+#include "Pipe.h"
 
 using namespace std;
 
@@ -40,6 +42,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_FIREBALL	5
 #define OBJECT_TYPE_ITEM	6
 #define OBJECT_TYPE_BREAKABLE_BRICK	7
+#define OBJECT_TYPE_VENUS_RED	8
+#define OBJECT_TYPE_VENUS_GREEN	9
+#define OBJECT_TYPE_PIRANHA	10
+#define OBJECT_TYPE_PIPE 11
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -233,6 +239,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			obj = new CBrick(x,y);
 			obj->SetState(BRICK_STATE_BREAKABLE);
+		}
+		break;
+	case OBJECT_TYPE_VENUS_RED:
+		{
+			obj = new CVenus(VENUS_STATE_RED);
+		}
+		break;
+	case OBJECT_TYPE_VENUS_GREEN:
+		{
+			obj = new CVenus(VENUS_STATE_GREEN);
+		}
+		break;
+	case OBJECT_TYPE_PIRANHA:
+		{
+			obj = new CVenus(VENUS_STATE_PIRANHA);
+		}
+		break;
+	case OBJECT_TYPE_PIPE:
+		{
+			obj = new CPipe();
 		}
 		break;
 	default:

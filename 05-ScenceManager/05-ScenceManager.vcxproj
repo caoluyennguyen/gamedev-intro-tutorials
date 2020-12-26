@@ -135,6 +135,7 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Tail.cpp" />
     <ClCompile Include="TileMap.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Tail.h" />
     <ClInclude Include="TileMap.h" />

@@ -10,6 +10,9 @@ CVenus::CVenus(int state) : CEnemy()
 
 	isUp = true;
 
+	startMove = 0;
+	startShoot = 0;
+
 	SetState(state);
 }
 
@@ -18,11 +21,17 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CEnemy::Update(dt);
 
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if (mario->y < this->y) isUp = true;
+	else isUp = false;
+	
+	if (mario->x > this->x) nx = 1;
+	else nx = -1;
 }
 
 void CVenus::Render()
 {
-	int ani = VENUS_ANI_RED_DOWN_LEFT;
+	int ani = VENUS_ANI_RED_UP_LEFT;
 
 	if (state == VENUS_STATE_RED) {
 		if (isUp)
@@ -86,12 +95,10 @@ void CVenus::SetState(int state)
 	switch (state)
 	{
 	case VENUS_STATE_RED:
-		vx = 0;
-		vy = 0;
+		break;
+	case VENUS_STATE_RED_SHOOT:
 		break;
 	case VENUS_STATE_GREEN:
-		vx = 0;
-		vy = 0;
 		break;
 	}
 }
