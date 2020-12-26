@@ -1,7 +1,9 @@
 #include "FireBall.h"
 #include "Koopas.h"
 #include "Ground.h"
+#include "Pipe.h"
 #include "Goomba.h"
+#include "Venus.h"
 #include "Brick.h"
 #include "Mario.h"
 #include "PlayScence.h"
@@ -78,7 +80,19 @@ void FireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					enable = false;
 				}
 			} // if Goomba
-			else if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CVenus*>(e->obj)) // if e->obj is Goomba 
+			{
+				// jump on top >> kill Goomba and deflect a bit 
+				if (e->ny != 0 || e->nx != 0)
+				{
+					if (e->obj->GetState() != VENUS_STATE_DIE)
+					{
+						e->obj->SetState(VENUS_STATE_DIE);
+					}
+					enable = false;
+				}
+			} // if Goomba
+			else if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CGround*>(e->obj) || dynamic_cast<CPipe*>(e->obj)) // if e->obj is Goomba 
 			{
 				x += min_tx * dx + nx * 0.2f;
 				y += min_ty * dy + ny * 0.2f;

@@ -12,6 +12,7 @@
 #include "Ground.h"
 #include "Items.h"
 #include "Pipe.h"
+#include "Venus.h"
 
 CMario* CMario::__instance = NULL;
 
@@ -473,6 +474,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				x += dx;
 				y += dy;
 				e->obj->SetEnable(false);
+			}
+			else if (dynamic_cast<CVenus *>(e->obj))
+			{
+				x += dx;
+				y += dy;
+				if (e->nx != 0 || e->ny != 0)
+				{
+					if (untouchable == 0)
+					{
+						if (level > MARIO_LEVEL_SMALL)
+						{
+							level = MARIO_LEVEL_SMALL;
+							StartUntouchable();
+						}
+						else
+							SetState(MARIO_STATE_DIE);
+					}
+				}
 			}
 		}
 	}

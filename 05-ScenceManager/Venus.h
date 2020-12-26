@@ -28,7 +28,13 @@
 #define VENUS_ANI_PIRANHA					16
 #define VENUS_ANI_DIE						17
 
-#define VENUS_TIME	1000
+#define VENUS_SHOOT_TIME	2000
+#define VENUS_DIE_TIME		500
+
+#define VENUS_BBOX_HEIGHT	32
+#define VENUS_BBOX_WIDTH	16
+#define PIRANHA_BBOX_HEIGHT	23
+#define PIRANHA_BBOX_WIDTH	16
 #pragma endregion
 
 class CVenus : public CEnemy
@@ -37,17 +43,18 @@ class CVenus : public CEnemy
 	float start_y;
 
 	bool isUp;			// look at mario?
+	int direction;		// move direction
 
 	bool isMoving;		// is moving up and down
 	bool isShooting;	// is shooting
 
 	DWORD startShoot;
-	DWORD startMove;
+	DWORD startDisappear;
 public:
-	CVenus(int state);
+	CVenus(int state, int start_y = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	virtual void SetState(int state);
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {};
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

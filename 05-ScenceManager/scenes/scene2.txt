@@ -730,11 +730,11 @@
 #3	100	200	4	100
 #3	50	200	4
 
-# VENUS
-8	100	350	9
-
 # PIPE
 11	352	368	10
+
+# VENUS
+8	360	368	9
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

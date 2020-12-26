@@ -3,14 +3,15 @@
 #include "Mario.h"
 #include "PlayScence.h"
 
-CVenus::CVenus(int state) : CEnemy()
+CVenus::CVenus(int state, int start_y) : CEnemy()
 {
-	start_x = x;
-	start_y = y;
+	this->start_y = start_y;
 
 	isUp = true;
 
-	startMove = 0;
+	direction = -1;
+
+	startDisappear = 0;
 	startShoot = 0;
 
 	SetState(state);
@@ -18,7 +19,17 @@ CVenus::CVenus(int state) : CEnemy()
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state == VENUS_STATE_DIE)
+	{
+		if (GetTickCount() - startDisappear > VENUS_DIE_TIME)
+		{
+			this->enable = false;
+		}
+	}
+
 	CEnemy::Update(dt);
+
+	y += dy;
 
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
@@ -27,6 +38,46 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	if (mario->x > this->x) nx = 1;
 	else nx = -1;
+
+	/*if (isMoving && GetTickCount() - startMove > VENUS_MOVE_TIME)
+	{
+		if (state == VENUS_STATE_RED)
+		{
+			SetState(VENUS_STATE_RED_SHOOT);
+		}
+		else if (state == VENUS_STATE_GREEN)
+		{
+			SetState(VENUS_STATE_GREEN_SHOOT);
+		}
+	}*/
+
+	if (isMoving)
+	{
+		if (y > start_y)
+		{
+			direction = -1;
+			if (state == VENUS_STATE_RED) SetState(VENUS_STATE_RED_SHOOT);
+			else if (state == VENUS_STATE_GREEN) SetState(VENUS_STATE_GREEN_SHOOT);
+			//fireball->Render();
+		}
+		else if (y < start_y - VENUS_BBOX_HEIGHT)
+		{
+			direction = 1;
+			if (state == VENUS_STATE_RED) SetState(VENUS_STATE_RED_SHOOT);
+			else if (state == VENUS_STATE_GREEN) SetState(VENUS_STATE_GREEN_SHOOT);
+		}
+	}
+	else if (isShooting && GetTickCount() - startShoot > VENUS_SHOOT_TIME)
+	{
+		if (state == VENUS_STATE_RED_SHOOT)
+		{
+			SetState(VENUS_STATE_RED);
+		}
+		else if (state == VENUS_STATE_GREEN_SHOOT)
+		{
+			SetState(VENUS_STATE_GREEN);
+		}
+	}
 }
 
 void CVenus::Render()
@@ -81,6 +132,7 @@ void CVenus::Render()
 			else ani = VENUS_ANI_GREEN_SHOOT_DOWN_LEFT;
 		}
 	}
+	else if (state == VENUS_STATE_DIE) ani = VENUS_ANI_DIE;
 	else ani = VENUS_ANI_PIRANHA;
 
 	animation_set->at(ani)->Render(x, y);
@@ -95,10 +147,39 @@ void CVenus::SetState(int state)
 	switch (state)
 	{
 	case VENUS_STATE_RED:
+		vy = direction * 0.01f;
+		isMoving = true;
+		isShooting = false;
 		break;
 	case VENUS_STATE_RED_SHOOT:
+		vy = 0;
+		isMoving = false;
+		isShooting = true;
+		startShoot = GetTickCount();
 		break;
 	case VENUS_STATE_GREEN:
 		break;
+	case VENUS_STATE_DIE:
+		startDisappear = GetTickCount();
+		vx = vy = 0;
+		break;
+	}
+}
+
+void CVenus::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	if (state == VENUS_STATE_DIE) return;
+	left = x;
+	top = y;
+
+	if (state == VENUS_STATE_PIRANHA)
+	{
+		right = left + PIRANHA_BBOX_WIDTH;
+		bottom = top + PIRANHA_BBOX_HEIGHT;
+	}
+	else
+	{
+		right = left + VENUS_BBOX_WIDTH;
+		bottom = top + VENUS_BBOX_HEIGHT;
 	}
 }

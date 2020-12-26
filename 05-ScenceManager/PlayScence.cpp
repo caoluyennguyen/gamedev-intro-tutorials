@@ -243,12 +243,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_VENUS_RED:
 		{
-			obj = new CVenus(VENUS_STATE_RED);
+			obj = new CVenus(VENUS_STATE_RED, y);
 		}
 		break;
 	case OBJECT_TYPE_VENUS_GREEN:
 		{
-			obj = new CVenus(VENUS_STATE_GREEN);
+			obj = new CVenus(VENUS_STATE_GREEN, y);
 		}
 		break;
 	case OBJECT_TYPE_PIRANHA:
