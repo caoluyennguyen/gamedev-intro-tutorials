@@ -47,6 +47,16 @@ void CItems::Render()
 		if (state == ITEM_TYPE_COIN) {
 			ani = ITEM_ANI_COIN;
 		}
+		else if (state == ITEM_TYPE_LEAF) {
+			if (vx > 0) ani = ITEM_ANI_LEAF_RIGHT;
+			else ani = ITEM_ANI_LEAF_LEFT;
+		}
+		else if (state == ITEM_TYPE_RED_MUSROOM) {
+			ani = ITEM_ANI_RED_MUSROOM;
+		}
+		else if (state == ITEM_TYPE_GREEN_MUSROOM) {
+			ani = ITEM_ANI_GREEN_MUSROOM;
+		}
 
 		animation_set->at(ani)->Render(x, y);
 

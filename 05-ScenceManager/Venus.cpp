@@ -152,6 +152,7 @@ void CVenus::SetState(int state)
 	case VENUS_STATE_GREEN:
 		break;
 	case VENUS_STATE_DIE:
+		ScoreUp();
 		startDisappear = GetTickCount();
 		vx = vy = 0;
 		break;

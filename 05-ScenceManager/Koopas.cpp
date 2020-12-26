@@ -4,6 +4,7 @@
 #include "Brick.h"
 #include <algorithm>
 #include "Goomba.h"
+#include "Venus.h"
 
 
 CKoopas::CKoopas(int state) : CEnemy()
@@ -149,6 +150,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				x += dx;
 
 				if (state == KOOPAS_STATE_WALKING) this->SetState(KOOPAS_STATE_DIE_NGUA);
+			}
+			else if (dynamic_cast<CVenus*>(e->obj))
+			{
+				x += dx;
+
+				if (e->obj->GetState() != VENUS_STATE_DIE) e->obj->SetState(VENUS_STATE_DIE);
 			}
 		}
 	}
