@@ -474,6 +474,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				x += dx;
 				y += dy;
 				e->obj->SetEnable(false);
+
+				if (e->obj->GetState() == ITEM_TYPE_LEAF)
+				{
+					SetLevel(MARIO_LEVEL_TAIL);
+				}
 			}
 			else if (dynamic_cast<CVenus *>(e->obj))
 			{

@@ -20,6 +20,9 @@
 #define ITEM_LEAF_VELOCITY_X	0.0005f
 #define ITEM_LEAF_VELOCITY_Y	0.1f
 #define ITEM_LEAF_MAX_VELOCITY	0.1f
+#define ITEM_MUSROOM_GRAVITY	0.0001f
+#define ITEM_MUSROOM_VELOCITY_X	0.05f
+#define ITEM_MUSROOM_VELOCITY_Y	-0.02f
 
 #define ITEM_COIN_BBOX_WIDTH		10.0f
 #define ITEM_COIN_BBOX_HEIGHT		16.0f
@@ -29,12 +32,19 @@
 #define ITEM_MUSROOM_BBOX_HEIGHT	16.0f
 
 #define ITEM_ANIM_SET_ID	6
+
+#define ITEM_INITIAL_POS_X	3.0f
+#define ITEM_INITIAL_POS_Y	16.0f
+#define MUSROOM_LIMIT_POS_Y		9.0f
+#define MUSROOM_INITIAL_POS_Y	6.0f
 #pragma endregion
 
 class CItems : public CGameObject
 {
 	int startY;
 	int ani;
+
+	bool appear;
 
 	CEffect* effect;
 public:
@@ -49,6 +59,7 @@ public:
 	void SetPosition(float x, float y);
 
 	void CoinUpdate(DWORD dt);
-	void LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void LeafUpdate(DWORD dt);
+	void MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 };
 

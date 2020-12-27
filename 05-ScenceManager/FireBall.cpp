@@ -104,8 +104,6 @@ void FireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				x += min_tx * dx + nx * 0.2f;
 				y += min_ty * dy + ny * 0.2f;
 
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
 				if (e->ny < 0)
 				{
 					vy = FIREBALL_VELOCITY_Y;

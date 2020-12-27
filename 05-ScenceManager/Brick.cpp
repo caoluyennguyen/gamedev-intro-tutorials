@@ -113,7 +113,10 @@ void CBrick::InitItem(int itemType)
 {
 	item = new CItems(itemType);
 	item->SetEnable(false);
-	item->SetPosition(initialPosX + 3.0f, initialPosY - 16.0f); // hard code
+	if (item->GetState() == ITEM_TYPE_RED_MUSROOM || item->GetState() == ITEM_TYPE_GREEN_MUSROOM)
+		item->SetPosition(initialPosX, initialPosY - MUSROOM_INITIAL_POS_Y);
+	else
+		item->SetPosition(initialPosX + ITEM_INITIAL_POS_X, initialPosY - ITEM_INITIAL_POS_Y);
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(ITEM_ANIM_SET_ID);
 

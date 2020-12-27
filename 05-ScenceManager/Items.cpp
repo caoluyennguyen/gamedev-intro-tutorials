@@ -1,4 +1,9 @@
 #include "Items.h"
+#include "Ground.h"
+#include "Brick.h"
+#include "Pipe.h"
+#include "Mario.h"
+#include "PlayScence.h"
 
 CItems::CItems(int type)
 {
@@ -35,7 +40,8 @@ void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (enable)
 	{
 		if (state == ITEM_TYPE_COIN) CoinUpdate(dt);
-		else if (state == ITEM_TYPE_LEAF) LeafUpdate(dt, coObjects);
+		else if (state == ITEM_TYPE_LEAF) LeafUpdate(dt);
+		else MusroomUpdate(dt, coObjects);
 	}
 
 	effect->Update(dt);
@@ -77,6 +83,14 @@ void CItems::SetState(int state)
 		break;
 	case ITEM_TYPE_LEAF:
 		break;
+	case ITEM_TYPE_RED_MUSROOM:
+		//vx = ITEM_MUSROOM_VELOCITY_X;
+		appear = true;
+		break;
+	case ITEM_TYPE_GREEN_MUSROOM:
+		//vx = ITEM_MUSROOM_VELOCITY_X;
+		appear = true;
+		break;
 	}
 }
 
@@ -104,7 +118,7 @@ void CItems::CoinUpdate(DWORD dt)
 	y += dy;
 }
 
-void CItems::LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CItems::LeafUpdate(DWORD dt)
 {
 	CGameObject::Update(dt);
 
@@ -121,4 +135,73 @@ void CItems::LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	x += dx;
 	y += dy;
+}
+
+void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CGameObject::Update(dt);
+
+	if (appear && y > startY - MUSROOM_LIMIT_POS_Y)
+	{
+		CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+		if (x > mario->x) vx = ITEM_MUSROOM_VELOCITY_X;
+		else vx = -ITEM_MUSROOM_VELOCITY_X;
+
+		vy = ITEM_MUSROOM_VELOCITY_Y;
+		y += vy * dt;
+
+		return;
+	}
+	else appear = false;
+
+	vy += ITEM_LEAF_GRAVITY * dt;
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	// No collision occured, proceed normally
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		//
+		// Collision logic with other objects
+		//
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CGround*>(e->obj) || dynamic_cast<CPipe*>(e->obj)) // if e->obj is Goomba 
+			{
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
+
+				if (e->nx != 0)
+				{
+					vx = -vx;
+				}
+			}
+			else
+			{
+				x += dx;
+				//y += dy;
+			}
+		}
+	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
