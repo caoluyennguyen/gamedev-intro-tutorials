@@ -2,39 +2,40 @@
 
 CItems::CItems(int type)
 {
-	this->type = type;
-	SetState(ITEM_TYPE_COIN);
+	SetState(type);
 	ani = ITEM_ANI_COIN;
 	effect = new CEffect();
+	nx = -1;
 }
 
 void CItems::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + ITEM_COIN_BBOX_WIDTH;
 
 	if (state == ITEM_TYPE_COIN)
+	{
+		right = x + ITEM_COIN_BBOX_WIDTH;
 		bottom = y + ITEM_COIN_BBOX_HEIGHT;
+	}
+	else if (state == ITEM_TYPE_LEAF)
+	{
+		right = x + ITEM_LEAF_BBOX_WIDTH;
+		bottom = y + ITEM_LEAF_BBOX_HEIGHT;
+	}
+	else
+	{
+		right = x + ITEM_MUSROOM_BBOX_WIDTH;
+		bottom = y + ITEM_MUSROOM_BBOX_HEIGHT;
+	}
 }
 
 void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (enable)
 	{
-		CGameObject::Update(dt, coObjects);
-
-		if (vy != 0)
-		{
-			vy += ITEM_COIN_GRAVITY * dt;
-			if (y > startY)
-			{
-				this->enable = false;
-				effect->StartTimeAppear();
-			}
-		}
-
-		y += dy;
+		if (state == ITEM_TYPE_COIN) CoinUpdate(dt);
+		else if (state == ITEM_TYPE_LEAF) LeafUpdate(dt, coObjects);
 	}
 
 	effect->Update(dt);
@@ -69,11 +70,12 @@ void CItems::Render()
 void CItems::SetState(int state)
 {
 	CGameObject::SetState(state);
+
 	switch (state)
 	{
 	case ITEM_TYPE_COIN:
-		vx = 0;
-		vy = 0;
+		break;
+	case ITEM_TYPE_LEAF:
 		break;
 	}
 }
@@ -83,4 +85,40 @@ void CItems::SetPosition(float x, float y)
 	CGameObject::SetPosition(x, y);
 	startY = y;
 	effect->SetPosition(x, y);
+}
+
+void CItems::CoinUpdate(DWORD dt)
+{
+	CGameObject::Update(dt);
+
+	if (vy != 0)
+	{
+		vy += ITEM_COIN_GRAVITY * dt;
+		if (y > startY)
+		{
+			this->enable = false;
+			effect->StartTimeAppear();
+		}
+	}
+
+	y += dy;
+}
+
+void CItems::LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CGameObject::Update(dt);
+
+	if (vy != 0)
+	{
+		vy += ITEM_LEAF_GRAVITY * dt;
+
+		if (vy > 0)
+		{
+			vx += ITEM_LEAF_VELOCITY_X * dt * nx;
+			if (vx > ITEM_LEAF_MAX_VELOCITY || vx < -ITEM_LEAF_MAX_VELOCITY) nx = -nx;
+		}
+	}
+
+	x += dx;
+	y += dy;
 }

@@ -93,9 +93,12 @@ void CBrick::SetState(int state)
 	case BRICK_STATE_AVAILABLE:
 		break;
 	case BRICK_STATE_UNAVAILABLE:
-		item->SetEnable(true);
-		item->SetSpeedVy(-0.2f);
 		vy = -0.2f;
+		item->SetEnable(true);
+
+		if (item->GetState() == ITEM_TYPE_COIN) item->SetSpeedVy(-ITEM_COIN_VELOCITY);
+		else if (item->GetState() == ITEM_TYPE_LEAF) item->SetSpeedVy(-ITEM_LEAF_VELOCITY_Y);
+
 		break;
 	case BRICK_STATE_BREAKABLE:
 		InitPieces();
