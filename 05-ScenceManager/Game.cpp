@@ -6,6 +6,7 @@
 #include "HUD.h"
 
 #include "PlayScence.h"
+#include "WorldMapScene.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -334,8 +335,24 @@ void CGame::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	LPSCENE scene = new CPlayScene(id, path);
-	scenes[id] = scene;
+	switch (id)
+	{
+	case 1:
+		{
+			LPSCENE scene = new CWorldMapScene(id, path);
+			scenes[id] = scene;
+		}
+		break;
+	case 2:
+		{
+			LPSCENE scene = new CPlayScene(id, path);
+			scenes[id] = scene;
+		}
+		break;
+	default:
+		return;
+	}
+	
 }
 
 /*

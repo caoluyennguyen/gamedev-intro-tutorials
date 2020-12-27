@@ -4,10 +4,11 @@
 #include "Scence.h"
 #include "Mario.h"
 
-class WorldMapScene : public CScene
+class CWorldMapScene : public CScene
 {
 protected:
 	CMario* player;					// A play scene has to have player, right?
+	CTileMap* tileMap;
 
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> objects;
@@ -17,9 +18,10 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_TILEMAP(string line);
 
 public:
-	WorldMapScene(int id, LPCWSTR filePath);
+	CWorldMapScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);
@@ -29,12 +31,12 @@ public:
 	CMario* GetPlayer() { return player; }
 };
 
-class CPlayScenceKeyHandler : public CScenceKeyHandler
+class CWorldMapSceneKeyHandler : public CScenceKeyHandler
 {
 public:
 	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-	CPlayScenceKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
+	CWorldMapSceneKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
 };
 

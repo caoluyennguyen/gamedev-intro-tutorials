@@ -412,6 +412,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_F1:
 		CGame::GetInstance()->SwitchScene(2);
 		break;
+	case DIK_F2:
+		CGame::GetInstance()->SwitchScene(1);
+		break;
 	}
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 
