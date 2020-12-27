@@ -23,7 +23,7 @@ void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
-			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
 				vx = vy = 0;
 			}
 		}
