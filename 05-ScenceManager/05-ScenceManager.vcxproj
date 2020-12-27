@@ -135,6 +135,7 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="MarioWorldMap.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Tail.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="BrickPiece.cpp" />
     <ClCompile Include="Venus.cpp" />
+    <ClCompile Include="WorldMapScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -164,6 +166,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="MarioWorldMap.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Tail.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="BrickPiece.h" />
     <ClInclude Include="Venus.h" />
+    <ClInclude Include="WorldMapScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
