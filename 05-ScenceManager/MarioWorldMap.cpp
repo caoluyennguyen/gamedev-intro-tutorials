@@ -1,4 +1,5 @@
 #include "MarioWorldMap.h"
+#include "CheckPoint.h"
 
 CMarioWorldMap::CMarioWorldMap()
 {
@@ -12,6 +13,21 @@ void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	x += dx;
 	y += dy;
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		// Check AABB collision
+		LPGAMEOBJECT obj = coObjects->at(i);
+		
+		if (dynamic_cast<CCheckPoint*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+				vx = vy = 0;
+			}
+		}
+	}
 }
 
 void CMarioWorldMap::Render()

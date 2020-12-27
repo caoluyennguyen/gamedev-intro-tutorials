@@ -269,10 +269,10 @@ void CWorldMapScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	/*for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 1; i < objects.size(); i++)
 	{
-		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
-	}*/
+		coObjects.push_back(objects[i]);
+	}
 
 	/*for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -307,17 +307,30 @@ void CWorldMapScene::Unload()
 
 void CWorldMapSceneKeyHandler::OnKeyDown(int KeyCode)
 {
-	//CMario* mario = ((CWorldMapScene*)scence)->GetPlayer();
+	CMarioWorldMap* mario = ((CWorldMapScene*)scence)->GetPlayer();
 
 	switch (KeyCode)
 	{
 	case DIK_S:
+		CGame::GetInstance()->SwitchScene(2);
 		break;
 	case DIK_F1:
 		CGame::GetInstance()->SwitchScene(2);
 		break;
 	case DIK_F2:
 		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_UP:
+		mario->SetSpeed(0, -MARIO_VELOCITY);
+		break;
+	case DIK_DOWN:
+		mario->SetSpeed(0, MARIO_VELOCITY);
+		break;
+	case DIK_LEFT:
+		mario->SetSpeed(-MARIO_VELOCITY, 0);
+		break;
+	case DIK_RIGHT:
+		mario->SetSpeed(MARIO_VELOCITY, 0);
 		break;
 	}
 }

@@ -46,10 +46,6 @@ void CAnimation::Render(float x, float y, int alpha, int freeze)
 void CAnimation::RenderOneTime(float x, float y, int alpha)
 {
 	DWORD now = GetTickCount();
-	/*if (reset)
-	{
-		currentFrame = 0;
-	}*/
 
 	if (currentFrame == -1)
 	{
