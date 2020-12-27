@@ -35,6 +35,7 @@ CMario::CMario() : CGameObject()
 	isAbleToShoot = false;
 	countBall = 1;
 	ani = -1;
+	coin_start = 0;
 
 	a = MARIO_ACCELERATION_WALK;
 
@@ -106,7 +107,33 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				}
 			}
 		}
-		
+		else if (dynamic_cast<CItems*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			//CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
+			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
+				if (e->obj->GetState() == ITEM_TYPE_RED_MUSROOM)
+				{
+					StartTransform();
+					SetLevel(MARIO_LEVEL_BIG);
+					e->obj->SetEnable(false);
+				}
+			}
+		}
+		else if (dynamic_cast<CBrick*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (obj->GetState() == BRICK_STATE_BREAKABLE && coin_start != 0)
+			{
+				obj->SetState(BRICK_STATE_COIN);
+			}
+			else if (obj->GetState() == BRICK_STATE_COIN)
+			{
+				obj->SetState(BRICK_STATE_BREAKABLE);
+			}
+		}
 		else if (dynamic_cast<CGround*>(obj)) {
 			CGround* ground = dynamic_cast<CGround*>(obj);
 
@@ -120,7 +147,6 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				}
 			}
 		}
-
 		else if (dynamic_cast<CPipe*>(obj)) {
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
@@ -167,11 +193,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		throwing_start = 0;
 		throwing = 0;
 	}
-	// reset throwing timer if transform time has passed
+	// reset transform level timer if transform time has passed
 	if (GetTickCount() - transform_start > MARIO_TRANSFORM_TIME)
 	{
 		transform_start = 0;
 		isTransform = false;
+	}
+	// reset transform coin timer if transform time has passed
+	if (coin_start != 0 && GetTickCount() - coin_start > BRICK_COIN_TIME)
+	{
+		coin_start = 0;
 	}
 
 	// Calculate dx, dy 
@@ -323,6 +354,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							{
 								level = MARIO_LEVEL_SMALL;
 								StartUntouchable();
+								StartTransform();
 							}
 							else {
 								SetState(MARIO_STATE_DIE);
@@ -398,6 +430,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					x += dx;
 					y += dy;
+				}
+				else if (e->obj->GetState() == BRICK_STATE_COIN)
+				{
+					x += dx;
+					y += dy;
+
+					e->obj->SetEnable(false);
 				}
 				else
 				{
@@ -501,6 +540,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += dy;
 					e->obj->SetEnable(false);
 				}
+				else if (e->obj->GetState() == ITEM_TYPE_SWITCH_BLOCK_UP)
+				{
+					if (e->ny < 0)
+					{
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						e->obj->SetState(ITEM_TYPE_SWITCH_BLOCK_DOWN);
+						StartTransformCoin();
+					}
+					else if (e->nx != 0)
+					{
+						vx = 0;
+						x += min_tx * dx + nx * 0.2f;
+					}
+				}
 			}
 			else if (dynamic_cast<CVenus *>(e->obj))
 			{
@@ -514,6 +567,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						{
 							level = MARIO_LEVEL_SMALL;
 							StartUntouchable();
+							StartTransform();
 						}
 						else
 							SetState(MARIO_STATE_DIE);

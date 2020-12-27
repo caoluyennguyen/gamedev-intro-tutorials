@@ -10,6 +10,14 @@ CItems::CItems(int type)
 	SetState(type);
 	ani = ITEM_ANI_COIN;
 	effect = new CEffect();
+	if (state == ITEM_TYPE_SWITCH_BLOCK_UP)
+	{
+		effect->SetState(EFFECT_TYPE_TRANSFORM);
+	}
+	else if (state == ITEM_TYPE_RED_MUSROOM)
+	{
+		effect->SetState(EFFECT_TYPE_SCORE_1000);
+	}
 	nx = -1;
 }
 
@@ -28,6 +36,10 @@ void CItems::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		right = x + ITEM_LEAF_BBOX_WIDTH;
 		bottom = y + ITEM_LEAF_BBOX_HEIGHT;
 	}
+	else if (state == ITEM_TYPE_SWITCH_BLOCK_DOWN)
+	{
+		left = top = right = bottom = 0;
+	}
 	else
 	{
 		right = x + ITEM_MUSROOM_BBOX_WIDTH;
@@ -41,7 +53,8 @@ void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (state == ITEM_TYPE_COIN) CoinUpdate(dt);
 		else if (state == ITEM_TYPE_LEAF) LeafUpdate(dt);
-		else MusroomUpdate(dt, coObjects);
+		else if (state == ITEM_TYPE_RED_MUSROOM || state == ITEM_TYPE_GREEN_MUSROOM) MusroomUpdate(dt, coObjects);
+		else SwitchBlockUpdate(dt);
 	}
 
 	effect->Update(dt);
@@ -64,13 +77,22 @@ void CItems::Render()
 		else if (state == ITEM_TYPE_GREEN_MUSROOM) {
 			ani = ITEM_ANI_GREEN_MUSROOM;
 		}
+		else if (state == ITEM_TYPE_SWITCH_BLOCK_UP) {
+			ani = ITEM_ANI_SWITCH_BLOCK_UP;
+		}
+		else if (state == ITEM_TYPE_SWITCH_BLOCK_DOWN) {
+			ani = ITEM_ANI_SWITCH_BLOCK_DOWN;
+		}
 
 		animation_set->at(ani)->Render(x, y);
 
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 
-	effect->Render();
+	if (state == ITEM_TYPE_SWITCH_BLOCK_UP) {
+		effect->RenderOneTime();
+	}
+	else effect->Render();
 }
 
 void CItems::SetState(int state)
@@ -84,12 +106,11 @@ void CItems::SetState(int state)
 	case ITEM_TYPE_LEAF:
 		break;
 	case ITEM_TYPE_RED_MUSROOM:
-		//vx = ITEM_MUSROOM_VELOCITY_X;
 		appear = true;
 		break;
 	case ITEM_TYPE_GREEN_MUSROOM:
-		//vx = ITEM_MUSROOM_VELOCITY_X;
 		appear = true;
+	case ITEM_TYPE_SWITCH_BLOCK_UP:
 		break;
 	}
 }
@@ -205,3 +226,6 @@ void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
+
+void CItems::SwitchBlockUpdate(DWORD dt)
+{}

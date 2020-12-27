@@ -22,16 +22,30 @@ void CEffect::Update(DWORD dt)
 		}
 		else
 		{
-			y -= 0.1f * dt; // hard code
+			if (state != EFFECT_TYPE_TRANSFORM) y += EFFECT_VELOCITY * dt;
 		}
 	}
-
 }
 
 void CEffect::Render()
 {
-	if (appear)
+	if (appear) ani_set->at(state)->Render(x, y);
+}
+
+void CEffect::RenderOneTime()
+{
+	ani_set->at(state)->RenderOneTime(x, y);
+}
+
+void CEffect::SetState(int state)
+{ 
+	this->state = state; 
+
+	switch (state)
 	{
-		ani_set->at(EFFECT_TYPE_SCORE_100)->Render(x, y);
+	case EFFECT_TYPE_TRANSFORM:
+		break;
+	default:
+		break;
 	}
 }

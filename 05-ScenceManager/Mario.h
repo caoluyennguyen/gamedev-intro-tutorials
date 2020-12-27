@@ -184,6 +184,7 @@ class CMario : public CGameObject
 	DWORD shooting_start;
 	DWORD throwing_start;
 	DWORD transform_start;
+	DWORD coin_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
@@ -221,6 +222,7 @@ public:
 	void StartThrowingObject() { throwing = 1; throwing_start = GetTickCount(); StartShoot(); }
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 	void StartTransform() { isTransform = true; transform_start = GetTickCount(); }
+	void StartTransformCoin() { coin_start = GetTickCount(); }
 
 	void Reset();
 	void Clear();

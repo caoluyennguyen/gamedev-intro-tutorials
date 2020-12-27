@@ -367,15 +367,8 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	if (player->GetState() != MARIO_STATE_DIE)
 	{
-		if (player->IsAbleToJumpHigh() || player->IsFlying())
-		{
-			if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
-			else CGame::GetInstance()->SetCamPos(int(cx), 230);
-		}
-		else
-		{
-			 CGame::GetInstance()->SetCamPos(int(cx), 230);
-		}
+		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
+		else CGame::GetInstance()->SetCamPos(int(cx), 230);
 	}
 }
 
@@ -470,6 +463,15 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
+		break;
+	case DIK_I:
+		mario->SetPosition(488.0f, 310.0f);
+		break;
+	case DIK_O:
+		mario->SetPosition(1710.0f, 369.0f);
+		break;
+	case DIK_P:
+		mario->SetPosition(2260.0f, 76.0f);
 		break;
 	/*case DIK_LSHIFT:
 		if (mario->GetState() == MARIO_STATE_FLY)

@@ -6,6 +6,7 @@ CBrick::CBrick(int initialPosX, int initialPosY, int itemType)
 	this->initialPosY = initialPosY;
 	freeze = false;
 	breakable = false;
+	coin_start = 0;
 
 	InitItem(itemType);
 }
@@ -74,6 +75,10 @@ void CBrick::Render()
 	{
 		animation_set->at(BRICK_ANI_BREAKABLE)->Render(x, y);
 	}
+	else if (state == BRICK_STATE_COIN)
+	{
+		animation_set->at(BRICK_ANI_COIN)->Render(x, y);
+	}
 
 	RenderBoundingBox();
 }
@@ -116,7 +121,9 @@ void CBrick::InitItem(int itemType)
 	item = new CItems(itemType);
 	item->SetEnable(false);
 	if (item->GetState() == ITEM_TYPE_RED_MUSROOM || item->GetState() == ITEM_TYPE_GREEN_MUSROOM)
-		item->SetPosition(initialPosX, initialPosY - MUSROOM_INITIAL_POS_Y);
+		item->SetPosition(initialPosX, initialPosY);
+	if (item->GetState() == ITEM_TYPE_SWITCH_BLOCK_UP)
+		item->SetPosition(initialPosX, initialPosY - ITEM_MUSROOM_BBOX_HEIGHT);
 	else
 		item->SetPosition(initialPosX + ITEM_INITIAL_POS_X, initialPosY - ITEM_INITIAL_POS_Y);
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
