@@ -136,7 +136,6 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -173,11 +172,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		transform_start = 0;
 		isTransform = false;
-	}
-
-	if (isTransform)
-	{
-		return;
 	}
 
 	// Calculate dx, dy 
@@ -251,6 +245,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// turn off collision when die 
 	CalcPotentialCollisions(coObjects, coEvents);
+
+	if (isTransform)
+	{
+		return;
+	}
 
 	// No collision occured, proceed normally
 	if (coEvents.size()==0)
@@ -385,6 +384,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							{
 								level = MARIO_LEVEL_SMALL;
 								StartUntouchable();
+								StartTransform();
 							}
 							else 
 								SetState(MARIO_STATE_DIE);
@@ -574,7 +574,8 @@ void CMario::Render()
 		{
 			if (isTransform)
 			{
-				ani = MARIO_ANI_SMALL_TRANSFORM;
+				if (nx > 0) ani = MARIO_ANI_SMALL_TRANSFORM_RIGHT;
+				else ani = MARIO_ANI_SMALL_TRANSFORM_LEFT;
 			}
 			else if (state == MARIO_STATE_JUMP)
 			{
@@ -711,7 +712,12 @@ void CMario::Render()
 		}
 		else if (level == MARIO_LEVEL_SMALL)
 		{
-			if (state == MARIO_STATE_JUMP)
+			if (isTransform)
+			{
+				if (nx > 0) ani = MARIO_ANI_SMALL_TRANSFORM_RIGHT;
+				else ani = MARIO_ANI_SMALL_TRANSFORM_LEFT;
+			}
+			else if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
 					if (isAbleToJumpHigh && isAbleToRun) ani = MARIO_ANI_SMALL_FLY_RIGHT;

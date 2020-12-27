@@ -197,7 +197,7 @@ void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else
 			{
 				x += dx;
-				//y += dy;
+				y += dy;
 			}
 		}
 	}
