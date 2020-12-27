@@ -113,11 +113,11 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 
 			//CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
 			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				if (e->obj->GetState() == ITEM_TYPE_RED_MUSROOM)
+				if (obj->GetState() == ITEM_TYPE_RED_MUSROOM)
 				{
 					StartTransform();
 					SetLevel(MARIO_LEVEL_BIG);
-					e->obj->SetEnable(false);
+					obj->SetEnable(false);
 				}
 			}
 		}
