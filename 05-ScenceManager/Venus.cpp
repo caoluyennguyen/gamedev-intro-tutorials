@@ -15,8 +15,12 @@ CVenus::CVenus(int state, int start_y) : CEnemy()
 	startShoot = 0;
 
 	SetState(state);
-	fireball = new FireBall();
-	fireball->SetState(FIREBALL_STATE_VENUS);
+
+	if (state != VENUS_STATE_PIRANHA_IDLE || state != VENUS_STATE_PIRANHA_MOVE)
+	{
+		fireball = new FireBall();
+		fireball->SetState(FIREBALL_STATE_VENUS);
+	}
 }
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -30,7 +34,7 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	CEnemy::Update(dt);
-	fireball->Update(dt); // handle update ball when reach out screen
+	if (fireball) fireball->Update(dt); // handle update ball when reach out screen
 
 	y += dy;
 
@@ -49,14 +53,37 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			direction = -1;
 			if (state == VENUS_STATE_RED) SetState(VENUS_STATE_RED_SHOOT);
 			else if (state == VENUS_STATE_GREEN) SetState(VENUS_STATE_GREEN_SHOOT);
+			else if (state == VENUS_STATE_PIRANHA_MOVE) SetState(VENUS_STATE_PIRANHA_IDLE);
 		}
-		else if (y < start_y - VENUS_BBOX_HEIGHT)
+		else
 		{
-			direction = 1;
-			if (state == VENUS_STATE_RED) SetState(VENUS_STATE_RED_SHOOT);
-			else if (state == VENUS_STATE_GREEN) SetState(VENUS_STATE_GREEN_SHOOT);
-			StartShoot();
+			if (state == VENUS_STATE_RED)
+			{
+				if (y < start_y - VENUS_BBOX_HEIGHT)
+				{
+					direction = 1;
+					SetState(VENUS_STATE_RED_SHOOT);
+					StartShoot();
+				}
+			}
+			else
+			{
+				if (y < start_y - PIRANHA_BBOX_HEIGHT)
+				{
+					direction = 1;
+					if (state == VENUS_STATE_GREEN)
+					{
+						SetState(VENUS_STATE_GREEN_SHOOT);
+						StartShoot();
+					}
+					else if(state == VENUS_STATE_PIRANHA_MOVE)
+					{
+						SetState(VENUS_STATE_PIRANHA_IDLE);
+					}
+				}
+			}
 		}
+			
 	}
 	else if (isShooting && GetTickCount() - startShoot > VENUS_SHOOT_TIME)
 	{
@@ -67,6 +94,10 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else if (state == VENUS_STATE_GREEN_SHOOT)
 		{
 			SetState(VENUS_STATE_GREEN);
+		}
+		else if(state == VENUS_STATE_PIRANHA_IDLE)
+		{
+			SetState(VENUS_STATE_PIRANHA_MOVE);
 		}
 	}
 }
@@ -125,11 +156,12 @@ void CVenus::Render()
 	}
 	else if (state == VENUS_STATE_DIE) ani = VENUS_ANI_DIE;
 	else ani = VENUS_ANI_PIRANHA;
+		
 
 	animation_set->at(ani)->Render(x, y);
 
 	CEnemy::Render();
-	fireball->Render();
+	if (fireball) fireball->Render();
 }
 
 void CVenus::SetState(int state)
@@ -150,6 +182,26 @@ void CVenus::SetState(int state)
 		startShoot = GetTickCount();
 		break;
 	case VENUS_STATE_GREEN:
+		vy = direction * VENUS_MOVE_SPEED;
+		isMoving = true;
+		isShooting = false;
+		break;
+	case VENUS_STATE_GREEN_SHOOT:
+		vy = 0;
+		isMoving = false;
+		isShooting = true;
+		startShoot = GetTickCount();
+		break;
+	case VENUS_STATE_PIRANHA_MOVE:
+		vy = direction * VENUS_MOVE_SPEED;
+		isMoving = true;
+		isShooting = false;
+		break;
+	case VENUS_STATE_PIRANHA_IDLE:
+		vy = 0;
+		isMoving = false;
+		isShooting = true;
+		startShoot = GetTickCount();
 		break;
 	case VENUS_STATE_DIE:
 		ScoreUp();
@@ -165,15 +217,15 @@ void CVenus::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	left = x;
 	top = y;
 
-	if (state == VENUS_STATE_PIRANHA)
-	{
-		right = left + PIRANHA_BBOX_WIDTH;
-		bottom = top + PIRANHA_BBOX_HEIGHT;
-	}
-	else
+	if (state == VENUS_STATE_RED || state == VENUS_STATE_RED_SHOOT)
 	{
 		right = left + VENUS_BBOX_WIDTH;
 		bottom = top + VENUS_BBOX_HEIGHT;
+	}
+	else
+	{
+		right = left + PIRANHA_BBOX_WIDTH;
+		bottom = top + PIRANHA_BBOX_HEIGHT;
 	}
 }
 

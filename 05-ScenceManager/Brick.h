@@ -32,6 +32,7 @@ public:
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
 
+	CItems* GetItem() { return item; }
 	void SetState(int state);
 	void InitItem(int itemType);
 	void InitPieces();

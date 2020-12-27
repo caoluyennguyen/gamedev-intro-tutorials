@@ -12,6 +12,8 @@ CBrick::CBrick(int initialPosX, int initialPosY, int itemType)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	coObjects->push_back(this->item);
+
 	if (state == BRICK_STATE_BREAK)
 	{
 		if (breakable == true && pieces != NULL)

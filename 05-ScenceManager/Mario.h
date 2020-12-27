@@ -140,8 +140,8 @@
 #define MARIO_ANI_FIRE_THROW_BALL_LEFT		100
 #define MARIO_ANI_FIRE_JUMP_HIT_RIGHT		101
 #define MARIO_ANI_FIRE_JUMP_HIT_LEFT		102
-#define MARIO_ANI_TRANSFORM_BIG				103
-#define MARIO_ANI_TRANSFORM_TAIL			104
+#define MARIO_ANI_SMALL_TRANSFORM			103
+#define MARIO_ANI_BIG_TRANSFORM				104
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -162,6 +162,7 @@
 #define MARIO_SHOOTING_TIME		200
 #define MARIO_THROWING_TIME		200
 #define MARIO_FLYING_TIME		4000
+#define MARIO_TRANSFORM_TIME	500
 #pragma endregion
 
 class CMario : public CGameObject
@@ -181,6 +182,7 @@ class CMario : public CGameObject
 	DWORD minimize_start;
 	DWORD shooting_start;
 	DWORD throwing_start;
+	DWORD transform_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
@@ -195,6 +197,7 @@ class CMario : public CGameObject
 	bool isAbleToFly;			// check if mario can fly
 	//bool isJumping;				// check if mario is in the air
 	bool isSlowFall;
+	bool isTransform;
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
@@ -216,6 +219,7 @@ public:
 	void StartHittingObject() { hitting = 1; hitting_start = GetTickCount();}
 	void StartThrowingObject() { throwing = 1; throwing_start = GetTickCount(); StartShoot(); }
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
+	void StartTransform() { isTransform = true; transform_start = GetTickCount(); }
 
 	void Reset();
 	void Clear();

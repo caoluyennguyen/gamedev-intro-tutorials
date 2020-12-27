@@ -258,7 +258,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_PIRANHA:
 		{
-			obj = new CVenus(VENUS_STATE_PIRANHA);
+			obj = new CVenus(VENUS_STATE_PIRANHA_MOVE, y);
 		}
 		break;
 	case OBJECT_TYPE_PIPE:

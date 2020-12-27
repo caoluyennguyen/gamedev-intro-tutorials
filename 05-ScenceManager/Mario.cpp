@@ -136,6 +136,50 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+
+	// reset untouchable timer if untouchable time has passed
+	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
+	}
+	// reset shooting timer if hitting time has passed
+	if (GetTickCount() - shooting_start > MARIO_SHOOTING_TIME)
+	{
+		shooting_start = 0;
+		shooting = 0;
+	}
+	// reset flying timer if hitting time has passed
+	if (GetTickCount() - flying_start > MARIO_FLYING_TIME)
+	{
+		flying_start = 0;
+		flying = false;
+	}
+	// reset hitting timer if hitting time has passed
+	if (GetTickCount() - hitting_start > MARIO_HITTING_TIME)
+	{
+		hitting_start = 0;
+		hitting = 0;
+		this->tail->SetEnable(false);
+	}
+	// reset throwing timer if hitting time has passed
+	if (GetTickCount() - throwing_start > MARIO_THROWING_TIME)
+	{
+		throwing_start = 0;
+		throwing = 0;
+	}
+	// reset throwing timer if transform time has passed
+	if (GetTickCount() - transform_start > MARIO_TRANSFORM_TIME)
+	{
+		transform_start = 0;
+		isTransform = false;
+	}
+
+	if (isTransform)
+	{
+		return;
+	}
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
@@ -207,38 +251,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// turn off collision when die 
 	CalcPotentialCollisions(coObjects, coEvents);
-
-	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
-	// reset shooting timer if hitting time has passed
-	if ( GetTickCount() - shooting_start > MARIO_SHOOTING_TIME)
-	{
-		shooting_start = 0;
-		shooting = 0;
-	}
-	// reset flying timer if hitting time has passed
-	if ( GetTickCount() - flying_start > MARIO_FLYING_TIME)
-	{
-		flying_start = 0;
-		flying = false;
-	}
-	// reset hitting timer if hitting time has passed
-	if ( GetTickCount() - hitting_start > MARIO_HITTING_TIME)
-	{
-		hitting_start = 0;
-		hitting = 0;
-		this->tail->SetEnable(false);
-	}
-	// reset throwing timer if hitting time has passed
-	if ( GetTickCount() - throwing_start > MARIO_THROWING_TIME)
-	{
-		throwing_start = 0;
-		throwing = 0;
-	}
 
 	// No collision occured, proceed normally
 	if (coEvents.size()==0)
@@ -471,13 +483,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CItems *>(e->obj))
 			{
-				x += dx;
-				y += dy;
-				e->obj->SetEnable(false);
-
-				if (e->obj->GetState() == ITEM_TYPE_LEAF)
+				/*if (e->obj->GetState() == ITEM_TYPE_LEAF)
 				{
+					StartTransform();
 					SetLevel(MARIO_LEVEL_TAIL);
+				}
+				else if (e->obj->GetState() == ITEM_TYPE_RED_MUSROOM)
+				{
+					StartTransform();
+					SetLevel(MARIO_LEVEL_BIG);
+				}*/
+				 
+				if (e->obj->GetState() == ITEM_TYPE_COIN)
+				{
+					x += dx;
+					y += dy;
+					e->obj->SetEnable(false);
 				}
 			}
 			else if (dynamic_cast<CVenus *>(e->obj))
@@ -550,7 +571,11 @@ void CMario::Render()
 	{
 		if (level == MARIO_LEVEL_BIG)
 		{
-			if (state == MARIO_STATE_JUMP)
+			if (isTransform)
+			{
+				ani = MARIO_ANI_BIG_TRANSFORM;
+			}
+			else if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
 					// check if mario can fly
@@ -685,7 +710,11 @@ void CMario::Render()
 		}
 		else if (level == MARIO_LEVEL_SMALL)
 		{
-			if (state == MARIO_STATE_JUMP)
+			if (isTransform)
+			{
+				ani = MARIO_ANI_SMALL_TRANSFORM;
+			}
+			else if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
 					if (isAbleToJumpHigh && isAbleToRun) ani = MARIO_ANI_SMALL_FLY_RIGHT;
