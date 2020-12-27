@@ -483,18 +483,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CItems *>(e->obj))
 			{
-				/*if (e->obj->GetState() == ITEM_TYPE_LEAF)
+				if (e->obj->GetState() == ITEM_TYPE_LEAF)
 				{
 					StartTransform();
 					SetLevel(MARIO_LEVEL_TAIL);
+					e->obj->SetEnable(false);
 				}
 				else if (e->obj->GetState() == ITEM_TYPE_RED_MUSROOM)
 				{
 					StartTransform();
 					SetLevel(MARIO_LEVEL_BIG);
-				}*/
-				 
-				if (e->obj->GetState() == ITEM_TYPE_COIN)
+					e->obj->SetEnable(false);
+				}
+				else if (e->obj->GetState() == ITEM_TYPE_COIN)
 				{
 					x += dx;
 					y += dy;
@@ -573,7 +574,7 @@ void CMario::Render()
 		{
 			if (isTransform)
 			{
-				ani = MARIO_ANI_BIG_TRANSFORM;
+				ani = MARIO_ANI_SMALL_TRANSFORM;
 			}
 			else if (state == MARIO_STATE_JUMP)
 			{
@@ -710,11 +711,7 @@ void CMario::Render()
 		}
 		else if (level == MARIO_LEVEL_SMALL)
 		{
-			if (isTransform)
-			{
-				ani = MARIO_ANI_SMALL_TRANSFORM;
-			}
-			else if (state == MARIO_STATE_JUMP)
+			if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
 					if (isAbleToJumpHigh && isAbleToRun) ani = MARIO_ANI_SMALL_FLY_RIGHT;
@@ -810,7 +807,11 @@ void CMario::Render()
 		}
 		else if (level == MARIO_LEVEL_TAIL)
 		{
-			if (state == MARIO_STATE_JUMP)
+			if (isTransform)
+			{
+				ani = MARIO_ANI_BIG_TRANSFORM;
+			}
+			else if (state == MARIO_STATE_JUMP)
 			{
 				if (nx > 0) {
 					if (isAbleToJumpHigh && isAbleToRun) ani = MARIO_ANI_TAIL_JUMP_HIGH_RIGHT;

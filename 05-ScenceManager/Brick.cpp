@@ -48,10 +48,10 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		freeze = true;
 	}
 
-	if (state == BRICK_STATE_UNAVAILABLE)
+	/*if (state == BRICK_STATE_UNAVAILABLE)
 	{
 		item->Update(dt, coObjects);
-	}
+	}*/
 }
 
 void CBrick::Render()

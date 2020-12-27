@@ -110,7 +110,7 @@ void CItems::CoinUpdate(DWORD dt)
 		vy += ITEM_COIN_GRAVITY * dt;
 		if (y > startY)
 		{
-			this->enable = false;
+			SetEnable(false);
 			effect->StartTimeAppear();
 		}
 	}

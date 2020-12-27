@@ -210,6 +210,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			int item_type = atof(tokens[4].c_str());
 			obj = new CBrick(x, y, item_type);
+			objects.push_back(((CBrick*)obj)->GetItem());
 			break;
 		}
 	case OBJECT_TYPE_KOOPAS:

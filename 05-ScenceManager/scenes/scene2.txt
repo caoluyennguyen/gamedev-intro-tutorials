@@ -752,7 +752,7 @@
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # item: 0 = coin, 1 = leaf, 2 = red musroom, 3 = green musroom
-1	176	352	22	1
+1	176	352	22	0
 1	192	352	22	0
 1	224	304	22	0
 1	240	304	22	2
