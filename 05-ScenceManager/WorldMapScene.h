@@ -3,11 +3,12 @@
 #include "Textures.h"
 #include "Scence.h"
 #include "Mario.h"
+#include "MarioWorldMap.h"
 
 class CWorldMapScene : public CScene
 {
 protected:
-	CMario* player;					// A play scene has to have player, right?
+	CMarioWorldMap* player;					// A play scene has to have player, right?
 	CTileMap* tileMap;
 
 	vector<LPGAMEOBJECT> coObjects;
@@ -28,7 +29,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	CMario* GetPlayer() { return player; }
+	CMarioWorldMap* GetPlayer() { return player; }
 };
 
 class CWorldMapSceneKeyHandler : public CScenceKeyHandler

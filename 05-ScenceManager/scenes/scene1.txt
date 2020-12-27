@@ -5,101 +5,69 @@
 [TEXTURES]
 0	scenes\textures\mario.png	255	255	255
 10	scenes\textures\WorldMap.PNG	3	26	110
-20	scenes\textures\misc.png	176	224	248
+20	scenes\textures\MapSelection.png	176	224	248
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# BIG MARIO 
-# idle right
-10001	246	154	260	181	0
-# walk
-10002	275	154	290	181	0		
-10003	304	154	321	181	0
-# idle left
-10011	186	154	200	181	0
-#walk
-10012	155	154	170	181	0
-10013	125	154	140	181	0
-# die 
-10099	215	120	231	135	0
-# SMALL MARIO
-# idle small right
-10021	247	0	259	15	0
-# walk
-10022	275	0	291	15	0
-10023	306	0	320	15	0
-# idle small left
-10031	187	0	198	15	0
-# walk
-10032	155	0	170	15	0
-10033	125	0	139	15	0
-#BRICK
-20001	408	225	424	241	20
-#GOOMBA
-30001	5	14	21	29	10
-30002	25	14	41	29	10
-#die
-30003	45	21	61	29	10
-
-#brick with question mark animation
-40001	300	117	316	133	20
-40002	318	117	334	133	20
-40003	336	117	352	133	20
-40004	355	117	370	133	20
+# MARIO 
+10001	216	0	230	15	0
+# CHECK POINT
+# start
+10002	1	33	17	49	20
+# 1
+10003	35	33	51	48	20
+# 2
+10004	52	33	68	48	20
+# 3
+10005	69	33	85	48	20
+# 4
+10006	86	33	102	48	20
+# M
+10007	18	0	34	16	20
+# effect help
+10008	1	2	17	15	20
+# grass
+10009	1	17	17	32	20
+10010	18	17	34	32	20
+10011	35	17	51	32	20
+10012	52	17	68	32	20
 						
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
 # ==== MARIO =========
-#idle BIG right
-400	10001	100
-#idle BIG left
-401	10011	100
-#idle small right
-402	10021	100
-#idle small left
-403	10031	100
-#walk right big
-500	10001	100	10002	100	10003	100
-#walk left big
-501	10011	100	10012	100	10013	100
-#walk right small
-502	10021	100	10022	100	10023	100
-#walk left small
-503	10031	100	10032	100	10033	100
-#die
-599	10099	100
+#idle
+100	10001	100
+# ==== CHECKPOINT ====
+0	0	0
+101	10002	0
+102	10003	0
+103	10004	0
+104	10005	0
+105	10006	0
+106	10007	0
 
-
-# ==== BRICK =========
-601	20001	100
-
-# ==== QUESTION MARK BRICK =========
-602	40001	1000	40001	100	40002	100	40003	100	40004	100
-
-
-# ==== GOOMBA  =========
-# walk
-701	30001	100	30002	100
-# die
-702	30003	100
+# === GRASS ===
+107	10009	200	10010	200	10011	200	10012	200
 
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # MARIO
-1	400	401	402	403	500	501	502	503	599
-# BRICK 
-2	601
-# QUESTION MARK BRICK 
-22	602
-# GOOMBA
-3	701	702
+1	100
+# CHECKPOINT
+2	0	101	102	103	104	105	106
+# GRASS
+3	107
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba
+# type: 0 = Mario , 1 = Check Point, 2 = Grass
 # MARIO
 0	50.0	0	1
+# CHECKPOINT
+1	100	0	2	1	1	1	1
+# GRASS
+2	200	0	3
 

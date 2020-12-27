@@ -1,17 +1,14 @@
-
 #include <iostream>
 #include <fstream>
 
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
-#include "Portal.h"
 #include "Ground.h"
 #include "TileMap.h"
-#include "Items.h"
-#include "Venus.h"
-#include "Pipe.h"
 #include "WorldMapScene.h"
+#include "CheckPoint.h"
+#include "Grass.h"
 
 using namespace std;
 
@@ -35,6 +32,9 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_OBJECTS	6
 
 #define OBJECT_TYPE_MARIO	0
+#define OBJECT_TYPE_CHECKPOINT	1
+#define OBJECT_TYPE_GRASS	2
+#define OBJECT_TYPE_CASTLE	3
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -167,21 +167,36 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		//obj = CMario::GetInstance();
-		obj = new CMario();
-		player = (CMario*)obj;
+		case OBJECT_TYPE_MARIO:
+			if (player != NULL)
+			{
+				DebugOut(L"[ERROR] MARIO object was created before!\n");
+				return;
+			}
+			obj = new CMarioWorldMap();
+			player = (CMarioWorldMap*)obj;
 
-		DebugOut(L"[INFO] Player object created!\n");
-		break;
-	default:
-		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
-		return;
+			DebugOut(L"[INFO] Player object created!\n");
+			break;
+		case OBJECT_TYPE_CHECKPOINT:
+			{
+				int left = atoi(tokens[4].c_str());
+				int top = atoi(tokens[5].c_str());
+				int right = atoi(tokens[6].c_str());
+				int bottom = atoi(tokens[7].c_str());
+
+				obj = new CCheckPoint(left, top, right, bottom);
+				DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+			}
+			
+			break;
+		case OBJECT_TYPE_GRASS:
+			obj = new CGrass();
+			DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+			break;
+		default:
+			DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+			return;
 	}
 
 	// General object setup
@@ -264,15 +279,16 @@ void CWorldMapScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}*/
 
-	//player->Update(dt, &coObjects);
+	player->Update(dt, &coObjects);
 }
 
 void CWorldMapScene::Render()
 {
 	tileMap->Render();
 
-	/*for (int i = objects.size() - 1; i > -1; i--)
-		if (objects[i]->IsEnable()) objects[i]->Render();*/
+	for (int i = 0; i < objects.size(); i++) objects[i]->Render();
+
+	player->Render();
 }
 
 /*
