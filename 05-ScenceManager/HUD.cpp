@@ -10,11 +10,11 @@ void HUD::LoadResource()
 
 	rect.left = 0;
 	rect.top = 120;
-	rect.right = 264;
-	rect.bottom = 157;
+	rect.right = 262;
+	rect.bottom = 170;
 
-	speedUp = new CSprite(100, 63, 161, 72, 170, bbox);
-	speedDown = new CSprite(101, 90, 161, 99, 170, bbox);
+	speedUp = new CSprite(100, 63, 173, 72, 182, bbox);
+	speedDown = new CSprite(101, 90, 173, 99, 182, bbox);
 	power = CAnimationSets::GetInstance()->Get(8);
 
 	vector<LPSPRITE> numbers;

@@ -181,15 +181,14 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 					}
 				}
 
-				if (obj->GetState() == PIPE_STATE_NORMAL && y > kTop)
+				if (obj->GetState() == PIPE_STATE_SECRET_GREEN_UP)
 				{
 					y -= MARIO_DIVING_SPEED * nx;
 				}
-				else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN && y < kBottom)
+				else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN)
 				{
 					y += MARIO_DIVING_SPEED * nx;
 				}
-
 			}
 		}
 	}
@@ -689,6 +688,17 @@ void CMario::Render()
 			{
 				if (nx > 0) ani = MARIO_ANI_SMALL_TRANSFORM_RIGHT;
 				else ani = MARIO_ANI_SMALL_TRANSFORM_LEFT;
+			}
+			else if (isGoingIntoPipe)
+			{
+				if (state == MARIO_STATE_GO_DOWN_PIPE)
+				{
+					ani = MARIO_ANI_BIG_GO_DOWN_PIPE;
+				}
+				else if (state == MARIO_STATE_GO_UP_PIPE)
+				{
+					ani = MARIO_ANI_BIG_GO_UP_PIPE;
+				}
 			}
 			else if (state == MARIO_STATE_JUMP)
 			{
@@ -1400,10 +1410,12 @@ void CMario::SetState(int state)
 	case MARIO_STATE_GO_DOWN_PIPE:
 		vy = MARIO_DIVING_SPEED;
 		isGoingIntoPipe = true;
+		vx = 0;
 		break;
 	case MARIO_STATE_GO_UP_PIPE:
 		vy = -MARIO_DIVING_SPEED;
 		isGoingIntoPipe = true;
+		vx = 0;
 		break;
 	}
 }

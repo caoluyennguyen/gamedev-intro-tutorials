@@ -258,7 +258,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_VENUS_GREEN:
 		{
-			obj = new CVenus(VENUS_STATE_GREEN, y);
+			obj = new CVenus(VENUS_STATE_GREEN_SHOOT, y);
 		}
 		break;
 	case OBJECT_TYPE_PIRANHA:
@@ -285,6 +285,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CPipe();
 			obj->SetState(PIPE_STATE_SECRET_GREEN_UP);
 		}
+		break;
 	case OBJECT_TYPE_PIPE_BLACK_DOWN:
 		{
 			obj = new CPipe();
@@ -370,7 +371,15 @@ void CPlayScene::Update(DWORD dt)
 {
 	coObjects.clear();
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	if (player == NULL || player->GetState() == MARIO_STATE_DIE)
+	{
+		player->Update(dt);
+		if (player->y > 1000.0f)
+		{
+			CGame::GetInstance()->SwitchScene(1);
+		}
+		return;
+	}
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
@@ -409,7 +418,8 @@ void CPlayScene::Render()
 {
 	tileMap->Render(player->x);
 
-	for (int i = objects.size() - 1; i > -1; i--)
+	//for (int i = objects.size() - 1; i > -1; i--)
+	for (int i = 0; i < objects.size(); i++)
 		if (objects[i]->IsEnable()) objects[i]->Render();
 	/*for (int i = coObjects.size() - 1; i > -1; i--)
 		coObjects[i]->Render();*/
@@ -515,12 +525,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_J:
 		mario->SetPosition(2106.0f, 564.0f);
 		break;
-	/*case DIK_LSHIFT:
-		if (mario->GetState() == MARIO_STATE_FLY)
-		{
-
-		}
-		break;*/
+	case DIK_K:
+		mario->SetPosition(2498.0f, 300.0f);
+		break;
 	}
 }
 
