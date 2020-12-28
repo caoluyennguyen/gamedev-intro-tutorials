@@ -27,15 +27,21 @@ CMario::CMario() : CGameObject()
 	level = MARIO_LEVEL_SMALL;
 	untouchable = 0;
 	SetState(MARIO_STATE_IDLE);
+
 	isAbleToJump = true;
 	isAbleToHoldObject = false;
 	isHoldObject = false;
 	isAbleToRun = false;
 	isAbleToJumpHigh = false;
 	isAbleToShoot = false;
+	isAbleToGoDownPipe = false;
+	isAbleToGoUpPipe = false;
+	isGoingIntoPipe = false;
+
 	countBall = 1;
 	ani = -1;
 	coin_start = 0;
+	go_into_pipe_start = 0;
 
 	a = MARIO_ACCELERATION_WALK;
 
@@ -151,8 +157,39 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
-			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
-				x -= 1.0f * nx;
+			CPipe* pipe = dynamic_cast<CPipe*>(obj);
+			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
+				if (isGoingIntoPipe)
+				{
+					if (obj->GetState() == PIPE_STATE_SECRET_GREEN_DOWN)
+					{
+						if (y > kTop)
+						{
+							isGoingIntoPipe = false;
+							isAbleToGoDownPipe = false;
+							SetPosition(pipe->posMoveX, pipe->posMoveY);
+						}
+					}
+					else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_UP)
+					{
+						if (y < kTop)
+						{
+							isGoingIntoPipe = false;
+							isAbleToGoUpPipe = false;
+							SetPosition(pipe->posMoveX, pipe->posMoveY);
+						}
+					}
+				}
+
+				if (obj->GetState() == PIPE_STATE_NORMAL && y > kTop)
+				{
+					y -= MARIO_DIVING_SPEED * nx;
+				}
+				else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN && y < kBottom)
+				{
+					y += MARIO_DIVING_SPEED * nx;
+				}
+
 			}
 		}
 	}
@@ -208,7 +245,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
-	vy += MARIO_GRAVITY * dt;
+	if (!isGoingIntoPipe) vy += MARIO_GRAVITY * dt;
 	if (state == MARIO_STATE_DIE) {
 		y += dy;
 		return;
@@ -277,6 +314,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// turn off collision when die 
 	CalcPotentialCollisions(coObjects, coEvents);
 
+	if (isGoingIntoPipe)
+	{
+		y += dy;
+		return;
+	}
+
 	if (isTransform)
 	{
 		return;
@@ -287,6 +330,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		x += dx; 
 		y += dy;
+
 	}
 	else
 	{
@@ -492,7 +536,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->ny > 0)
 				{
-					if (ground->GetId() == GROUND_TYPE_NORMAL) y += min_ty * dy + ny * 0.2f;
+
+					if (ground->GetId() == GROUND_TYPE_NORMAL)
+					{
+						y += min_ty * dy + ny * 0.2f;
+						vy += 0.1f;
+					}
 					else y += dy;
 				}
 
@@ -500,6 +549,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CPipe*>(e->obj)) // if e->obj is Goomba 
 			{
 				//CGround* ground = dynamic_cast<CGround*>(e->obj);
+				if (isGoingIntoPipe) continue;
 
 				if (e->nx != 0)
 				{
@@ -513,6 +563,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					isAbleToJump = true;
 					vy = 0;
 					y += min_ty * dy + ny * 0.2f;
+
+					if (e->obj->GetState() == PIPE_STATE_SECRET_GREEN_DOWN)
+					{
+						isAbleToGoDownPipe = true;
+					}
+					else if (e->obj->GetState() == PIPE_STATE_SECRET_BLACK_UP)
+					{
+						isAbleToGoUpPipe = true;
+					}
 				}
 			}
 			else if (dynamic_cast<CPortal *>(e->obj))
@@ -770,6 +829,17 @@ void CMario::Render()
 			{
 				if (nx > 0) ani = MARIO_ANI_SMALL_TRANSFORM_RIGHT;
 				else ani = MARIO_ANI_SMALL_TRANSFORM_LEFT;
+			}
+			else if (isGoingIntoPipe)
+			{
+				if (state == MARIO_STATE_GO_DOWN_PIPE)
+				{
+					ani = MARIO_ANI_SMALL_GO_DOWN_PIPE;
+				}
+				else if (state == MARIO_STATE_GO_UP_PIPE)
+				{
+					ani = MARIO_ANI_SMALL_GO_UP_PIPE;
+				}
 			}
 			else if (state == MARIO_STATE_JUMP)
 			{
@@ -1304,7 +1374,7 @@ void CMario::SetState(int state)
 		vy = -MARIO_DIE_DEFLECT_SPEED;
 		break;
 	case MARIO_STATE_SIT:
-		vy = 0;
+		//vy = 0;
 		break;
 	case MARIO_STATE_RUN_RIGHT:
 		nx = 1;
@@ -1326,6 +1396,14 @@ void CMario::SetState(int state)
 			StartHittingObject();
 		}
 		else StartThrowingObject();
+		break;
+	case MARIO_STATE_GO_DOWN_PIPE:
+		vy = MARIO_DIVING_SPEED;
+		isGoingIntoPipe = true;
+		break;
+	case MARIO_STATE_GO_UP_PIPE:
+		vy = -MARIO_DIVING_SPEED;
+		isGoingIntoPipe = true;
 		break;
 	}
 }

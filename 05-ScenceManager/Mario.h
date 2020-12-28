@@ -5,6 +5,7 @@
 
 #pragma region define
 #define MARIO_MAX_WALKING_SPEED			0.1f 
+#define MARIO_DIVING_SPEED				0.05f 
 #define MARIO_MAX_RUN_SPEED				0.2f 
 #define MARIO_MIN_WALKING_SPEED			0.0005f 
 #define MARIO_ACCELERATION_WALK			0.0002f
@@ -31,6 +32,8 @@
 #define MARIO_STATE_HIT				900
 #define MARIO_STATE_FLY				1000
 #define MARIO_STATE_SLOW_FALL		1100
+#define MARIO_STATE_GO_DOWN_PIPE	1200
+#define MARIO_STATE_GO_UP_PIPE		1300
 
 #define MARIO_ANI_BIG_IDLE_RIGHT			0
 #define MARIO_ANI_BIG_IDLE_LEFT				1
@@ -144,6 +147,11 @@
 #define MARIO_ANI_BIG_TRANSFORM				106
 #define MARIO_ANI_SMALL_TRANSFORM_LEFT		107
 
+#define MARIO_ANI_SMALL_GO_DOWN_PIPE		108
+#define MARIO_ANI_SMALL_GO_UP_PIPE			109
+#define MARIO_ANI_BIG_GO_DOWN_PIPE			110
+#define MARIO_ANI_BIG_GO_UP_PIPE			111
+
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define	MARIO_LEVEL_TAIL	3
@@ -185,6 +193,7 @@ class CMario : public CGameObject
 	DWORD throwing_start;
 	DWORD transform_start;
 	DWORD coin_start;
+	DWORD go_into_pipe_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
@@ -200,6 +209,9 @@ class CMario : public CGameObject
 	//bool isJumping;				// check if mario is in the air
 	bool isSlowFall;
 	bool isTransform;
+	bool isAbleToGoDownPipe;
+	bool isAbleToGoUpPipe;
+	bool isGoingIntoPipe;
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
@@ -223,6 +235,7 @@ public:
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 	void StartTransform() { isTransform = true; transform_start = GetTickCount(); }
 	void StartTransformCoin() { coin_start = GetTickCount(); }
+	void StartGoIntoPipe() { go_into_pipe_start = GetTickCount(); isGoingIntoPipe = true; }
 
 	void Reset();
 	void Clear();
@@ -234,6 +247,8 @@ public:
 	bool IsAbleToRun() { return isAbleToRun; }
 	bool IsAbleToShoot() { return isAbleToShoot; }
 	bool IsAbleToSlowFall() { return isAbleToSlowFall; }
+	bool IsAbleToGoDownPipe() { return isAbleToGoDownPipe; }
+	bool IsAbleToGoUpPipe() { return isAbleToGoUpPipe; }
 	bool IsFlying() { return flying; }
 	void SetAbleToJump(bool x) { isAbleToJump = x; }
 	void SetAbleToHoldObject(bool x) { isAbleToHoldObject = x; }

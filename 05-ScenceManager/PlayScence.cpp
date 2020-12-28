@@ -45,7 +45,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_VENUS_RED	8
 #define OBJECT_TYPE_VENUS_GREEN	9
 #define OBJECT_TYPE_PIRANHA	10
-#define OBJECT_TYPE_PIPE 11
+#define OBJECT_TYPE_PIPE_NORMAL 11
+#define OBJECT_TYPE_PIPE_GREEN_DOWN 12
+#define OBJECT_TYPE_PIPE_GREEN_UP 13
+#define OBJECT_TYPE_PIPE_BLACK_DOWN 14
+#define OBJECT_TYPE_PIPE_BLACK_UP 15
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -262,9 +266,37 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CVenus(VENUS_STATE_PIRANHA_MOVE, y);
 		}
 		break;
-	case OBJECT_TYPE_PIPE:
+	case OBJECT_TYPE_PIPE_NORMAL:
 		{
 			obj = new CPipe();
+			obj->SetState(PIPE_STATE_NORMAL);
+		}
+		break;
+	case OBJECT_TYPE_PIPE_GREEN_DOWN:
+		{
+			float posX = atof(tokens[4].c_str());
+			float posY = atof(tokens[5].c_str());
+			obj = new CPipe(posX, posY);
+			obj->SetState(PIPE_STATE_SECRET_GREEN_DOWN);
+		}
+		break;
+	case OBJECT_TYPE_PIPE_GREEN_UP:
+		{
+			obj = new CPipe();
+			obj->SetState(PIPE_STATE_SECRET_GREEN_UP);
+		}
+	case OBJECT_TYPE_PIPE_BLACK_DOWN:
+		{
+			obj = new CPipe();
+			obj->SetState(PIPE_STATE_SECRET_BLACK_DOWN);
+		}
+		break;
+	case OBJECT_TYPE_PIPE_BLACK_UP:
+		{
+			float posX = atof(tokens[4].c_str());
+			float posY = atof(tokens[5].c_str());
+			obj = new CPipe(posX, posY);
+			obj->SetState(PIPE_STATE_SECRET_BLACK_UP);
 		}
 		break;
 	default:
@@ -463,7 +495,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_DOWN:
-		mario->SetState(MARIO_STATE_SIT);
+		if (mario->IsAbleToGoDownPipe())
+			mario->SetState(MARIO_STATE_GO_DOWN_PIPE);
+		else mario->SetState(MARIO_STATE_SIT);
+		break;
+	case DIK_UP:
+		if (mario->IsAbleToGoUpPipe())
+			mario->SetState(MARIO_STATE_GO_UP_PIPE);
 		break;
 	case DIK_I:
 		mario->SetPosition(488.0f, 310.0f);

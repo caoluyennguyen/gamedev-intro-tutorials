@@ -30,7 +30,7 @@
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
 #define SCREEN_WIDTH 280
 #define SCREEN_HEIGHT 280
 
@@ -59,7 +59,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void Update(DWORD dt)
 {
 	CGame::GetInstance()->GetCurrentScene()->Update(dt);
-	//HUD::GetInstance()->Update(dt);
+	HUD::GetInstance()->Update(dt);
 }
 
 /*
@@ -79,7 +79,7 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		CGame::GetInstance()->GetCurrentScene()->Render();
-		//HUD::GetInstance()->Render();
+		HUD::GetInstance()->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();
