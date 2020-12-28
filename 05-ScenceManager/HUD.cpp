@@ -13,8 +13,8 @@ void HUD::LoadResource()
 	rect.right = 262;
 	rect.bottom = 170;
 
-	speedUp = new CSprite(100, 63, 173, 72, 182, bbox);
-	speedDown = new CSprite(101, 90, 173, 99, 182, bbox);
+	speedUp = CSprites::GetInstance()->Get(201);
+	speedDown = CSprites::GetInstance()->Get(202);
 	power = CAnimationSets::GetInstance()->Get(8);
 
 	vector<LPSPRITE> numbers;
@@ -43,7 +43,7 @@ void HUD::Update(DWORD dt)
 
 void HUD::Render()
 {
-	CGame::GetInstance()->Draw(0, 200, bbox, rect.left, rect.top, rect.right, rect.bottom, 255, 0);
+	CSprites::GetInstance()->Get(200)->Draw(0, 200, 255, 0);
 
 	for (int i = 0; i < marioSpeed; i++)
 	{

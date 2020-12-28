@@ -122,6 +122,9 @@
     <ClCompile Include="Grass.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="EndPoint.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -215,6 +218,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Grass.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="EndPoint.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

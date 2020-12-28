@@ -129,6 +129,7 @@
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EndPoint.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Grass.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CheckPoint.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EndPoint.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="Grass.h" />

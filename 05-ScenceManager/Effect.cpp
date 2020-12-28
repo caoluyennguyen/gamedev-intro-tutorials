@@ -15,7 +15,7 @@ void CEffect::Update(DWORD dt)
 {
 	if (appear)
 	{
-		if (GetTickCount() - appear_start > EFFECT_TIME_APPEAR)
+		if (GetTickCount() - appear_start > EFFECT_TIME_APPEAR && state < 3)
 		{
 			appear = false;
 			appear_start = 0;

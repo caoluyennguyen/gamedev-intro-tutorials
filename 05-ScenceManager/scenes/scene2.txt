@@ -11,6 +11,7 @@
 40	scenes\textures\enemies-3.png	0	128	128
 50	scenes\textures\flower.png	255	255	255
 60	scenes\textures\misc2.png	0	128	128
+70	scenes\textures\goalRoulette.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -28,6 +29,26 @@
 1009	197	24	205	32	10
 1010	73	173	88	182	10
 1011	100	173	114	182	10
+# display
+200	0	120	262	170	10
+201	63	173	72	182	10
+202	90	173	99	182	10
+# card
+203	140	168	165	195	10
+204	127	1	153	27	70
+205	155	1	181	27	70
+206	183	1	209	27	70
+#musroom
+207	5	27	21	43	70
+208	65	27	77	43	70
+#flower
+209	25	28	41	44	70
+210	80	28	90	44	70
+#star
+211	45	27	61	43	70
+212	92	27	105	43	70
+213	105	27	112	43	70
+
 
 # BIG MARIO 1-20 44-50
 # idle right
@@ -701,6 +722,18 @@ right
 109	10137	0
 110	10138	0
 
+# === END POINT ===
+111	203	0
+112	204	0
+113	205	0
+114	206	0
+#musroom
+115	207	50	208	50	213	50
+#flower
+116	209	50	210	50	213	50
+#star
+117	211	50	212	50	213	50
+
 # === VENUS ===
 # red up left
 201	90001	100	90002	100
@@ -758,23 +791,26 @@ right
 # ITEM
 6	901	902	903	904	905	906	907
 # EFFECT
-7	101	218	102
+7	101	218	102	115	116	117
 # POWER
 8	102	103	104
 # VENUS
 9	201	202	203	204	205	206	207	208	209	210	211	212	213	214	215	216	217	218
 # PIPE
 10	608	608	608	609	609
+# END POINT
+11	112	113	114	111
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4= Ground, 8 = Venus red, 9 = Venus green
 # 10 = Piranha, 11 = Pipe normal, 12 = Pipe green down, 13 = Pipe green up, 14 = Pipe red down,
-# 15 = Pipe red up
+# 15 = Pipe red up, 16 = End point
 
 # MARIO
 # 0	10	300	1
-0	1952	300	1
+# 0	1952	300	1
+0	2570	300	1
 
 # GOOMBA
 # state: 100 = normal, 400 = fly
@@ -790,6 +826,9 @@ right
 8	360	368	9
 9	1864	364	9
 10	1800	384	9
+
+# END POINT
+16	2684	330	11
 
 # PIPE
 11	352	368	10

@@ -11,6 +11,7 @@
 #include "Items.h"
 #include "Venus.h"
 #include "Pipe.h"
+#include "EndPoint.h"
 
 using namespace std;
 
@@ -50,6 +51,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_PIPE_GREEN_UP 13
 #define OBJECT_TYPE_PIPE_BLACK_DOWN 14
 #define OBJECT_TYPE_PIPE_BLACK_UP 15
+#define OBJECT_TYPE_END_POINT 16
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -300,6 +302,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj->SetState(PIPE_STATE_SECRET_BLACK_UP);
 		}
 		break;
+	case OBJECT_TYPE_END_POINT:
+		{
+			obj = new CEndPoint();
+		}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -393,7 +400,7 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (objects[i]->IsEnable()) objects[i]->Update(dt, &coObjects);
 	}
 
 	// Update camera to follow mario
@@ -416,9 +423,9 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	tileMap->Render(player->x);
+	// Render make CPU higher
+	//tileMap->Render(player->x);
 
-	//for (int i = objects.size() - 1; i > -1; i--)
 	for (int i = 0; i < objects.size(); i++)
 		if (objects[i]->IsEnable()) objects[i]->Render();
 	/*for (int i = coObjects.size() - 1; i > -1; i--)
