@@ -1,6 +1,6 @@
 #include "CheckPoint.h"
 
-CCheckPoint::CCheckPoint(int left, int right, int bottom, int top)
+CCheckPoint::CCheckPoint(int left, int top, int right, int bottom)
 {
 	this->left = left;
 	this->right = right;

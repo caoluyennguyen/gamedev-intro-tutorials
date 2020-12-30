@@ -12,6 +12,13 @@ CKoopas::CKoopas(int state) : CEnemy()
 	SetState(state);
 }
 
+CKoopas::CKoopas(int state, int minX, int maxX) : CEnemy()
+{
+	SetState(state);
+	this->minX = minX;
+	this->maxX = maxX;
+}
+
 void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
@@ -114,20 +121,36 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->nx != 0)
 				{
-					vx = -vx;
-					x += min_tx * dx + nx * 0.5f;
-					if (e->obj->GetState() == BRICK_STATE_AVAILABLE)
+					if (e->obj->GetState() == BRICK_STATE_BREAK || e->obj->GetState() == BRICK_STATE_COIN)
 					{
-						e->obj->SetState(BRICK_STATE_UNAVAILABLE);
+						x += dx;
 					}
-					else if (e->obj->GetState() == BRICK_STATE_BREAKABLE)
+					else
 					{
-						e->obj->SetState(BRICK_STATE_BREAK);
+						vx = -vx;
+						x += min_tx * dx + nx * 0.5f;
+						if (state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA)
+						{
+							if (e->obj->GetState() == BRICK_STATE_AVAILABLE)
+							{
+								e->obj->SetState(BRICK_STATE_UNAVAILABLE);
+							}
+							else if (e->obj->GetState() == BRICK_STATE_BREAKABLE)
+							{
+								e->obj->SetState(BRICK_STATE_BREAK);
+							}
+						}
 					}
 				}
+				
 				if (e->ny != 0)
 				{
 					vy = 0;
+					if (state == KOOPAS_STATE_WALKING)
+					{
+						if (x < e->obj->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
+						else if (x > e->obj->x + KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
+					}
 				}
 			}
 			else if (dynamic_cast<CMario*>(e->obj))
@@ -214,7 +237,7 @@ void CKoopas::SetState(int state)
 		vx = nx * 0.01f;
 		break;
 	case KOOPAS_STATE_WALKING:
-		//vx = KOOPAS_WALKING_SPEED;
+		vx = KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_ROLLING:
 		vx = nx * 0.4f;

@@ -128,7 +128,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				}
 			}
 		}
-		/*else if (dynamic_cast<CBrick*>(obj)) {
+		else if (dynamic_cast<CBrick*>(obj)) {
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
@@ -136,11 +136,11 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 			{
 				obj->SetState(BRICK_STATE_COIN);
 			}
-			else if (obj->GetState() == BRICK_STATE_COIN)
+			else if (obj->GetState() == BRICK_STATE_COIN && coin_start == 0)
 			{
 				obj->SetState(BRICK_STATE_BREAKABLE);
 			}
-		}*/
+		}
 		else if (dynamic_cast<CGround*>(obj)) {
 			CGround* ground = dynamic_cast<CGround*>(obj);
 

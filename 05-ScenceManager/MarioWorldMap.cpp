@@ -23,8 +23,13 @@ void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
+			CCheckPoint* checkPoint = dynamic_cast<CCheckPoint*>(obj);
+
 			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
 				vx = vy = 0;
+
+				this->x += 0.1f * (checkPoint->right - checkPoint->left);
+				this->y += 0.1f * (checkPoint->bottom - checkPoint->top);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Effect.h"
 
 #define TAIL_BBOX_WIDTH		10
 #define TAIL_BBOX_HEIGHT	10
@@ -8,8 +9,9 @@ class Tail : public CGameObject
 {
 private:
 	bool enable;
+	CEffect* effect;
 public:
-	Tail() { enable = false; };
+	Tail();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 
 	virtual void Render();

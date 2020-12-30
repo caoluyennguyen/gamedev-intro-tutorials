@@ -29,8 +29,10 @@
 class CKoopas : public CEnemy
 {
 	DWORD jump;
+	int minX, maxX;
 public:
 	CKoopas(int state);
+	CKoopas(int state, int minX, int maxX);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 	virtual void SetState(int state);

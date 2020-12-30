@@ -125,6 +125,9 @@
     <ClCompile Include="EndPoint.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="PlayCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -222,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="EndPoint.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayCard.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

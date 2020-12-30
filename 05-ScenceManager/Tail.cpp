@@ -1,6 +1,15 @@
 #include "Tail.h"
 #include "Koopas.h"
 #include "Brick.h"
+#include "Venus.h"
+#include "Goomba.h"
+
+Tail::Tail() 
+{
+	enable = false; 
+	effect = new CEffect();
+	effect->SetState(EFFECT_TYPE_HIT);
+}
 
 void Tail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -12,6 +21,7 @@ void Tail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void Tail::Render()
 {
+	effect->Render();
 	RenderBoundingBox();
 }
 
@@ -26,7 +36,23 @@ void Tail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
 			CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
-			if (CheckCollision(kLeft, kTop, kRight, kBottom)) obj->SetState(KOOPAS_STATE_DIE_NGUA);
+			if (CheckCollision(kLeft, kTop, kRight, kBottom))
+			{
+				obj->SetState(KOOPAS_STATE_DIE_NGUA);
+				effect->SetPosition(x, y);
+				effect->StartTimeAppear();
+			}
+		}
+		else if (dynamic_cast<CGoomba*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom))
+			{
+				obj->SetState(GOOMBA_STATE_DIE_NGUA);
+				effect->SetPosition(x, y);
+				effect->StartTimeAppear();
+			}
 		}
 		else if (dynamic_cast<CBrick*>(obj)) {
 			float kLeft, kTop, kRight, kBottom;
@@ -44,5 +70,17 @@ void Tail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 		}
+		else if (dynamic_cast<CVenus*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && obj->GetState() != VENUS_STATE_DIE)
+			{
+				obj->SetState(VENUS_STATE_DIE);
+				effect->SetPosition(x, y);
+				effect->StartTimeAppear();
+			}
+		}
 	}
+	effect->Update(dt);
 }

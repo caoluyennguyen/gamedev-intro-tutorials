@@ -11,7 +11,7 @@ public:
 	int left, right, bottom, top;
 
 	CCheckPoint() {};
-	CCheckPoint(int left = 0, int right = 1, int bottom = 0, int top = 0);
+	CCheckPoint(int left = 0, int top = 0, int right = 1, int bottom = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL) {};
 
 	virtual void Render();

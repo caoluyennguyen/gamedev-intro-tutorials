@@ -15,7 +15,15 @@ void CEffect::Update(DWORD dt)
 {
 	if (appear)
 	{
-		if (GetTickCount() - appear_start > EFFECT_TIME_APPEAR && state < 3)
+		if (state == EFFECT_TYPE_HIT)
+		{
+			if (GetTickCount() - appear_start > HIT_EFFECT_TIME_APPEAR)
+			{
+				appear = false;
+				appear_start = 0;
+			}
+		}
+		else if (GetTickCount() - appear_start > EFFECT_TIME_APPEAR && state < 3)
 		{
 			appear = false;
 			appear_start = 0;
@@ -29,7 +37,10 @@ void CEffect::Update(DWORD dt)
 
 void CEffect::Render()
 {
-	if (appear) ani_set->at(state)->Render(x, y);
+	if (appear)
+	{
+		ani_set->at(state)->Render(x, y);
+	}
 }
 
 void CEffect::RenderOneTime()

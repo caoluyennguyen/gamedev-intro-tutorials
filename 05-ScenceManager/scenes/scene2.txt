@@ -12,6 +12,7 @@
 50	scenes\textures\flower.png	255	255	255
 60	scenes\textures\misc2.png	0	128	128
 70	scenes\textures\goalRoulette.png	255	255	255
+80	scenes\textures\effect.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -384,6 +385,9 @@
 80001	458	223	469	231	20
 #SCORE 1000
 80002	471	223	486	231	20
+#HIT EFFECT
+80003	0	0	17	17	80
+80004	18	0	35	17	80
 
 #VENUS
 #RED UP LEFT
@@ -734,6 +738,9 @@ right
 #star
 117	211	50	212	50	213	50
 
+# === EFFECT ===
+118	80003	100	80004	100	21	0
+
 # === VENUS ===
 # red up left
 201	90001	100	90002	100
@@ -791,7 +798,7 @@ right
 # ITEM
 6	901	902	903	904	905	906	907
 # EFFECT
-7	101	218	102	115	116	117
+7	101	218	102	115	116	117	118
 # POWER
 8	102	103	104
 # VENUS
@@ -809,8 +816,8 @@ right
 
 # MARIO
 # 0	10	300	1
-# 0	1952	300	1
-0	2570	300	1
+0	2000	300	1
+# 0	2570	300	1
 
 # GOOMBA
 # state: 100 = normal, 400 = fly
@@ -821,6 +828,7 @@ right
 # state: 100 = normal, 600 = fly
 #3	100	200	4	100
 #3	50	200	4
+17	1990	360	4	100
 
 # VENUS
 8	360	368	9

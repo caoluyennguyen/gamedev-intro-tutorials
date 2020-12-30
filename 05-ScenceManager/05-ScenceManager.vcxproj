@@ -140,6 +140,7 @@
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="MarioWorldMap.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PlayCard.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Tail.cpp" />
     <ClCompile Include="TileMap.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="MarioWorldMap.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PlayCard.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Tail.h" />
     <ClInclude Include="TileMap.h" />

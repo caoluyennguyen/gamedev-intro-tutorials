@@ -30,6 +30,7 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (GetTickCount() - startDisappear > VENUS_DIE_TIME)
 		{
 			this->enable = false;
+			return;
 		}
 	}
 

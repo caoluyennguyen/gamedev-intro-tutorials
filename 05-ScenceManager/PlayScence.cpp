@@ -52,6 +52,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_PIPE_BLACK_DOWN 14
 #define OBJECT_TYPE_PIPE_BLACK_UP 15
 #define OBJECT_TYPE_END_POINT 16
+#define OBJECT_TYPE_RED_KOOPAS 17
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -307,6 +308,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CEndPoint();
 		}
 		break;
+	case OBJECT_TYPE_RED_KOOPAS:
+	{
+		int state = atof(tokens[4].c_str());
+		obj = new CKoopas(state);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -400,7 +407,7 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->IsEnable()) objects[i]->Update(dt, &coObjects);
+		objects[i]->Update(dt, &coObjects);
 	}
 
 	// Update camera to follow mario
