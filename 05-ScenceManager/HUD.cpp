@@ -13,12 +13,12 @@ HUD::HUD()
 void HUD::LoadResource()
 {
 
-	bbox = CTextures::GetInstance()->Get(10);
+	/*bbox = CTextures::GetInstance()->Get(10);
 
 	rect.left = 0;
 	rect.top = 120;
 	rect.right = 262;
-	rect.bottom = 170;
+	rect.bottom = 170;*/
 
 	speedUp = CSprites::GetInstance()->Get(201);
 	speedDown = CSprites::GetInstance()->Get(202);
@@ -34,6 +34,11 @@ void HUD::LoadResource()
 	{
 		number.push_back(numbers);
 	}
+
+	card = new CPlayCard();
+	//card->SetState(CARD_STATE_NORMAL);
+	card->SetState(1);
+	card->SetPosition(10, 10);
 }
 
 void HUD::UnLoadResource()
@@ -67,6 +72,8 @@ void HUD::Render()
 	RenderCoin(coin);
 
 	power->at(2)->Render(120, 214, 255, 0);
+
+	card->Render();
 }
 
 void HUD::RenderScore(int numScore)
@@ -110,4 +117,3 @@ HUD* HUD::GetInstance()
 	if (__instance == NULL) __instance = new HUD();
 	return __instance;
 }
-

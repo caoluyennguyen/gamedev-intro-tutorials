@@ -125,13 +125,13 @@
     <ClCompile Include="EndPoint.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="PlayCard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EndTitle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Turtle.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayCard.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -232,13 +232,13 @@
     <ClInclude Include="EndPoint.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="PlayCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EndTitle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Turtle.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayCard.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

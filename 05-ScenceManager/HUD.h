@@ -3,6 +3,7 @@
 #include "Sprites.h"
 #include "Game.h"
 #include "Animations.h"
+#include "PlayCard.h"
 
 #define TIME_PLAY 300
 
@@ -21,6 +22,7 @@ class HUD
 	LPSPRITE speedUp;
 	LPSPRITE speedDown;
 	LPANIMATION_SET power;
+	CPlayCard* card;
 
 	vector<vector<LPSPRITE>> number;
 public:
@@ -37,7 +39,7 @@ public:
 
 	void AddScore(int score) { this->score += score; }
 	void AddCoin() { this->coin++; }
+	void SetCard(int state) { this->card->SetState(state); }
 
 	static HUD* GetInstance();
 };
-
