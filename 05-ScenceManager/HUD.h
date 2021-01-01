@@ -24,7 +24,7 @@ class HUD
 
 	vector<vector<LPSPRITE>> number;
 public:
-	HUD() { marioSpeed = 3; };
+	HUD();
 	~HUD() {};
 
 	void LoadResource();

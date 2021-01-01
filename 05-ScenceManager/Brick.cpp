@@ -112,7 +112,6 @@ void CBrick::SetState(int state)
 		breakable = true;
 		break;
 	case BRICK_STATE_BREAK:
-		enable = false;
 		break;
 	default:
 		break;

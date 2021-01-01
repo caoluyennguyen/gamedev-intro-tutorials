@@ -16,9 +16,6 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CWorldMapSceneKeyHandler(this);
-
-	effect = new CEffect();
-	effect->SetPosition(207, 107);
 }
 
 /*
@@ -225,6 +222,11 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+
+	effect = new CEffect();
+	effect->SetPosition(207, 107);
+	effect->SetState(0);
+	effect->SetAppear(true);
 }
 
 void CWorldMapScene::Load()
@@ -303,6 +305,8 @@ void CWorldMapScene::Render()
 	for (int i = 0; i < objects.size(); i++) objects[i]->Render();
 
 	player->Render();
+
+	effect->Render();
 }
 
 /*

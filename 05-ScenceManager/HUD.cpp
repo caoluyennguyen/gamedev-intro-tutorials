@@ -2,11 +2,16 @@
 
 HUD* HUD::__instance = NULL;
 
-void HUD::LoadResource()
+HUD::HUD()
 {
 	gameTime = 300.0f;
 	score = 0;
 	coin = 0;
+	marioSpeed = 3;
+}
+
+void HUD::LoadResource()
+{
 
 	bbox = CTextures::GetInstance()->Get(10);
 
@@ -105,3 +110,4 @@ HUD* HUD::GetInstance()
 	if (__instance == NULL) __instance = new HUD();
 	return __instance;
 }
+
