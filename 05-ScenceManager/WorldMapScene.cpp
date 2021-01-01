@@ -16,6 +16,9 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CWorldMapSceneKeyHandler(this);
+
+	effect = new CEffect();
+	effect->SetPosition(207, 107);
 }
 
 /*
@@ -35,6 +38,7 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_CHECKPOINT	1
 #define OBJECT_TYPE_GRASS	2
 #define OBJECT_TYPE_CASTLE	3
+#define OBJECT_TYPE_START	4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -186,6 +190,21 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 				int bottom = atoi(tokens[7].c_str());
 
 				obj = new CCheckPoint(left, top, right, bottom);
+				obj->SetState(CHECKPOINT_STATE_NORMAL);
+				DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+			}
+			
+			break;
+		case OBJECT_TYPE_START:
+			{
+				int left = atoi(tokens[4].c_str());
+				int top = atoi(tokens[5].c_str());
+				int right = atoi(tokens[6].c_str());
+				int bottom = atoi(tokens[7].c_str());
+
+				obj = new CCheckPoint(left, top, right, bottom);
+				obj->SetState(CHECKPOINT_STATE_NORMAL);
+				obj->SetEnable(false);
 				DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 			}
 			
@@ -315,17 +334,52 @@ void CWorldMapSceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_F2:
 		CGame::GetInstance()->SwitchScene(1);
 		break;
+	}
+
+	if (mario->IsMoving()) return;
+
+	switch (KeyCode)
+	{
+	case DIK_S:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+	case DIK_F1:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+	case DIK_F2:
+		CGame::GetInstance()->SwitchScene(1);
+		break;
 	case DIK_UP:
-		mario->SetSpeed(0, -MARIO_VELOCITY);
+		if (mario->moveUp)
+		{
+			mario->SetSpeed(0, -MARIO_VELOCITY);
+			mario->SetMoving(true);
+		}
+		
 		break;
 	case DIK_DOWN:
-		mario->SetSpeed(0, MARIO_VELOCITY);
+		if (mario->moveDown)
+		{
+			mario->SetSpeed(0, MARIO_VELOCITY);
+			mario->SetMoving(true);
+		}
+		
 		break;
 	case DIK_LEFT:
-		mario->SetSpeed(-MARIO_VELOCITY, 0);
+		if (mario->moveLeft)
+		{
+			mario->SetSpeed(-MARIO_VELOCITY, 0);
+			mario->SetMoving(true);
+		}
+		
 		break;
 	case DIK_RIGHT:
-		mario->SetSpeed(MARIO_VELOCITY, 0);
+		if (mario->moveRight)
+		{
+			mario->SetSpeed(MARIO_VELOCITY, 0);
+			mario->SetMoving(true);
+		}
+		
 		break;
 	}
 }

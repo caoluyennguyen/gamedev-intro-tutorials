@@ -14,6 +14,7 @@
 #include "Pipe.h"
 #include "Venus.h"
 #include "EndPoint.h"
+#include "Hud.h"
 
 CMario* CMario::__instance = NULL;
 
@@ -592,12 +593,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					StartTransform();
 					SetLevel(MARIO_LEVEL_BIG);
 					e->obj->SetEnable(false);
+
+					((CItems*)e->obj)->effect->SetPosition(e->obj->x, e->obj->y);
+					((CItems*)e->obj)->effect->StartTimeAppear();
 				}
 				else if (e->obj->GetState() == ITEM_TYPE_COIN)
 				{
 					x += dx;
 					y += dy;
 					e->obj->SetEnable(false);
+
+					HUD::GetInstance()->AddCoin();
 				}
 				else if (e->obj->GetState() == ITEM_TYPE_SWITCH_BLOCK_UP)
 				{

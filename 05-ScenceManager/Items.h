@@ -51,8 +51,8 @@ class CItems : public CGameObject
 
 	bool appear;
 
-	CEffect* effect;
 public:
+	CEffect* effect;
 	CItems(int type);
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

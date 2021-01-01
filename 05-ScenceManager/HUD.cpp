@@ -5,6 +5,8 @@ HUD* HUD::__instance = NULL;
 void HUD::LoadResource()
 {
 	gameTime = 300.0f;
+	score = 0;
+	coin = 0;
 
 	bbox = CTextures::GetInstance()->Get(10);
 
@@ -55,9 +57,9 @@ void HUD::Render()
 		speedDown->Draw(90 + i * 10, 214, 255, 0);
 	}
 
-	RenderScore(696969);
+	RenderScore(score);
 	RenderTime(gameTime);
-	RenderCoin(69);
+	RenderCoin(coin);
 
 	power->at(2)->Render(120, 214, 255, 0);
 }

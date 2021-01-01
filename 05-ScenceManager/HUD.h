@@ -15,6 +15,9 @@ class HUD
 
 	int marioSpeed;
 	float gameTime;
+	int score;
+	int coin;
+
 	LPSPRITE speedUp;
 	LPSPRITE speedDown;
 	LPANIMATION_SET power;
@@ -31,6 +34,9 @@ public:
 	void RenderScore(int score);
 	void RenderTime(int time);
 	void RenderCoin(int coin);
+
+	void AddScore(int score) { this->score += score; }
+	void AddCoin() { this->coin++; }
 
 	static HUD* GetInstance();
 };

@@ -5,6 +5,8 @@ CMarioWorldMap::CMarioWorldMap()
 {
 	/*CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(0);*/
+
+	isMoving = false;
 }
 
 void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -20,16 +22,64 @@ void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		LPGAMEOBJECT obj = coObjects->at(i);
 		
 		if (dynamic_cast<CCheckPoint*>(obj)) {
-			float kLeft, kTop, kRight, kBottom;
-			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+			float a_left, a_top, a_right, a_bottom;
+			obj->GetBoundingBox(a_left, a_top, a_right, a_bottom);
+
+			float b_left, b_top, b_right, b_bottom;
+			GetBoundingBox(b_left, b_top, b_right, b_bottom);
 
 			CCheckPoint* checkPoint = dynamic_cast<CCheckPoint*>(obj);
 
-			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				vx = vy = 0;
+			if (CheckCollision(a_left, a_top, a_right, a_bottom)) {
+				/*vx = vy = 0;
 
 				this->x += 0.1f * (checkPoint->right - checkPoint->left);
-				this->y += 0.1f * (checkPoint->bottom - checkPoint->top);
+				this->y += 0.1f * (checkPoint->bottom - checkPoint->top);*/
+				if (checkPoint->IsEnable())
+				{
+					if (vx > 0)
+					{
+						if (b_right > a_right)
+						{
+							vx = 0;
+							isMoving = false;
+							checkPoint->enable = false;
+						}
+					}
+					else if (vx < 0)
+					{
+						if (b_left < a_left)
+						{
+							vx = 0;
+							isMoving = false;
+							checkPoint->enable = false;
+						}
+					}
+					else if (vy < 0)
+					{
+						if (b_top < a_top)
+						{
+							vy = 0;
+							isMoving = false;
+							checkPoint->enable = false;
+						}
+					}
+					else if (vy > 0)
+					{
+						if (b_bottom > a_bottom)
+						{
+							vy = 0;
+							isMoving = false;
+							checkPoint->enable = false;
+						}
+					}
+				}
+
+				checkPoint->GetDirection(moveLeft, moveUp, moveRight, moveDown);
+			}
+			else
+			{
+				if (!checkPoint->IsEnable()) checkPoint->enable = true;
 			}
 		}
 	}

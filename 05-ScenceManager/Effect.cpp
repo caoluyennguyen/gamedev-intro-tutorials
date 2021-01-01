@@ -1,4 +1,5 @@
 #include "Effect.h"
+#include "Hud.h"
 
 CEffect::CEffect()
 {
@@ -27,6 +28,9 @@ void CEffect::Update(DWORD dt)
 		{
 			appear = false;
 			appear_start = 0;
+
+			if (state == EFFECT_TYPE_SCORE_100) HUD::GetInstance()->AddScore(100);
+			if (state == EFFECT_TYPE_SCORE_1000) HUD::GetInstance()->AddScore(1000);
 		}
 		else
 		{

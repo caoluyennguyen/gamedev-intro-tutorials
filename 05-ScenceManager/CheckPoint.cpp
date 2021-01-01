@@ -6,11 +6,13 @@ CCheckPoint::CCheckPoint(int left, int top, int right, int bottom)
 	this->right = right;
 	this->bottom = bottom;
 	this->top = top;
+
+	state = CHECKPOINT_STATE_NORMAL;
 }
 
 void CCheckPoint::Render()
 {
-	animation_set->at(1)->Render(x, y);
+	animation_set->at(state)->Render(x, y);
 
 	RenderBoundingBox();
 }

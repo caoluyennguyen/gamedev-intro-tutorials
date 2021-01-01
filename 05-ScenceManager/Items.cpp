@@ -4,6 +4,7 @@
 #include "Pipe.h"
 #include "Mario.h"
 #include "PlayScence.h"
+#include "Hud.h"
 
 CItems::CItems(int type)
 {
@@ -133,6 +134,7 @@ void CItems::CoinUpdate(DWORD dt)
 		{
 			SetEnable(false);
 			effect->StartTimeAppear();
+			HUD::GetInstance()->AddCoin();
 		}
 	}
 

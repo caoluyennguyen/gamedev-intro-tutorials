@@ -8,7 +8,14 @@
 
 class CMarioWorldMap : public CGameObject
 {
+	bool isMoving;
+
 public:
+	int moveLeft;
+	int moveUp;
+	int moveRight;
+	int moveDown;
+
 	CMarioWorldMap();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 
@@ -16,4 +23,7 @@ public:
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
 	float GetPositionX() { return this->x; };
+
+	bool IsMoving() { return isMoving; }
+	void SetMoving(bool moving) { this->isMoving = moving; }
 };

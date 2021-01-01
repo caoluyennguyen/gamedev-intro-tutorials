@@ -431,7 +431,7 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	// Render make CPU higher
-	//tileMap->Render(player->x);
+	tileMap->Render(CGame::GetInstance()->GetCamPos());
 
 	for (int i = 0; i < objects.size(); i++)
 		if (objects[i]->IsEnable()) objects[i]->Render();
