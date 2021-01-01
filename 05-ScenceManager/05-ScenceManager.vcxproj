@@ -145,6 +145,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Tail.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Tail.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Turtle.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

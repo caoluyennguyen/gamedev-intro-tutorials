@@ -9,6 +9,7 @@
 #include "WorldMapScene.h"
 #include "CheckPoint.h"
 #include "Grass.h"
+#include "Turtle.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_GRASS	2
 #define OBJECT_TYPE_CASTLE	3
 #define OBJECT_TYPE_START	4
+#define OBJECT_TYPE_TURTLE	5
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -188,7 +190,7 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 
 				obj = new CCheckPoint(left, top, right, bottom);
 				obj->SetState(CHECKPOINT_STATE_NORMAL);
-				DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+				DebugOut(L"[ERR] Object type created: %d\n", object_type);
 			}
 			
 			break;
@@ -202,13 +204,17 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 				obj = new CCheckPoint(left, top, right, bottom);
 				obj->SetState(CHECKPOINT_STATE_NORMAL);
 				obj->SetEnable(false);
-				DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+				DebugOut(L"[ERR] Object type created: %d\n", object_type);
 			}
 			
 			break;
 		case OBJECT_TYPE_GRASS:
 			obj = new CGrass();
-			DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+			DebugOut(L"[ERR] Object type created: %d\n", object_type);
+			break;
+		case OBJECT_TYPE_TURTLE:
+			obj = new CTurtle();
+			DebugOut(L"[ERR] Object type created: %d\n", object_type);
 			break;
 		default:
 			DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -294,6 +300,7 @@ void CWorldMapScene::Update(DWORD dt)
 	{
 		coObjects.push_back(objects[i]);
 	}
+	coObjects[0]->Update(dt);
 
 	player->Update(dt, &coObjects);
 }
