@@ -311,7 +311,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_RED_KOOPAS:
 	{
 		int state = atof(tokens[4].c_str());
-		obj = new CKoopas(state);
+		obj = new CKoopas(state, 1);
 		break;
 	}
 	default:

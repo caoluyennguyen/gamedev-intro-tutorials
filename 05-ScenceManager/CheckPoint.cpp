@@ -13,8 +13,6 @@ CCheckPoint::CCheckPoint(int left, int top, int right, int bottom)
 void CCheckPoint::Render()
 {
 	animation_set->at(state)->Render(x, y);
-
-	RenderBoundingBox();
 }
 
 void CCheckPoint::GetBoundingBox(float& l, float& t, float& r, float& b)

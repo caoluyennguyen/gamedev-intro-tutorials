@@ -7,16 +7,10 @@
 #include "Venus.h"
 
 
-CKoopas::CKoopas(int state) : CEnemy()
+CKoopas::CKoopas(int state, int color) : CEnemy()
 {
 	SetState(state);
-}
-
-CKoopas::CKoopas(int state, int minX, int maxX) : CEnemy()
-{
-	SetState(state);
-	this->minX = minX;
-	this->maxX = maxX;
+	this->color = color;
 }
 
 void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -38,7 +32,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// TO-DO: make sure Koopas can interact with the world and to each of them too!
 	// 
 
-	//CGameObject::Update(dt);
 	CEnemy::Update(dt);
 
 	if (x < 0) vx = abs(vx);
@@ -88,7 +81,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						x += dx;
 					}
-					
 				}
 				if (e->ny != 0)
 				{
@@ -121,7 +113,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->nx != 0)
 				{
-					if (e->obj->GetState() == BRICK_STATE_BREAK || e->obj->GetState() == BRICK_STATE_COIN)
+					if (e->obj->GetState() == BRICK_STATE_BREAK) x += dx;
+					else if (e->obj->GetState() == BRICK_STATE_BREAK || e->obj->GetState() == BRICK_STATE_COIN)
 					{
 						x += dx;
 					}
@@ -143,7 +136,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 				
-				if (e->ny != 0)
+				if (e->ny != 0 && e->obj->GetState() != BRICK_STATE_BREAK)
 				{
 					vy = 0;
 					if (state == KOOPAS_STATE_WALKING)
@@ -151,7 +144,15 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						if (x < e->obj->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
 						else if (x > e->obj->x + KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
 					}
+					else if (state == KOOPAS_STATE_DIE_NGUA)
+					{
+						vx = 0;
+					}
 				}
+				/*else
+				{
+					y += dy;
+				}*/
 			}
 			else if (dynamic_cast<CMario*>(e->obj))
 			{
@@ -193,30 +194,61 @@ void CKoopas::Render()
 
 	int ani = KOOPAS_ANI_WALKING_LEFT;
 
-	if (state == KOOPAS_STATE_DIE) {
-		ani = KOOPAS_ANI_DIE;
-	}
-	else if (state == KOOPAS_STATE_DIE_NGUA) {
-		ani = KOOPAS_ANI_DIE_NGUA;
-	}
-	else if (state == KOOPAS_STATE_ROLLING)
+	if (color == 0)
 	{
-		ani = KOOPAS_ANI_ROLLING;
-	}
-	else if (state == KOOPAS_STATE_ROLLING_NGUA)
-	{
-		ani = KOOPAS_ANI_ROLLING_NGUA;
-	}
-	else if (state == KOOPAS_STATE_FLY)
-	{
-		if (vx > 0) ani = KOOPAS_ANI_FLY_RIGHT;
-		else ani = KOOPAS_ANI_FLY_LEFT;
+		if (state == KOOPAS_STATE_DIE) {
+			ani = KOOPAS_ANI_DIE;
+		}
+		else if (state == KOOPAS_STATE_DIE_NGUA) {
+			ani = KOOPAS_ANI_DIE_NGUA;
+		}
+		else if (state == KOOPAS_STATE_ROLLING)
+		{
+			ani = KOOPAS_ANI_ROLLING;
+		}
+		else if (state == KOOPAS_STATE_ROLLING_NGUA)
+		{
+			ani = KOOPAS_ANI_ROLLING_NGUA;
+		}
+		else if (state == KOOPAS_STATE_FLY)
+		{
+			if (vx > 0) ani = KOOPAS_ANI_FLY_RIGHT;
+			else ani = KOOPAS_ANI_FLY_LEFT;
+		}
+		else
+		{
+			if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
+			else ani = KOOPAS_ANI_WALKING_LEFT;
+		}
 	}
 	else
 	{
-		if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
-		else ani = KOOPAS_ANI_WALKING_LEFT;
+		if (state == KOOPAS_STATE_DIE) {
+			ani = KOOPAS_RED_ANI_DIE;
+		}
+		else if (state == KOOPAS_STATE_DIE_NGUA) {
+			ani = KOOPAS_RED_ANI_DIE_NGUA;
+		}
+		else if (state == KOOPAS_STATE_ROLLING)
+		{
+			ani = KOOPAS_RED_ANI_ROLLING;
+		}
+		else if (state == KOOPAS_STATE_ROLLING_NGUA)
+		{
+			ani = KOOPAS_RED_ANI_ROLLING_NGUA;
+		}
+		else if (state == KOOPAS_STATE_FLY)
+		{
+			if (vx > 0) ani = KOOPAS_RED_ANI_FLY_RIGHT;
+			else ani = KOOPAS_RED_ANI_FLY_LEFT;
+		}
+		else
+		{
+			if (vx > 0) ani = KOOPAS_RED_ANI_WALKING_RIGHT;
+			else ani = KOOPAS_RED_ANI_WALKING_LEFT;
+		}
 	}
+	
 	/*else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;*/
 
