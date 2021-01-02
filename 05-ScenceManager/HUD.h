@@ -4,8 +4,9 @@
 #include "Game.h"
 #include "Animations.h"
 #include "PlayCard.h"
+#include "EndSceneTitle.h"
 
-#define TIME_PLAY 300
+#define TIME_PLAY 1000
 
 class HUD
 {
@@ -18,11 +19,13 @@ class HUD
 	float gameTime;
 	int score;
 	int coin;
+	bool endScene;
 
 	LPSPRITE speedUp;
 	LPSPRITE speedDown;
 	LPANIMATION_SET power;
 	CPlayCard* card;
+	CEndSceneTitle* endTitle;
 
 	vector<vector<LPSPRITE>> number;
 public:
@@ -39,7 +42,10 @@ public:
 
 	void AddScore(int score) { this->score += score; }
 	void AddCoin() { this->coin++; }
-	void SetCard(int state) { this->card->SetState(state); }
+	void SetCard(int state) { this->card->SetState(state); endTitle->SetCard(state); }
+
+	void SetEndScene(bool endScene) { this->endScene = endScene; }
+	bool IsEndScene() { return this->endScene; }
 
 	static HUD* GetInstance();
 };

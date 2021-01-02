@@ -60,6 +60,8 @@ CMario::CMario() : CGameObject()
 		fireball = new FireBall();
 		fireBalls.push_back(fireball);
 	}*/
+
+	moveEndScene = false;
 }
 
 void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
@@ -245,6 +247,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
+
+	if (moveEndScene)
+	{
+		SetState(MARIO_STATE_WALKING_RIGHT);
+		if (vy != 0) vx = 0;
+		x += dx;
+	}
 
 	if (!isGoingIntoPipe) vy += MARIO_GRAVITY * dt;
 	if (state == MARIO_STATE_DIE) {
@@ -530,14 +539,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (e->ny < 0)
 				{
-					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
-					isAbleToJump = true;
-					vy = 0;
-					y += min_ty * dy + ny * 0.2f;
+					if (moveEndScene)
+					{
+						vx = 0.05f;
+					}
+					else
+					{
+						if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
+						isAbleToJump = true;
+						vy = 0;
+						y += min_ty * dy + ny * 0.2f;
+					}
+					
 				}
 				else if (e->ny > 0)
 				{
-
 					if (ground->GetId() == GROUND_TYPE_NORMAL)
 					{
 						y += min_ty * dy + ny * 0.2f;
@@ -643,7 +659,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				x += dx;
 				y += dy;
 
+				HUD::GetInstance()->SetCard(e->obj->GetState());
 				((CEndPoint*)(e->obj))->StartEffect();
+				moveEndScene = true;
 			}
 			else {
 				x += dx;
@@ -921,7 +939,7 @@ void CMario::Render()
 						}
 					}
 					else {
-						if (vy != 0 && !isAbleToJump)
+						if (vy != 0 && !isAbleToJump && !moveEndScene)
 						{
 							if (nx > 0) ani = MARIO_ANI_SMALL_JUMP_RIGHT;
 							else ani = MARIO_ANI_SMALL_JUMP_LEFT;

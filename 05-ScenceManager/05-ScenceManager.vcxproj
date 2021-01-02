@@ -130,6 +130,7 @@
     <ClCompile Include="CheckPoint.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EndPoint.cpp" />
+    <ClCompile Include="EndSceneTitle.cpp" />
     <ClCompile Include="EndTitle.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FireBall.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="CheckPoint.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EndPoint.h" />
+    <ClInclude Include="EndSceneTitle.h" />
     <ClInclude Include="EndTitle.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FireBall.h" />

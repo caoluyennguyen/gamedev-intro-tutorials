@@ -34,7 +34,10 @@ void CEffect::Update(DWORD dt)
 		}
 		else
 		{
-			if (state != EFFECT_TYPE_TRANSFORM) y += EFFECT_VELOCITY * dt;
+			if (state != EFFECT_TYPE_TRANSFORM)
+			{
+				y += EFFECT_VELOCITY * dt;
+			}
 		}
 	}
 }
@@ -44,6 +47,14 @@ void CEffect::Render()
 	if (appear)
 	{
 		ani_set->at(state)->Render(x, y);
+	}
+}
+
+void CEffect::RenderFreeze()
+{
+	if (appear)
+	{
+		ani_set->at(state)->Render(x, y, 255, 0);
 	}
 }
 

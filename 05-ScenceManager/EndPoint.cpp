@@ -20,16 +20,13 @@ void CEndPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		StartRolling();
 	}
 
-	if (state > 2) state = 0;
+	if (state > ENDPOINT_STATE_MUSROOM) state = ENDPOINT_STATE_STAR;
 }
 
 void CEndPoint::Render()
 {
 	animation_set->at(state)->Render(x, y);
-
 	if (state == ENDPOINT_STATE_EMPTY) effect->Render();
-
-	RenderBoundingBox();
 }
 
 void CEndPoint::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -46,7 +43,7 @@ void CEndPoint::StartEffect()
 	{
 		effect = new CEffect();
 		effect->SetPosition(this->x, this->y);
-		effect->SetState(state + 3);
+		effect->SetState(state + 2);
 		effect->StartTimeAppear();
 	}
 	

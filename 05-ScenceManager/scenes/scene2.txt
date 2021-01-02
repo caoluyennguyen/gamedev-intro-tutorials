@@ -13,6 +13,7 @@
 60	scenes\textures\misc2.png	0	128	128
 70	scenes\textures\goalRoulette.png	255	255	255
 80	scenes\textures\effect.png	255	255	255
+90	scenes\textures\EndTitle.PNG	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -52,6 +53,10 @@
 211	45	27	61	43	70
 212	92	27	105	43	70
 213	105	27	112	43	70
+
+#END TITLE
+250	0	0	166	25	90
+251	0	26	166	51	90
 
 # BIG MARIO 1-20 44-50
 # idle right
@@ -418,7 +423,8 @@
 #HIT EFFECT
 80003	0	0	17	17	80
 80004	18	0	35	17	80
-
+#LEVEL UP
+80005	596	174	617	188	20
 
 #VENUS
 #RED UP LEFT
@@ -755,6 +761,7 @@
 # === EFFECT ===
 101	80001	0
 102	80002	0
+124	80005	0
 
 # === POWER ===
 119	1010	0
@@ -851,7 +858,7 @@ right
 # ITEM
 6	901	902	903	904	905	906	907
 # EFFECT
-7	101	218	102	115	116	117	118
+7	101	218	102	117	116	115	118	124
 # POWER
 8	119	103	104
 # VENUS
@@ -859,7 +866,7 @@ right
 # PIPE
 10	608	608	608	609	609
 # END POINT
-11	112	113	114	111
+11	111	114	113	112
 # CARD
 12	120	121	122	123
 
@@ -870,9 +877,9 @@ right
 # 15 = Pipe red up, 16 = End point
 
 # MARIO
-0	10	300	1
+# 0	10	300	1
 # 0	2000	300	1
-# 0	2570	300	1
+0	2570	300	1
 
 # GOOMBA
 # state: 100 = normal, 400 = fly

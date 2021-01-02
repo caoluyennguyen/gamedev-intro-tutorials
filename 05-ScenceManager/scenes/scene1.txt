@@ -7,6 +7,7 @@
 10	scenes\textures\hud.png		255	255	255
 20	scenes\textures\WorldMap.PNG	3	26	110
 30	scenes\textures\MapSelection.png	176	224	248
+90	scenes\textures\EndTitle.PNG	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -63,6 +64,9 @@
 204	127	1	153	27	70
 205	155	1	181	27	70
 206	183	1	209	27	70
+214	233	168	257	197	10
+215	203	168	227	197	10
+216	172	168	196	197	10
 #musroom
 207	5	27	21	43	70
 208	65	27	77	43	70
@@ -105,6 +109,11 @@
 112	10013	100	10014	100
 113	10015	100	10016	100
 
+== PLAYCARD ==
+120	203	0
+121	214	0
+122	215	0
+123	216	0
 #
 # id	ani1	ani2	ani3
 #
@@ -121,6 +130,8 @@
 7	111
 # POWER
 8	108	109	110
+# CARD
+12	120	121	122	123
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type

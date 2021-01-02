@@ -212,6 +212,7 @@ class CMario : public CGameObject
 	bool isAbleToGoDownPipe;
 	bool isAbleToGoUpPipe;
 	bool isGoingIntoPipe;
+	bool moveEndScene;
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
@@ -250,6 +251,7 @@ public:
 	bool IsAbleToGoDownPipe() { return isAbleToGoDownPipe; }
 	bool IsAbleToGoUpPipe() { return isAbleToGoUpPipe; }
 	bool IsFlying() { return flying; }
+	bool IsMoveEndScene() { return moveEndScene; }
 	void SetAbleToJump(bool x) { isAbleToJump = x; }
 	void SetAbleToHoldObject(bool x) { isAbleToHoldObject = x; }
 	void SetAbleToRun(bool x) { isAbleToRun = x; }

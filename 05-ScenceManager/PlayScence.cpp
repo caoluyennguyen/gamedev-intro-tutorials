@@ -12,6 +12,7 @@
 #include "Venus.h"
 #include "Pipe.h"
 #include "EndPoint.h"
+#include "HUD.h"
 
 using namespace std;
 
@@ -326,6 +327,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+
 }
 
 void CPlayScene::Load()
@@ -413,6 +415,10 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
+	if (cx > 2808)
+	{
+		HUD::GetInstance()->SetEndScene(true);
+	}
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 3;
@@ -420,7 +426,8 @@ void CPlayScene::Update(DWORD dt)
 	//if (cy > 150.0f) cy = 230.0f;
 	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
-	if (player->GetState() != MARIO_STATE_DIE)
+	else if (cx > 2528) cx = 2528;
+	if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{
 		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 		else if (cy > 380.0f ) CGame::GetInstance()->SetCamPos(2088, 432);
@@ -437,6 +444,7 @@ void CPlayScene::Render()
 		if (objects[i]->IsEnable()) objects[i]->Render();
 	/*for (int i = coObjects.size() - 1; i > -1; i--)
 		coObjects[i]->Render();*/
+
 }
 
 /*

@@ -8,18 +8,11 @@ HUD::HUD()
 	score = 0;
 	coin = 0;
 	marioSpeed = 3;
+	endScene = false;
 }
 
 void HUD::LoadResource()
 {
-
-	/*bbox = CTextures::GetInstance()->Get(10);
-
-	rect.left = 0;
-	rect.top = 120;
-	rect.right = 262;
-	rect.bottom = 170;*/
-
 	speedUp = CSprites::GetInstance()->Get(201);
 	speedDown = CSprites::GetInstance()->Get(202);
 	power = CAnimationSets::GetInstance()->Get(8);
@@ -36,14 +29,19 @@ void HUD::LoadResource()
 	}
 
 	card = new CPlayCard();
-	//card->SetState(CARD_STATE_NORMAL);
-	card->SetState(1);
-	card->SetPosition(10, 10);
+	card->SetState(0);
+	card->SetPosition(172, 207);
+
+	endTitle = new CEndSceneTitle();
+	endTitle->LoadResource();
+	//card->SetPosition(196, 207);
+	//card->SetPosition(220, 207);
 }
 
 void HUD::UnLoadResource()
 {
 	number.clear();
+	endScene = false;
 }
 
 void HUD::Update(DWORD dt)
@@ -74,6 +72,8 @@ void HUD::Render()
 	power->at(2)->Render(120, 214, 255, 0);
 
 	card->Render();
+
+	if (endScene) endTitle->Render();
 }
 
 void HUD::RenderScore(int numScore)

@@ -134,6 +134,9 @@
     <ClCompile Include="PlayCard.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="EndSceneTitle.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -239,6 +242,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="PlayCard.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="EndSceneTitle.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
