@@ -386,6 +386,7 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {
 	coObjects.clear();
+
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL || player->GetState() == MARIO_STATE_DIE)
 	{
@@ -397,10 +398,14 @@ void CPlayScene::Update(DWORD dt)
 		return;
 	}
 
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
+	// Update camera to follow mario
+	float cx, cy;
+	player->GetPosition(cx, cy);
 
 	//grid->GetListObject(&coObjects, cx, cy);
+
+	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
+	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	for (size_t i = 1; i < objects.size(); i++)
 	{
@@ -412,9 +417,6 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
 	if (cx > 2808)
 	{
 		HUD::GetInstance()->SetEndScene(true);
@@ -423,10 +425,9 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 3;
 
-	//if (cy > 150.0f) cy = 230.0f;
 	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
-	else if (cx > 2528) cx = 2528;
+	else if (cx > MARIO_MAX_POSITION) cx = MARIO_MAX_POSITION;
 	if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{
 		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
@@ -536,7 +537,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_GO_UP_PIPE);
 		break;
 	case DIK_I:
-		mario->SetPosition(488.0f, 310.0f);
+		mario->SetPosition(1212.0f, 390.0f);
 		break;
 	case DIK_O:
 		mario->SetPosition(1710.0f, 369.0f);

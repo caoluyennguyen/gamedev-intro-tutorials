@@ -52,10 +52,10 @@ void CGrid::_ParseSection_SETTINGS(string line)
 	numCol = atoi(tokens[1].c_str());
 	numRow = atoi(tokens[2].c_str());
 
-	cells = new LPCELL[numCol];
-	for (int i = 0; i < numCol; i++)
+	cells = new LPCELL[numRow];
+	for (int i = 0; i < numRow; i++)
 	{
-		cells[i] = new Cell[numRow];
+		cells[i] = new Cell[numCol];
 	}
 }
 

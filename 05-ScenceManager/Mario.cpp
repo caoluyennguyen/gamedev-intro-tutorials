@@ -143,6 +143,10 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 			{
 				obj->SetState(BRICK_STATE_BREAKABLE);
 			}
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+			}
 		}
 		else if (dynamic_cast<CGround*>(obj)) {
 			CGround* ground = dynamic_cast<CGround*>(obj);
@@ -396,6 +400,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += dy;
 					}
 				}
+				else y += dy;
 				
 				if (e->nx != 0 && !isAbleToHoldObject)
 				{

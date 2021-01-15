@@ -152,9 +152,10 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vy = 0;
 				}
 			}
-			else if (dynamic_cast<CKoopas*>(e->obj))
+			else if (dynamic_cast<CKoopas*>(e->obj) || dynamic_cast<CGoomba*>(e->obj))
 			{
 				x += dx;
+				if (state == GOOMBA_STATE_FLY) y += dy;
 			}
 		}
 	}
@@ -192,7 +193,7 @@ void CGoomba::SetState(int state)
 			StartDisappear();
 			break;
 		case GOOMBA_STATE_WALKING: 
-			//vx = -GOOMBA_WALKING_SPEED;
+			vx = -GOOMBA_WALKING_SPEED;
 			break;
 		case GOOMBA_STATE_DIE_NGUA:
 			vy = -0.2f;
@@ -201,6 +202,7 @@ void CGoomba::SetState(int state)
 			break;
 		case GOOMBA_STATE_FLY:
 			jump = GetTickCount();
+			vx = -GOOMBA_WALKING_SPEED;
 			break;
 	}
 }

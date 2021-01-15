@@ -4,7 +4,7 @@
 #define MARIO_BBOX_WIDTH	16
 #define MARIO_BBOX_HEIGHT	16
 
-#define MARIO_VELOCITY	0.05f
+#define MARIO_VELOCITY	0.07f
 
 class CMarioWorldMap : public CGameObject
 {

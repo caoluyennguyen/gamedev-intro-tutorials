@@ -172,6 +172,8 @@
 #define MARIO_THROWING_TIME		200
 #define MARIO_FLYING_TIME		4000
 #define MARIO_TRANSFORM_TIME	500
+
+#define MARIO_MAX_POSITION	2528
 #pragma endregion
 
 class CMario : public CGameObject
