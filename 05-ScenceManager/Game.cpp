@@ -356,6 +356,12 @@ void CGame::_ParseSection_SCENES(string line)
 			scenes[id] = scene;
 		}
 		break;
+	case 4:
+		{
+			LPSCENE scene = new CPlayScene(id, path);
+			scenes[id] = scene;
+		}
+		break;
 	default:
 		return;
 	}
