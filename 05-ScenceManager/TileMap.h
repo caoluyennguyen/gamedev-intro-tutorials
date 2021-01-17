@@ -7,7 +7,7 @@
 
 class CTileMap
 {
-	CTileMap* _instance;
+	//CTileMap* _instance;
 
 	int pixel;
 	int idCell;
@@ -39,6 +39,6 @@ public:
 	void Render(int x);
 	void UnLoad() { sprites->Clear(); };
 
-	CTileMap* GetInstance();
+	//CTileMap* GetInstance();
 };
 

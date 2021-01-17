@@ -105,15 +105,10 @@ void HUD::RenderPower()
 	{
 		marioPower = 0;
 	}
-	
-	if (marioPower > 6)
+
+	for (int i = 0; i < 6; i++)
 	{
-		marioPower = 6;
-		power->at(2)->Render(120, 214, 255, 0);
-	}
-	else
-	{
-		power->at(1)->Render(120, 214, 255, 0);
+		speedDown->Draw(60 + i * 10, 214, 255, 0);
 	}
 
 	for (int i = 0; i < marioPower; i++)
@@ -121,9 +116,14 @@ void HUD::RenderPower()
 		speedUp->Draw(60 + i * 10, 214, 255, 0);
 	}
 
-	for (int i = 0; i < 6; i++)
+	if (marioPower > 6)
 	{
-		speedDown->Draw(60 + i * 10, 214, 255, 0);
+		marioPower = 7;
+		power->at(2)->Render(120, 214, 255, 0);
+	}
+	else
+	{
+		power->at(1)->Render(120, 214, 255, 0);
 	}
 
 }
@@ -133,14 +133,16 @@ void HUD::PowerUp()
 	if (GetTickCount() - powerUp > TIME_POWER)
 	{
 		marioPower++;
+		powerUp = GetTickCount();
 	}
 }
 
 void HUD::PowerDown()
 {
-	if (GetTickCount() - powerUp > TIME_POWER)
+	if (GetTickCount() - powerDown > TIME_POWER)
 	{
 		marioPower--;
+		powerDown = GetTickCount();
 	}
 }
 

@@ -29,6 +29,7 @@ class HUD
 	CEndSceneTitle* endTitle;
 
 	DWORD powerUp;
+	DWORD powerDown;
 
 	vector<vector<LPSPRITE>> number;
 public:

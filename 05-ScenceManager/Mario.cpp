@@ -299,6 +299,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isAbleToJumpHigh = false;
 			}
 			else isAbleToJumpHigh = true;
+			if (vx > 0) HUD::GetInstance()->PowerUp();
 		}
 		else {
 			if (vx > -MARIO_MAX_RUN_SPEED) {
@@ -306,8 +307,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isAbleToJumpHigh = false;
 			}
 			else isAbleToJumpHigh = true;
+			if (vx < 0) HUD::GetInstance()->PowerUp();
 		}
 	}
+
+	// Check power
+	/*if (!IsFlying() || state != MARIO_STATE_RUN_RIGHT || state != MARIO_STATE_RUN_LEFT)
+	{
+		HUD::GetInstance()->PowerDown();
+	}*/
+
 	if (state == MARIO_STATE_JUMP && isAbleToJump)
 	{
 		if (vy < 0) vy -= MARIO_ACCELERATION_JUMP * dt;
@@ -1543,5 +1552,10 @@ void CMario::SetLevel(int l)
 {
 	level = l;
 	if (l == MARIO_LEVEL_FIRE) isAbleToShoot = true;
+	else if (l == MARIO_LEVEL_SMALL || l == MARIO_LEVEL_BIG)
+	{
+		isAbleToFly = false;
+		flying = false;
+	}
 	else isAbleToShoot = false;
 }

@@ -112,8 +112,8 @@ void CTileMap::Render(int x)
 	}
 }
 
-CTileMap* CTileMap::GetInstance()
-{
-	if (_instance == NULL) _instance = new CTileMap();
-	return _instance;
-}
+//CTileMap* CTileMap::GetInstance()
+//{
+//	if (_instance == NULL) _instance = new CTileMap();
+//	return _instance;
+//}

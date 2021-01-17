@@ -439,7 +439,7 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	// Render make CPU higher
-	tileMap->Render(CGame::GetInstance()->GetCamPos());
+	//tileMap->Render(CGame::GetInstance()->GetCamPos());
 
 	for (int i = 0; i < objects.size(); i++)
 		if (objects[i]->IsEnable()) objects[i]->Render();
@@ -578,8 +578,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		mario->SetAbleToHoldObject(false);
 		mario->SetAbleToRun(false);
 		mario->SetAbleToJumpHigh(false);
-		
-		HUD::GetInstance()->PowerDown();
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);
@@ -607,8 +605,13 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		if (mario->IsAbleToRun()) mario->SetState(MARIO_STATE_RUN_LEFT);
 		else mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	/*else
-		mario->SetState(MARIO_STATE_IDLE);*/
+	else
+	{
+		if (mario->IsFlying() == false && mario->IsAbleToRun() == false)
+		{
+			HUD::GetInstance()->PowerDown();
+		}
+	}
 
 	if (game->IsKeyDown(DIK_S)) {
 		if (mario->IsAbleToJump()) mario->SetState(MARIO_STATE_JUMP);

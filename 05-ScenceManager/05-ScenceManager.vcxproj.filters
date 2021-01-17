@@ -137,6 +137,9 @@
     <ClCompile Include="EndSceneTitle.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -246,6 +249,9 @@
     </ClInclude>
     <ClInclude Include="EndSceneTitle.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
