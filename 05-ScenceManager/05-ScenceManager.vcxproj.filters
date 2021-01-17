@@ -140,6 +140,9 @@
     <ClCompile Include="IntroScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>Mario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -252,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="IntroScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>Mario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

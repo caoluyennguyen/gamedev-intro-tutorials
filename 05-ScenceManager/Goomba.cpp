@@ -13,14 +13,19 @@ CGoomba::CGoomba(int state) : CEnemy()
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
-	top = y;
+	top = y + GOOMBA_BBOX_HEIGHT_DIE;
 	right = x + GOOMBA_BBOX_WIDTH;
 
 	if (state == GOOMBA_STATE_DIE)
 	{
-		bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
+		top = y + GOOMBA_BBOX_HEIGHT_DIE;
+		bottom = top;
 	}
-	else bottom = top + GOOMBA_BBOX_HEIGHT;
+	else
+	{
+		top = y;
+		bottom = top + GOOMBA_BBOX_HEIGHT;
+	}
 }
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)

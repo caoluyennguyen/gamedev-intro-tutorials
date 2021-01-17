@@ -31,8 +31,10 @@ class CTileMap
 	CSprites* sprites;
 	LPCWSTR filePath;
 	LPCWSTR bgImagePath;
+	int textureId;
 public:
 	CTileMap() {};
+	CTileMap(int textureId) { this->textureId = textureId; };
 	CTileMap(int pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol, int numRow, int numColToRead, int numRowToRead, int idCell);
 	void LoadMap();
 	void Render();

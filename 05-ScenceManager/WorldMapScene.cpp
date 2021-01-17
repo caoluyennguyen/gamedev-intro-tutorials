@@ -41,6 +41,7 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 
 #define OBJECT_TYPE_PORTAL	50
 
+#define TEXTURE_ID 20
 #define MAX_SCENE_LINE 1024
 
 
@@ -62,7 +63,7 @@ void CWorldMapScene::_ParseSection_TILEMAP(string line)
 
 	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 	//tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
-	tileMap = new CTileMap();
+	tileMap = new CTileMap(TEXTURE_ID);
 }
 
 void CWorldMapScene::_ParseSection_TEXTURES(string line)

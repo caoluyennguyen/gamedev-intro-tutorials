@@ -1,41 +1,20 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-0	scenes\textures\mario.png	255	255	255
-20	scenes\textures\misc.png	176	224	248
-
+0	scenes\textures\title.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# BIG MARIO 
-# idle right
-10001	246	154	260	181	0
-# walk
-10002	275	154	290	181	0		
-10003	304	154	321	181	0
-# idle left
-10011	186	154	200	181	0
-#walk
-10012	155	154	170	181	0
-10013	125	154	140	181	0
-# die 
-10099	215	120	231	135	0
-# SMALL MARIO
-# idle small right
-10021	247	0	259	15	0
-# walk
-10022	275	0	291	15	0
-10023	306	0	320	15	0
-# idle small left
-10031	187	0	198	15	0
-# walk
-10032	155	0	170	15	0
-10033	125	0	139	15	0
-
-#QUESTION BRICK
-40001	300	117	316	133	20
-40002	318	117	334	133	20
-40003	336	117	352	133	20
-40004	355	117	370	133	20
+# ARROW 
+10001	30	307	37	315	0
+# SCROLL STAGE
+10002	0	0	256	187	0
+# BACKGROUND
+10003	516	226	772	413	0
+# THREE
+10004	194	363	236	404	0
+10005	240	363	282	404	0
+10006	287	363	329	404	0
+10007	333	363	375	404	0
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

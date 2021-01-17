@@ -67,12 +67,12 @@ void CTileMap::Render()
 {
 	RECT rect;
 
-	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(20);
+	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(textureId);
 
 	float l, t, r, b;
 
-	rect.left = 0;
-	rect.top = 0;
+	rect.left = 200;
+	rect.top = 200;
 	rect.right = 2819;
 	rect.bottom = 430;
 
