@@ -1,71 +1,58 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-0	scenes\textures\title.png	255	255	255
+0	scenes\textures\title.png	0	255	255
+10	scenes\textures\title.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # ARROW 
-10001	30	307	37	315	0
+10001	30	307	37	315	10
 # SCROLL STAGE
 10002	0	0	256	187	0
 # BACKGROUND
 10003	516	226	772	413	0
 # THREE
-10004	194	363	236	404	0
-10005	240	363	282	404	0
-10006	287	363	329	404	0
-10007	333	363	375	404	0
+10004	194	363	236	404	10
+10005	240	363	282	404	10
+10006	287	363	329	404	10
+10007	333	363	375	404	10
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-# ==== MARIO =========
-#idle BIG right
-400	10001	100
-#idle BIG left
-401	10011	100
-#idle small right
-402	10021	100
-#idle small left
-403	10031	100
-#walk right big
-500	10001	100	10002	100	10003	100
-#walk left big
-501	10011	100	10012	100	10013	100
-#walk right small
-502	10021	100	10022	100	10023	100
-#walk left small
-503	10031	100	10032	100	10033	100
-#die
-599	10099	100
-
-# ==== QUESTION BRICK =========
-602	40001	1000	40001	100	40002	100	40003	100	40004	100
+# ==== ARROW =========
+100	10001	0
+# ==== SCROLL STAGE =========
+101	10002	0
+# ==== BACKGROUND =========
+102	10003	0
+# ==== THREE =========
+103	10004	100	10005	100	10006	100	10007	100
 
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# MARIO
-1	400	401	402	403	500	501	502	503	599
-# QUESTION BRICK 
-22	602
+# ARROW 
+1	100
+# SCROLL STAGE
+2	101
+# BACKGROUND
+3	102
+# THREE
+7	103
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
-# MARIO
-0	17	115	1
+# type: 0 = Arrow, 1 = Scroll stage, 2 = Background, 3 = Three
 
-# BRICK 
-1	0	135	22
-1	0	150	22
-1	16	150	22
-1	32	150	22
-1	100	150	22
-1	115	150	22
-1	130	150	22
+# ARROW 145	161	177
+0	75	145	1
+# SCROLL STAGE
+1	5	0	2
+# BACKGROUND
+2	0	0	3
+# THREE
+3	118	96	7
 
-# --- SCENE PORTAL ----
-# type	l	t	ani_set_id	r	b	scene_id
-50	115	98	0	148	150	1
-
+[TILEMAP]
+0	511	226	772	450

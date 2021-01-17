@@ -22,6 +22,15 @@ CTileMap::CTileMap(int pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol,
 	LoadMap();
 }
 
+CTileMap::CTileMap(int textureId, int left, int top, int right, int bottom)
+{
+	this->textureId = textureId;
+	this->left = left;
+	this->top = top;
+	this->right = right;
+	this->bottom = bottom;
+}
+
 void CTileMap::LoadMap()
 {
 	// Luu tung tile theo id tu 1, 2, ...
@@ -65,18 +74,22 @@ void CTileMap::LoadMap()
 
 void CTileMap::Render()
 {
-	RECT rect;
+	//RECT rect;
 
 	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(textureId);
 
 	float l, t, r, b;
 
-	rect.left = 200;
+	/*rect.left = 200;
 	rect.top = 200;
 	rect.right = 2819;
-	rect.bottom = 430;
+	rect.bottom = 430;*/
+	/*rect.left = left;
+	rect.top = top;
+	rect.right = right;
+	rect.bottom = bottom;*/
 
-	CGame::GetInstance()->Draw(0, 0, bbox, rect.left, rect.top, rect.right, rect.bottom);
+	CGame::GetInstance()->Draw(0, 0, bbox, this->left, this->top, this->right, this->bottom);
 }
 
 void CTileMap::Render(int x)

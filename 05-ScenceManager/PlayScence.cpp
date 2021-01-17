@@ -434,6 +434,8 @@ void CPlayScene::Update(DWORD dt)
 		else if (cy > 380.0f ) CGame::GetInstance()->SetCamPos(2088, 432);
 		else CGame::GetInstance()->SetCamPos(int(cx), 230);
 	}
+
+	HUD::GetInstance()->Update(dt);
 }
 
 void CPlayScene::Render()
@@ -446,6 +448,7 @@ void CPlayScene::Render()
 	/*for (int i = coObjects.size() - 1; i > -1; i--)
 		coObjects[i]->Render();*/
 
+	HUD::GetInstance()->Render();
 }
 
 /*
@@ -473,6 +476,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_F2:
 		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_F3:
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	}
 	if (mario->GetState() == MARIO_STATE_DIE) return;

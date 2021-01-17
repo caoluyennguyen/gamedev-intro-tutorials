@@ -143,6 +143,9 @@
     <ClCompile Include="Arrow.cpp">
       <Filter>Mario</Filter>
     </ClCompile>
+    <ClCompile Include="ScrollStage.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -258,6 +261,9 @@
     </ClInclude>
     <ClInclude Include="Arrow.h">
       <Filter>Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollStage.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 #include "CheckPoint.h"
 #include "Grass.h"
 #include "Turtle.h"
+#include "HUD.h"
 
 using namespace std;
 
@@ -41,29 +42,14 @@ CWorldMapScene::CWorldMapScene(int id, LPCWSTR filePath) :
 
 #define OBJECT_TYPE_PORTAL	50
 
-#define TEXTURE_ID 20
 #define MAX_SCENE_LINE 1024
 
 
 void CWorldMapScene::_ParseSection_TILEMAP(string line)
 {
-	//vector<string> tokens = split(line);
+	vector<string> tokens = split(line);
 
-	//if (tokens.size() < 5) return; // skip invalid lines
-
-	//int pixel = atoi(tokens[0].c_str());
-	//wstring img_path = ToWSTR(tokens[1]);
-	//wstring file_path = ToWSTR(tokens[2]);
-	//int numCol = atoi(tokens[3].c_str());
-	//int numRow = atoi(tokens[4].c_str());
-	//int numColToRead = atoi(tokens[5].c_str());
-	//int numRowToRead = atoi(tokens[6].c_str());
-	//int idCell = atoi(tokens[7].c_str());
-	//mapWidth = atoi(tokens[8].c_str());
-
-	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
-	//tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
-	tileMap = new CTileMap(TEXTURE_ID);
+	tileMap = new CTileMap(atoi(tokens[0].c_str()), atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), atoi(tokens[3].c_str()), atoi(tokens[4].c_str()));
 }
 
 void CWorldMapScene::_ParseSection_TEXTURES(string line)
@@ -315,6 +301,8 @@ void CWorldMapScene::Render()
 	player->Render();
 
 	effect->Render();
+
+	HUD::GetInstance()->Render();
 }
 
 /*
@@ -360,6 +348,9 @@ void CWorldMapSceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_F2:
 		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_F3:
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	case DIK_UP:
 		if (mario->moveUp)

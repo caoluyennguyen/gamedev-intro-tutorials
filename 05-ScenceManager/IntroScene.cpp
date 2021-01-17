@@ -29,10 +29,10 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_ARROW	0
-#define OBJECT_TYPE_CHECKPOINT	1
-#define OBJECT_TYPE_ARROW	0
-#define OBJECT_TYPE_CHECKPOINT	1
+#define OBJECT_TYPE_ARROW			0
+#define OBJECT_TYPE_SCROLL_STAGE	1
+#define OBJECT_TYPE_BACKGROUND		2
+#define OBJECT_TYPE_THREE			3
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -41,7 +41,8 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) :
 
 void CIntroScene::_ParseSection_TILEMAP(string line)
 {
-	tileMap = new CTileMap();
+	vector<string> tokens = split(line);
+	tileMap = new CTileMap(atoi(tokens[0].c_str()), atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), atoi(tokens[3].c_str()), atoi(tokens[4].c_str()));
 }
 
 void CIntroScene::_ParseSection_TEXTURES(string line)
@@ -160,23 +161,33 @@ void CIntroScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
+	case OBJECT_TYPE_SCROLL_STAGE:
+		obj = new CScrollStage();
+
+		break;
+	case OBJECT_TYPE_THREE:
+		effect = new CEffect();
+		effect->SetPosition(x, y);
+		effect->SetState(0);
+		effect->SetAppear(true);
+
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
 	// General object setup
+	if (obj == NULL)
+	{
+		return;
+	}
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
-
-	effect = new CEffect();
-	effect->SetPosition(207, 107);
-	effect->SetState(0);
-	effect->SetAppear(true);
 }
 
 void CIntroScene::Load()
@@ -240,24 +251,20 @@ void CIntroScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
-	}
-	coObjects[0]->Update(dt);
+	objects[1]->Update(dt);
 
-	player->Update(dt, &coObjects);
+	player->Update(dt);
 }
 
 void CIntroScene::Render()
 {
 	tileMap->Render();
 
-	for (int i = 0; i < objects.size(); i++) objects[i]->Render();
+	effect->Render();
 
 	player->Render();
 
-	effect->Render();
+	objects[1]->Render();
 }
 
 /*
@@ -277,11 +284,10 @@ void CIntroScene::Unload()
 void CIntroSceneSceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	CArrow* arrow = ((CIntroScene*)scence)->GetPlayer();
-
 	switch (KeyCode)
 	{
 	case DIK_S:
-		CGame::GetInstance()->SwitchScene(2);
+		CGame::GetInstance()->SwitchScene(1);
 		break;
 	case DIK_F1:
 		CGame::GetInstance()->SwitchScene(2);
@@ -289,31 +295,21 @@ void CIntroSceneSceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_F2:
 		CGame::GetInstance()->SwitchScene(1);
 		break;
-	}
-}
+	case DIK_F3:
+		CGame::GetInstance()->SwitchScene(3);
+		break;
 
-void CIntroSceneSceneKeyHandler::OnKeyUp(int KeyCode)
-{
-	//CMario* mario = ((CWorldMapScene*)scence)->GetPlayer();
-
-	switch (KeyCode)
-	{
-	case DIK_S:
+	case DIK_UP:
+		arrow->y -= 16;
+		break;
+	case DIK_DOWN:
+		arrow->y += 16;
 		break;
 	}
 }
 
+void CIntroSceneSceneKeyHandler::OnKeyUp(int KeyCode)
+{}
+
 void CIntroSceneSceneKeyHandler::KeyState(BYTE* states)
-{
-	CGame* game = CGame::GetInstance();
-	//CMario* mario = ((CWorldMapScene*)scence)->GetPlayer();
-
-	if (game->IsKeyDown(DIK_RIGHT)) {
-
-	}
-	else if (game->IsKeyDown(DIK_LEFT)) {
-
-	}
-	/*else
-		mario->SetState(MARIO_STATE_IDLE);*/
-}
+{}

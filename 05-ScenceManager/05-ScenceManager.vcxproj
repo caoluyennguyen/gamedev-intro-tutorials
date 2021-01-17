@@ -146,6 +146,7 @@
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlayCard.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="ScrollStage.cpp" />
     <ClCompile Include="Tail.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Turtle.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayCard.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="ScrollStage.h" />
     <ClInclude Include="Tail.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Turtle.h" />

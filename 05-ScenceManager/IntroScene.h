@@ -4,6 +4,7 @@
 #include "Scence.h"
 #include "Mario.h"
 #include "Arrow.h"
+#include "ScrollStage.h"
 #include "TileMap.h"
 
 class CIntroScene : public CScene

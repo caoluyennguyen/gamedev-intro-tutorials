@@ -26,6 +26,8 @@ class CTileMap
 	int cellWidth;			// chieu rong cua mot o
 	int cellHeight;			// chieu cao cua mot o
 
+	int left, top, right, bottom;
+
 	vector<vector<int>> cellId;
 
 	CSprites* sprites;
@@ -34,7 +36,7 @@ class CTileMap
 	int textureId;
 public:
 	CTileMap() {};
-	CTileMap(int textureId) { this->textureId = textureId; };
+	CTileMap(int textureId, int left, int top, int right, int bottom);
 	CTileMap(int pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol, int numRow, int numColToRead, int numRowToRead, int idCell);
 	void LoadMap();
 	void Render();

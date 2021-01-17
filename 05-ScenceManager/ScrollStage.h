@@ -1,13 +1,13 @@
 #pragma once
 #include "GameObject.h"
 
-#define MIN_Y	145
-#define MAX_Y	161
+#define STAGE_VELOCITY	0.6f
+#define MIN_Y	200
 
-class CArrow : public CGameObject
+class CScrollStage : public CGameObject
 {
 public:
-	CArrow() {};
+	CScrollStage() {};
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 
 	virtual void Render();
