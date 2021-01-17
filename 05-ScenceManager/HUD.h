@@ -7,6 +7,7 @@
 #include "EndSceneTitle.h"
 
 #define TIME_PLAY 1000
+#define TIME_POWER 150
 
 class HUD
 {
@@ -15,7 +16,7 @@ class HUD
 	RECT rect;
 	LPDIRECT3DTEXTURE9 bbox;
 
-	int marioSpeed;
+	int marioPower;
 	float gameTime;
 	int score;
 	int coin;
@@ -26,6 +27,8 @@ class HUD
 	LPANIMATION_SET power;
 	CPlayCard* card;
 	CEndSceneTitle* endTitle;
+
+	DWORD powerUp;
 
 	vector<vector<LPSPRITE>> number;
 public:
@@ -39,6 +42,7 @@ public:
 	void RenderScore(int score);
 	void RenderTime(int time);
 	void RenderCoin(int coin);
+	void RenderPower();
 
 	void AddScore(int score) { this->score += score; }
 	void AddCoin() { this->coin++; }
@@ -46,6 +50,9 @@ public:
 
 	void SetEndScene(bool endScene) { this->endScene = endScene; }
 	bool IsEndScene() { return this->endScene; }
+
+	void PowerUp();
+	void PowerDown();
 
 	static HUD* GetInstance();
 };

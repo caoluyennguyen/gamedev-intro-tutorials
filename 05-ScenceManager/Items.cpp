@@ -19,6 +19,10 @@ CItems::CItems(int type)
 	{
 		effect->SetState(EFFECT_TYPE_SCORE_1000);
 	}
+	else if (state == ITEM_TYPE_GREEN_MUSROOM)
+	{
+		effect->SetState(EFFECT_TYPE_LEVEL_UP);
+	}
 	nx = -1;
 }
 

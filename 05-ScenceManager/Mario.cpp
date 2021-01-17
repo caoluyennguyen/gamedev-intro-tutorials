@@ -618,6 +618,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					((CItems*)e->obj)->effect->SetPosition(e->obj->x, e->obj->y);
 					((CItems*)e->obj)->effect->StartTimeAppear();
 				}
+				else if (e->obj->GetState() == ITEM_TYPE_GREEN_MUSROOM)
+				{
+					e->obj->SetEnable(false);
+
+					((CItems*)e->obj)->effect->SetPosition(e->obj->x, e->obj->y);
+					((CItems*)e->obj)->effect->StartTimeAppear();
+				}
 				else if (e->obj->GetState() == ITEM_TYPE_COIN)
 				{
 					x += dx;

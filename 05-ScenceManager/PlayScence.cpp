@@ -578,8 +578,8 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		mario->SetAbleToHoldObject(false);
 		mario->SetAbleToRun(false);
 		mario->SetAbleToJumpHigh(false);
-		//mario->SetAbleToShoot(false);
-		//mario->SetState(MARIO_STATE_IDLE);
+		
+		HUD::GetInstance()->PowerDown();
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);

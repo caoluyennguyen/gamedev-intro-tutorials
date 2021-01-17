@@ -7,7 +7,7 @@ HUD::HUD()
 	gameTime = 300.0f;
 	score = 0;
 	coin = 0;
-	marioSpeed = 3;
+	marioPower = 0;
 	endScene = false;
 }
 
@@ -34,8 +34,6 @@ void HUD::LoadResource()
 
 	endTitle = new CEndSceneTitle();
 	endTitle->LoadResource();
-	//card->SetPosition(196, 207);
-	//card->SetPosition(220, 207);
 }
 
 void HUD::UnLoadResource()
@@ -55,21 +53,10 @@ void HUD::Render()
 {
 	CSprites::GetInstance()->Get(200)->Draw(0, 200, 255, 0);
 
-	for (int i = 0; i < marioSpeed; i++)
-	{
-		speedUp->Draw(60 + i * 10, 214, 255, 0);
-	}
-
-	for (int i = 0; i < 6 - marioSpeed; i++)
-	{
-		speedDown->Draw(90 + i * 10, 214, 255, 0);
-	}
-
 	RenderScore(score);
 	RenderTime(gameTime);
 	RenderCoin(coin);
-
-	power->at(2)->Render(120, 214, 255, 0);
+	RenderPower();
 
 	card->Render();
 
@@ -109,6 +96,51 @@ void HUD::RenderCoin(int coin)
 		int k = coin % 10;
 		number[i][k]->Draw(151 - i * 10, 214, 255, 0);
 		coin = (coin - k) / 10;
+	}
+}
+
+void HUD::RenderPower()
+{
+	if (marioPower < 0)
+	{
+		marioPower = 0;
+	}
+	
+	if (marioPower > 6)
+	{
+		marioPower = 6;
+		power->at(2)->Render(120, 214, 255, 0);
+	}
+	else
+	{
+		power->at(1)->Render(120, 214, 255, 0);
+	}
+
+	for (int i = 0; i < marioPower; i++)
+	{
+		speedUp->Draw(60 + i * 10, 214, 255, 0);
+	}
+
+	for (int i = 0; i < 6; i++)
+	{
+		speedDown->Draw(60 + i * 10, 214, 255, 0);
+	}
+
+}
+
+void HUD::PowerUp()
+{
+	if (GetTickCount() - powerUp > TIME_POWER)
+	{
+		marioPower++;
+	}
+}
+
+void HUD::PowerDown()
+{
+	if (GetTickCount() - powerUp > TIME_POWER)
+	{
+		marioPower--;
 	}
 }
 
