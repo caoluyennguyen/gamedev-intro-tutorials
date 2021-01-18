@@ -290,13 +290,16 @@ void CIntroSceneSceneKeyHandler::OnKeyDown(int KeyCode)
 		CGame::GetInstance()->SwitchScene(1);
 		break;
 	case DIK_F1:
-		CGame::GetInstance()->SwitchScene(2);
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	case DIK_F2:
-		CGame::GetInstance()->SwitchScene(1);
+		CGame::GetInstance()->SwitchScene(2);
 		break;
 	case DIK_F3:
-		CGame::GetInstance()->SwitchScene(3);
+		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_F4:
+		CGame::GetInstance()->SwitchScene(4);
 		break;
 
 	case DIK_UP:

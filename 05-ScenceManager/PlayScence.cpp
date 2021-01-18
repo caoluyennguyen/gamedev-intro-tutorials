@@ -428,12 +428,13 @@ void CPlayScene::Update(DWORD dt)
 	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
 	else if (cx > MARIO_MAX_POSITION) cx = MARIO_MAX_POSITION;
-	if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
+	/*if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{
 		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 		else if (cy > 380.0f ) CGame::GetInstance()->SetCamPos(2088, 432);
 		else CGame::GetInstance()->SetCamPos(int(cx), 230);
-	}
+	}*/
+	CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 
 	HUD::GetInstance()->Update(dt);
 }
@@ -472,13 +473,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_F1:
-		CGame::GetInstance()->SwitchScene(2);
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	case DIK_F2:
-		CGame::GetInstance()->SwitchScene(1);
+		CGame::GetInstance()->SwitchScene(2);
 		break;
 	case DIK_F3:
-		CGame::GetInstance()->SwitchScene(3);
+		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_F4:
+		CGame::GetInstance()->SwitchScene(4);
 		break;
 	}
 	if (mario->GetState() == MARIO_STATE_DIE) return;
