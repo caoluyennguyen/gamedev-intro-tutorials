@@ -153,7 +153,7 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Boomerang.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,7 +281,7 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Boomerang.h">
-      <Filter>Header Files</Filter>
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

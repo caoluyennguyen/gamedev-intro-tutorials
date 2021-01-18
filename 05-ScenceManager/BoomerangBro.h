@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "Boomerang.h"
 
 #define BOOMERANG_BRO_STATE_WALKING	0
 #define BOOMERANG_BRO_STATE_SHOOTING 1
@@ -12,6 +13,7 @@
 
 class CBoomerangBro : public CEnemy
 {
+	CBoomerang* boomerang;
 	DWORD changeDirection;
 	bool isAbleToJump;
 

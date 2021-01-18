@@ -6,6 +6,9 @@ CBoomerangBro::CBoomerangBro() : CEnemy()
 {
 	changeDirection = 0;
 	SetState(BOOMERANG_BRO_STATE_WALKING);
+
+	boomerang = new CBoomerang();
+	boomerang->SetPosition(x, y);
 }
 
 void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -99,6 +102,7 @@ void CBoomerangBro::Render()
 	animation_set->at(ani)->Render(x, y);
 
 	CEnemy::Render();
+	boomerang->Render();
 }
 
 void CBoomerangBro::SetState(int state)
