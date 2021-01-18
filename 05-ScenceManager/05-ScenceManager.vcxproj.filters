@@ -146,6 +146,15 @@
     <ClCompile Include="ScrollStage.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="MovingWood.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="BoomerangBro.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -264,6 +273,15 @@
     </ClInclude>
     <ClInclude Include="ScrollStage.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingWood.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangBro.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

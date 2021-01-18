@@ -126,6 +126,8 @@
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="Boomerang.cpp" />
+    <ClCompile Include="BoomerangBro.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
@@ -143,6 +145,7 @@
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="MarioWorldMap.cpp" />
+    <ClCompile Include="MovingWood.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlayCard.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -167,6 +170,8 @@
   <ItemGroup>
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="Boomerang.h" />
+    <ClInclude Include="BoomerangBro.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CheckPoint.h" />
@@ -184,6 +189,7 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="MarioWorldMap.h" />
+    <ClInclude Include="MovingWood.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayCard.h" />
     <ClInclude Include="Portal.h" />

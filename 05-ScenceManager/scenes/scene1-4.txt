@@ -9,11 +9,12 @@
 20	scenes\textures\misc.png	176	224	248
 30	scenes\textures\enemies-2.png	0	128	128
 40	scenes\textures\enemies-3.png	0	128	128
-50	scenes\textures\flower.png	255	255	255
+50	scenes\textures\flower.png	0	128	128
 60	scenes\textures\misc2.png	0	128	128
 70	scenes\textures\goalRoulette.png	255	255	255
 80	scenes\textures\effect.png	255	255	255
 90	scenes\textures\EndTitle.PNG	255	255	255
+100	scenes\textures\enemies-right.png	0	128	128
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -406,6 +407,28 @@
 #LEVEL UP
 80005	596	174	617	188	20
 
+#moving brick
+100000	352	167	400	183	60
+
+# BOOMERANG BRO
+#walking
+9901	498	120	514	144	100
+9911	481	120	497	144	100
+
+#firing
+9921	464	120	480	144	100
+9931	447	120	463	144	100
+
+# die
+9941	498	272	515	296	40
+9951	481	272	497	296	40
+
+#boomerang
+9942	498	102	513	118	100
+9952	481	103	497	118	100
+9962	464	103	480	118	100
+9972	448	102	463	118	100
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -735,6 +758,19 @@ right
 # === EFFECT ===
 118	80003	100	80004	100	21	0
 
+#boomerang brother
+#walking
+9901	9901	100	9911	100
+#firing
+9902	9921	100	9931	100
+#boomerang
+9903	9942	100	9952	100	9962	100	9972	100
+#die
+9962	9941	100	9951	100
+
+# === MOVING WOOD =====
+100000	100000	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -745,6 +781,8 @@ right
 2	601
 # QUESTION MARK BRICK 
 22	602	605	606	607	901
+#boomerang brother
+3	9962	9901	9902	9903	9962
 # KOOPAS
 4	801	802	803	804	805	806	807	808	809	810	811	812	813	814	815	816
 # FIREBALL
@@ -761,22 +799,24 @@ right
 11	111	114	113	112
 # CARD
 12	120	121	122	123
+# MOVING WOOD
+13	100000
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4= Ground, 8 = Venus red, 9 = Venus green
 # 10 = Piranha, 11 = Pipe normal, 12 = Pipe green down, 13 = Pipe green up, 14 = Pipe red down,
-# 15 = Pipe red up, 16 = End point
+# 15 = Pipe red up, 16 = End point, 17 = Red Koopas, 18 = Moving wood,
+# 19 = Boomerang bro
 
 # MARIO
-0	10	300	1
-# 0	2000	300	1
-# 0	2570	300	1
+# 0	10	300	1
+0	2120	300	1
 
 # KOOPAS
 # state: 100 = normal, 600 = fly
 #3	100	200	4	100
-17	2080	312	4	100
+17	1950	312	4	100
 
 # END POINT
 16	2443	331	11
@@ -867,6 +907,24 @@ right
 6	1889	272	6	0
 6	1905	272	6	0
 6	1921	272	6	0
+
+# MOVING WOOD
+#18	366	320	13
+#18	560	350	13
+#18	590	303	13
+#18	625	399	13
+#18	753	336	13
+#18	1088	383	13
+#18	1199	321	13
+#18	1375	352	13
+#18	1409	355	13
+#18	1533	302	13
+#18	1744	383	13
+#18	1793	414	13
+#18	1776	333	13
+
+# BOOMERANG BRO
+19	2120	289	3
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

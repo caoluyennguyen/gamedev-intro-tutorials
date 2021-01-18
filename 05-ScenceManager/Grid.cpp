@@ -170,6 +170,10 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>* listObject, int camX, int camY)
 						obj = cells[i][j].GetListObjects().at(k);
 						if (obj->enable == false) continue;
 							listObject->push_back(obj);
+						/*if (obj->enable == false) continue;
+						if (CheckObjectId(listObject, obj)) {
+							listObject->push_back(obj);
+						}*/
 					}
 				}
 			}
@@ -192,4 +196,15 @@ void CGrid::Unload()
 		delete cells;
 		cells = NULL;
 	}
+}
+
+bool CGrid::CheckObjectId(vector<LPGAMEOBJECT>* listObjects, LPGAMEOBJECT obj)
+{
+	for (int i = 0; i < listObjects->size(); i++)
+	{
+		if (listObjects->at(i) == obj) {
+			return false;
+		}
+	}
+	return true;
 }

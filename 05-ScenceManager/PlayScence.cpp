@@ -13,6 +13,8 @@
 #include "Pipe.h"
 #include "EndPoint.h"
 #include "HUD.h"
+#include "MovingWood.h"
+#include "BoomerangBro.h"
 
 using namespace std;
 
@@ -54,6 +56,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_PIPE_BLACK_UP 15
 #define OBJECT_TYPE_END_POINT 16
 #define OBJECT_TYPE_RED_KOOPAS 17
+#define OBJECT_TYPE_MOVING_WOOD 18
+#define OBJECT_TYPE_BOOMERANG_BRO 19
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -313,6 +317,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int state = atof(tokens[4].c_str());
 		obj = new CKoopas(state, 1);
+		break;
+	}
+	case OBJECT_TYPE_MOVING_WOOD:
+	{
+		obj = new CMovingWood();
+		break;
+	}
+	case OBJECT_TYPE_BOOMERANG_BRO:
+	{
+		obj = new CBoomerangBro();
 		break;
 	}
 	default:

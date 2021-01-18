@@ -15,6 +15,7 @@
 #include "Venus.h"
 #include "EndPoint.h"
 #include "Hud.h"
+#include "MovingWood.h"
 
 CMario* CMario::__instance = NULL;
 
@@ -684,6 +685,29 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				HUD::GetInstance()->SetCard(e->obj->GetState());
 				((CEndPoint*)(e->obj))->StartEffect();
 				moveEndScene = true;
+			}
+			else if (dynamic_cast<CMovingWood*>(e->obj)) {
+				CMovingWood* wood = dynamic_cast<CMovingWood*>(e->obj);
+
+				if (e->nx != 0)
+				{
+					x += min_tx * dx + nx * 0.2f;
+				}
+				if (e->ny < 0)
+				{
+					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
+					isAbleToJump = true;
+					//vy = 0;
+					y += min_ty * dy + ny * 0.2f;
+					wood->vx = 0;
+					wood->SetFallDown();
+				}
+				else if (e->ny > 0)
+				{
+					y += min_ty * dy + ny * 0.2f;
+					vy += 0.1f;
+				}
+
 			}
 			else {
 				x += dx;
@@ -1424,7 +1448,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		if (vy == 0) {
+		if (isAbleToJump) {
 			// mario can fly when can run and jump high
 			if (isAbleToJumpHigh && level != MARIO_LEVEL_TAIL)
 			{

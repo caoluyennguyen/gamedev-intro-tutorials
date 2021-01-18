@@ -20,5 +20,6 @@ public:
 	void GetListObject(vector<LPGAMEOBJECT>* listObject, int camX, int camY);
 	void Load(LPCWSTR filePath, vector<LPGAMEOBJECT>* listObject);
 	void Unload();
+	bool CheckObjectId(vector<LPGAMEOBJECT>* listObjects, LPGAMEOBJECT obj);
 };
 
