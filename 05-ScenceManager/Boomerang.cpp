@@ -55,7 +55,7 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBoomerang::Render()
 {
-	animation_set->at(2)->Render(x, y);
+	animation_set->at(3)->Render(x, y);
 
 	RenderBoundingBox();
 }

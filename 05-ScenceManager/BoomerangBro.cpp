@@ -9,6 +9,9 @@ CBoomerangBro::CBoomerangBro() : CEnemy()
 
 	boomerang = new CBoomerang();
 	boomerang->SetPosition(x, y);
+
+	changeDirection = 0;
+	startShoot = 0;
 }
 
 void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -36,13 +39,29 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CEnemy::Update(dt);
 
-	//vy += BOOMERANG_BRO_STATE_GRAVITY * dt;
+	vy += BOOMERANG_BRO_STATE_GRAVITY * dt;
 
 	if (state == BOOMERANG_BRO_STATE_DIE)
 	{
-		x += dx;
+		x += dx * nx;
 		y += dy;
 		return;
+	}
+
+	if (GetTickCount() - changeDirection > BOOMERANG_BRO_TIME_MOVE)
+	{
+		nx = -nx;
+		changeDirection = GetTickCount();
+	}
+
+	if (GetTickCount() - startShoot > BOOMERANG_BRO_TIME_SHOOT)
+	{
+		if (isShooting)
+		{
+			isShooting = false;
+		}
+		else isShooting = true;
+		startShoot = GetTickCount();
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -56,7 +75,7 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		x += dx;
+		x += dx * nx;
 		y += dy;
 	}
 	else
@@ -81,12 +100,17 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					vx = -vx;
 					x += min_tx * dx + nx * 0.5f;
 				}
+				else x += dx * nx;
+
 				if (e->ny != 0)
 				{
-
 					vy = 0;
 					y += min_ty * dy + ny * 0.2f;
 				}
+			}
+			else
+			{
+				x += dx * nx;
 			}
 		}
 	}
@@ -97,9 +121,20 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBoomerangBro::Render()
 {
-	int ani = BOOMERANG_BRO_STATE_WALKING;
+	//int ani = BOOMERANG_BRO_STATE_WALKING;
 
-	animation_set->at(ani)->Render(x, y);
+	if (state == BOOMERANG_BRO_STATE_DIE)
+	{
+		animation_set->at(state)->Render(x, y);
+	}
+	else
+	{
+		if (isShooting)
+		{
+			animation_set->at(BOOMERANG_BRO_STATE_SHOOTING)->Render(x, y);
+		}
+		else animation_set->at(BOOMERANG_BRO_STATE_WALKING)->Render(x, y);
+	}
 
 	CEnemy::Render();
 	boomerang->Render();
@@ -110,6 +145,9 @@ void CBoomerangBro::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case BOOMERANG_BRO_STATE_WALKING:
+		vx = BOOMERANG_BRO_STATE_VELOCITY;
+		break;
 	case BOOMERANG_BRO_STATE_DIE:
 		vx = 0;
 		vy = -0.1f;
