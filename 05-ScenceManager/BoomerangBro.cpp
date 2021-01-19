@@ -1,17 +1,17 @@
 #include "BoomerangBro.h"
 #include "Ground.h"
 #include "Mario.h"
+#include "Boomerang.h"
 
 CBoomerangBro::CBoomerangBro() : CEnemy()
 {
 	changeDirection = 0;
 	SetState(BOOMERANG_BRO_STATE_WALKING);
 
-	boomerang = new CBoomerang();
-	boomerang->SetPosition(x, y);
+	fBoomerang = new CBoomerang();
 
 	changeDirection = 0;
-	startShoot = 0;
+	startShoot = GetTickCount();
 }
 
 void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -54,14 +54,21 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		changeDirection = GetTickCount();
 	}
 
-	if (GetTickCount() - startShoot > BOOMERANG_BRO_TIME_SHOOT)
+	if (GetTickCount() - startShoot > BOOMERANG_BRO_TIME_FIRST_SHOOT && startShoot != 0)
 	{
-		if (isShooting)
+		/*if (fShooting)
 		{
-			isShooting = false;
+			fShooting = false;
 		}
-		else isShooting = true;
-		startShoot = GetTickCount();
+		else fShooting = true;*/
+		fBoomerang->SetPosition(x, y);
+		startShoot = 0;
+		fBoomerang->enable = true;
+	}
+
+	if (fBoomerang->enable)
+	{
+		fBoomerang->Update(dt);
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -108,12 +115,29 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					y += min_ty * dy + ny * 0.2f;
 				}
 			}
+			else if (dynamic_cast<CBoomerang*>(e->obj))
+			{
+				CBoomerang* boomerang = dynamic_cast<CBoomerang*>(e->obj);
+				if (e->nx != 0)
+				{
+					boomerang->Reset();
+					startShoot = GetTickCount();
+				}
+			}
 			else
 			{
 				x += dx * nx;
 			}
 		}
 	}
+
+	LPCOLLISIONEVENT e = SweptAABBEx(fBoomerang);
+	if (e->nx != 0)
+	{
+		fBoomerang->Reset();
+		startShoot = GetTickCount();
+	}
+	delete e;
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -129,7 +153,7 @@ void CBoomerangBro::Render()
 	}
 	else
 	{
-		if (isShooting)
+		if (fShooting)
 		{
 			animation_set->at(BOOMERANG_BRO_STATE_SHOOTING)->Render(x, y);
 		}
@@ -137,7 +161,11 @@ void CBoomerangBro::Render()
 	}
 
 	CEnemy::Render();
-	boomerang->Render();
+	/*if (fBoomerang->enable)
+	{
+		fBoomerang->Render();
+	}*/
+	fBoomerang->Render();
 }
 
 void CBoomerangBro::SetState(int state)
