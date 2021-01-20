@@ -327,6 +327,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BOOMERANG_BRO:
 	{
 		obj = new CBoomerangBro();
+		objects.push_back(dynamic_cast<CBoomerangBro*>(obj)->fBoomerang);
 		break;
 	}
 	default:

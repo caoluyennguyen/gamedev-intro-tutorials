@@ -2,6 +2,7 @@
 #include "Ground.h"
 #include "Mario.h"
 #include "Boomerang.h"
+#include "PlayScence.h"
 
 CBoomerangBro::CBoomerangBro() : CEnemy()
 {
@@ -10,7 +11,7 @@ CBoomerangBro::CBoomerangBro() : CEnemy()
 
 	fBoomerang = new CBoomerang();
 
-	changeDirection = 0;
+	direction = 1;
 	startShoot = GetTickCount();
 }
 
@@ -36,39 +37,49 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//
 	// TO-DO: make sure Goomba can interact with the world and to each of them too!
 	// 
-
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->x > this->x)
+	{
+		nx = 1;
+	}
+	else
+	{
+		nx = -1;
+	}
 	CEnemy::Update(dt);
+
+	fBoomerang->Update(dt);
+	if (fBoomerang->y > y)
+	{
+		fBoomerang->y = y;
+	}
+	else if (fBoomerang->y < y - 20.0f)
+	{
+		fBoomerang->vy = -fBoomerang->vy;
+	}
 
 	vy += BOOMERANG_BRO_STATE_GRAVITY * dt;
 
 	if (state == BOOMERANG_BRO_STATE_DIE)
 	{
-		x += dx * nx;
+		x += dx * direction;
 		y += dy;
 		return;
 	}
 
 	if (GetTickCount() - changeDirection > BOOMERANG_BRO_TIME_MOVE)
 	{
-		nx = -nx;
+		direction = -direction;
 		changeDirection = GetTickCount();
 	}
 
 	if (GetTickCount() - startShoot > BOOMERANG_BRO_TIME_FIRST_SHOOT && startShoot != 0)
 	{
-		/*if (fShooting)
-		{
-			fShooting = false;
-		}
-		else fShooting = true;*/
 		fBoomerang->SetPosition(x, y);
+		fBoomerang->StartFly();
+		fBoomerang->SetDirection(nx);
 		startShoot = 0;
 		fBoomerang->enable = true;
-	}
-
-	if (fBoomerang->enable)
-	{
-		fBoomerang->Update(dt);
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -82,7 +93,7 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		x += dx * nx;
+		x += dx * direction;
 		y += dy;
 	}
 	else
@@ -115,29 +126,21 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					y += min_ty * dy + ny * 0.2f;
 				}
 			}
-			else if (dynamic_cast<CBoomerang*>(e->obj))
+			else
+			{
+				x += dx * direction;
+			}
+			if (dynamic_cast<CBoomerang*>(e->obj))
 			{
 				CBoomerang* boomerang = dynamic_cast<CBoomerang*>(e->obj);
-				if (e->nx != 0)
+				if (e->nx != 0 && boomerang->IsFlyBack())
 				{
 					boomerang->Reset();
 					startShoot = GetTickCount();
 				}
 			}
-			else
-			{
-				x += dx * nx;
-			}
 		}
 	}
-
-	LPCOLLISIONEVENT e = SweptAABBEx(fBoomerang);
-	if (e->nx != 0)
-	{
-		fBoomerang->Reset();
-		startShoot = GetTickCount();
-	}
-	delete e;
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -153,11 +156,22 @@ void CBoomerangBro::Render()
 	}
 	else
 	{
-		if (fShooting)
+		if (nx == 1)
 		{
-			animation_set->at(BOOMERANG_BRO_STATE_SHOOTING)->Render(x, y);
+			if (startShoot == 0)
+			{
+				animation_set->at(BOOMERANG_BRO_ANI_SHOOTING_RIGHT)->Render(x, y);
+			}
+			else animation_set->at(BOOMERANG_BRO_ANI_WALKING_RIGHT)->Render(x, y);
 		}
-		else animation_set->at(BOOMERANG_BRO_STATE_WALKING)->Render(x, y);
+		else
+		{
+			if (startShoot == 0)
+			{
+				animation_set->at(BOOMERANG_BRO_ANI_WALKING_LEFT)->Render(x, y);
+			}
+			else animation_set->at(BOOMERANG_BRO_ANI_WALKING_LEFT)->Render(x, y);
+		}
 	}
 
 	CEnemy::Render();

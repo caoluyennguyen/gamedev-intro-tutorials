@@ -8,26 +8,37 @@ CBoomerang::CBoomerang()
 
 	SetAnimationSet(ani_set);
 
-	fly_x = GetTickCount();
+	fly_x = 0;
 	vx = BOOMERANG_VELOCITY;
+	vy = -BOOMERANG_VELOCITY;
+	flyBack = false;
 }
 
 void CBoomerang::Update(DWORD dt)
 {
+	if (!enable)
+	{
+		return;
+	}
+
 	if (GetTickCount() - fly_x > BOOMERANG_TIME_X && fly_x != 0)
 	{
 		vx = -vx;
+		flyBack = true;
 		fly_x = 0;
 	}
 
 	this->dt = dt;
-	dx = vx * nx * dt;
+	dx = vx * direction * dt;
 	dy = vy * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+
+	x += dx;
+	y += dy;
 	//if (enable) CalcPotentialCollisions(coObjects, coEvents);
 
 	// No collision occured, proceed normally
@@ -64,7 +75,7 @@ void CBoomerang::Update(DWORD dt)
 
 void CBoomerang::Render()
 {
-	animation_set->at(3)->Render(x, y);
+	if (enable) animation_set->at(3)->Render(x, y);
 
 	RenderBoundingBox();
 }
