@@ -192,7 +192,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 
 				if (obj->GetState() == PIPE_STATE_SECRET_GREEN_UP)
 				{
-					y -= MARIO_DIVING_SPEED * nx;
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
 				}
 				else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN)
 				{
@@ -1448,7 +1448,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		if (isAbleToJump) {
+		if (isAbleToJump && vy == 0) {
 			// mario can fly when can run and jump high
 			if (isAbleToJumpHigh && level != MARIO_LEVEL_TAIL)
 			{

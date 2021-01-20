@@ -168,12 +168,12 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>* listObject, int camX, int camY)
 					for (k = 0; k < cells[i][j].GetListObjects().size(); k++)
 					{
 						obj = cells[i][j].GetListObjects().at(k);
-						if (obj->enable == false) continue;
-							listObject->push_back(obj);
 						/*if (obj->enable == false) continue;
+							listObject->push_back(obj);*/
+						if (obj->enable == false) continue;
 						if (CheckObjectId(listObject, obj)) {
 							listObject->push_back(obj);
-						}*/
+						}
 					}
 				}
 			}
@@ -186,9 +186,9 @@ void CGrid::Unload()
 {
 	if (cells)
 	{
-		for (int i = 0; i < numCol; i++)
+		for (int i = 0; i < numRow; i++)
 		{
-			for (int j = 0; j < numRow; j++)
+			for (int j = 0; j < numCol; j++)
 			{
 				cells[i][j].Unload();
 			}

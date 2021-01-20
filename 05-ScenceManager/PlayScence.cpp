@@ -417,15 +417,15 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	//grid->GetListObject(&coObjects, cx, cy);
+	grid->GetListObject(&coObjects, cx, cy);
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	for (size_t i = 1; i < objects.size(); i++)
+	/*for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
-	}
+	}*/
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -443,26 +443,27 @@ void CPlayScene::Update(DWORD dt)
 	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
 	else if (cx > MARIO_MAX_POSITION) cx = MARIO_MAX_POSITION;
-	/*if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
+	if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{
 		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 		else if (cy > 380.0f ) CGame::GetInstance()->SetCamPos(2088, 432);
 		else CGame::GetInstance()->SetCamPos(int(cx), 230);
-	}*/
-	CGame::GetInstance()->SetCamPos(int(cx), int(cy));
+	}
+	//CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 
 	HUD::GetInstance()->Update(dt);
+	//grid->GetListObject(&coObjects, cx, cy);
 }
 
 void CPlayScene::Render()
 {
 	// Render make CPU higher
-	tileMap->Render(CGame::GetInstance()->GetCamPos());
-
-	for (int i = 0; i < objects.size(); i++)
-		if (objects[i]->IsEnable()) objects[i]->Render();
-	/*for (int i = coObjects.size() - 1; i > -1; i--)
-		coObjects[i]->Render();*/
+	//tileMap->Render(CGame::GetInstance()->GetCamPos());
+	player->Render();
+	/*for (int i = 0; i < objects.size(); i++)
+		if (objects[i]->IsEnable()) objects[i]->Render();*/
+	for (int i = coObjects.size() - 1; i > -1; i--)
+		coObjects[i]->Render();
 
 	HUD::GetInstance()->Render();
 }

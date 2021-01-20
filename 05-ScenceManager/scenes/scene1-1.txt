@@ -1034,5 +1034,5 @@ right
 # type	l	t	ani_set_id	r	b	scene_id
 # 50	300	98	0	380	150	1
 
-#[GRID]
-#scenes\map\grid1.txt
+[GRID]
+scenes\map\grid1.txt
