@@ -58,6 +58,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_RED_KOOPAS 17
 #define OBJECT_TYPE_MOVING_WOOD 18
 #define OBJECT_TYPE_BOOMERANG_BRO 19
+#define OBJECT_TYPE_MULTI_BRICK 20
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -262,6 +263,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			obj = new CBrick(x,y);
 			obj->SetState(BRICK_STATE_BREAKABLE);
+		}
+		break;
+	case OBJECT_TYPE_MULTI_BRICK:
+		{
+			int item_type = atof(tokens[4].c_str());
+			obj = new CBrick(x, y, item_type);
+			objects.push_back(((CBrick*)obj)->GetItem());
+			obj->SetState(BRICK_STATE_MULTI_COIN);
 		}
 		break;
 	case OBJECT_TYPE_VENUS_RED:

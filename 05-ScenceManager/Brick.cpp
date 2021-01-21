@@ -7,14 +7,12 @@ CBrick::CBrick(int initialPosX, int initialPosY, int itemType)
 	freeze = false;
 	breakable = false;
 	coin_start = 0;
-
+	count = 10;
 	InitItem(itemType);
 }
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	coObjects->push_back(this->item);
-
 	if (state == BRICK_STATE_BREAK)
 	{
 		if (breakable == true && pieces != NULL)
@@ -46,13 +44,8 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (y > initialPosY)
 	{
 		y = initialPosY;
-		freeze = true;
+		if (state != BRICK_STATE_MULTI_COIN_AVAILABLE) freeze = true;
 	}
-
-	/*if (state == BRICK_STATE_UNAVAILABLE)
-	{
-		item->Update(dt, coObjects);
-	}*/
 }
 
 void CBrick::Render()
@@ -78,6 +71,11 @@ void CBrick::Render()
 	else if (state == BRICK_STATE_COIN)
 	{
 		animation_set->at(BRICK_ANI_COIN)->Render(x, y);
+	}
+	else
+	{
+		animation_set->at(BRICK_ANI_BREAKABLE)->Render(x, y);
+		item->Render();
 	}
 
 	RenderBoundingBox();
@@ -112,6 +110,12 @@ void CBrick::SetState(int state)
 		breakable = true;
 		break;
 	case BRICK_STATE_BREAK:
+		break;
+	case BRICK_STATE_MULTI_COIN_AVAILABLE:
+		vy = -0.2f;
+		item->SetPosition(initialPosX + ITEM_INITIAL_POS_X, initialPosY - ITEM_INITIAL_POS_Y);
+		item->SetEnable(true);
+		item->SetSpeedVy(-ITEM_COIN_VELOCITY);
 		break;
 	default:
 		break;

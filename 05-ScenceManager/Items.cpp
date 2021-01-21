@@ -90,8 +90,6 @@ void CItems::Render()
 		}
 
 		animation_set->at(ani)->Render(x, y);
-
-		//RenderBoundingBox();
 	}
 
 	if (state == ITEM_TYPE_SWITCH_BLOCK_UP) {

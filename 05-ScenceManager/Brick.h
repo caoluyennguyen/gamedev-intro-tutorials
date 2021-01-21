@@ -11,6 +11,8 @@
 #define BRICK_STATE_BREAKABLE 2
 #define BRICK_STATE_BREAK 3
 #define BRICK_STATE_COIN 4
+#define BRICK_STATE_MULTI_COIN 5
+#define BRICK_STATE_MULTI_COIN_AVAILABLE 6
 
 #define BRICK_ANI_AVAILABLE 0
 #define BRICK_ANI_UNAVAILABLE 1
@@ -24,14 +26,16 @@ class CBrick : public CGameObject
 {
 	int initialPosX;
 	int initialPosY;
-	bool freeze;
 	bool breakable;
 
 	CItems* item;
+	vector<CItems*> lsItem;
 	BrickPieces* pieces;
 
 	DWORD coin_start;
 public:
+	int count;
+	bool freeze;
 	CBrick(int initialPosX, int initialPosY, int itemType = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();

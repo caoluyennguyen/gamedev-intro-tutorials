@@ -147,7 +147,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				obj->SetState(BRICK_STATE_BREAKABLE);
 			}
 
-			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y && obj->GetState() != BRICK_STATE_BREAK && obj->GetState() != BRICK_STATE_COIN) {
 				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
 			}
 		}
@@ -577,6 +577,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						else if (brick->GetState() == BRICK_STATE_BREAKABLE)
 						{
 							brick->SetState(BRICK_STATE_BREAK);
+						}
+						else if (brick->GetState() == BRICK_STATE_MULTI_COIN || brick->GetState() == BRICK_STATE_MULTI_COIN_AVAILABLE)
+						{
+							if (brick->count > 0)
+							{
+								brick->count--;
+								brick->SetState(BRICK_STATE_MULTI_COIN_AVAILABLE);
+							}
+							else
+							{
+								brick->SetState(BRICK_STATE_UNAVAILABLE);
+							}
+							/*brick->count--;
+							if (brick->count < 1)
+							{
+								brick->SetState(BRICK_STATE_UNAVAILABLE);
+							}
+							else
+							{
+								brick->SetState(BRICK_STATE_MULTI_COIN);
+								brick->freeze = false;
+							}*/
 						}
 					}
 				}
