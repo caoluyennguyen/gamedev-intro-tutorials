@@ -9,6 +9,9 @@
 #define SHOW_TIME	100
 #define CHANGE_SCENE_TIME	2000
 
+#define FIRST_TITLE_ID		250
+#define SECOND_TITLE_ID		251
+
 class CEndSceneTitle
 {
 	LPSPRITE firstTitle;

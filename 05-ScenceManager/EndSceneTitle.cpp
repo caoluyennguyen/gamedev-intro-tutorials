@@ -2,8 +2,8 @@
 
 void CEndSceneTitle::LoadResource()
 {
-	firstTitle = CSprites::GetInstance()->Get(250);
-	secondTitle = CSprites::GetInstance()->Get(251);
+	firstTitle = CSprites::GetInstance()->Get(FIRST_TITLE_ID);
+	secondTitle = CSprites::GetInstance()->Get(SECOND_TITLE_ID);
 
 	card = new CPlayCard();
 	card->SetPosition(200, 70);
@@ -15,7 +15,6 @@ void CEndSceneTitle::LoadResource()
 	effectStart = changeSceneStart = false;
 	effect = new CEffect();
 	effect->SetState(EFFECT_TYPE_LEVEL_UP);
-	effect->SetPosition(130, 120);
 	effect->SetAppear(true);
 }
 
@@ -45,7 +44,7 @@ void CEndSceneTitle::Render()
 	{
 		if (GetTickCount() - effect_start > SHOW_TIME * 2)
 		{
-			effect->RenderFreeze();
+			//effect->RenderFreeze();
 			if (!changeSceneStart)
 			{
 				changeSceneStart = true;

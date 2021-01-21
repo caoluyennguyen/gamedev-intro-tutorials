@@ -417,8 +417,6 @@ void CPlayScene::Update(DWORD dt)
 {
 	coObjects.clear();
 
-	// turn on grid
-	//grid->GetListObject(&coObjects, cx, cy);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -431,15 +429,17 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
+	// turn on grid
+	grid->GetListObject(&coObjects, cx, cy);
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	// turn off grid
-	for (size_t i = 1; i < objects.size(); i++)
+	/*for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
-	}
+	}*/
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -467,7 +467,6 @@ void CPlayScene::Update(DWORD dt)
 	//CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 
 	HUD::GetInstance()->Update(dt);
-	//grid->GetListObject(&coObjects, cx, cy);
 }
 
 void CPlayScene::Render()
@@ -476,12 +475,12 @@ void CPlayScene::Render()
 	//tileMap->Render(CGame::GetInstance()->GetCamPos());
 	player->Render();
 	// turn off grid
-	for (int i = 0; i < objects.size(); i++)
-		if (objects[i]->IsEnable()) objects[i]->Render();
+	/*for (int i = 0; i < objects.size(); i++)
+		if (objects[i]->IsEnable()) objects[i]->Render();*/
 
 	// turn on grid
-	/*for (int i = coObjects.size() - 1; i > -1; i--)
-		coObjects[i]->Render();*/
+	for (int i = coObjects.size() - 1; i > -1; i--)
+		coObjects[i]->Render();
 
 	HUD::GetInstance()->Render();
 }
