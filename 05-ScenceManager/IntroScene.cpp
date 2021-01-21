@@ -38,6 +38,10 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) :
 
 #define MAX_SCENE_LINE 1024
 
+#define SCENE_INTRO_ID		1
+#define SCENE_WORLDMAP_ID	2
+#define SCENE_1_1_ID		3
+#define SCENE_1_4_ID		4
 
 void CIntroScene::_ParseSection_TILEMAP(string line)
 {
@@ -287,19 +291,19 @@ void CIntroSceneSceneKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		CGame::GetInstance()->SwitchScene(1);
-		break;
-	case DIK_F1:
-		CGame::GetInstance()->SwitchScene(3);
-		break;
-	case DIK_F2:
 		CGame::GetInstance()->SwitchScene(2);
 		break;
+	case DIK_F1:
+		CGame::GetInstance()->SwitchScene(SCENE_INTRO_ID);
+		break;
+	case DIK_F2:
+		CGame::GetInstance()->SwitchScene(SCENE_WORLDMAP_ID);
+		break;
 	case DIK_F3:
-		CGame::GetInstance()->SwitchScene(1);
+		CGame::GetInstance()->SwitchScene(SCENE_1_1_ID);
 		break;
 	case DIK_F4:
-		CGame::GetInstance()->SwitchScene(4);
+		CGame::GetInstance()->SwitchScene(SCENE_1_4_ID);
 		break;
 
 	case DIK_UP:

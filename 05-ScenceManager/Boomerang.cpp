@@ -9,9 +9,10 @@ CBoomerang::CBoomerang()
 	SetAnimationSet(ani_set);
 
 	fly_x = 0;
-	vx = BOOMERANG_VELOCITY;
-	vy = -BOOMERANG_VELOCITY;
+	vx = BOOMERANG_VELOCITY_X;
+	vy = BOOMERANG_VELOCITY_Y;
 	flyBack = false;
+	enable = false;
 }
 
 void CBoomerang::Update(DWORD dt)
@@ -21,16 +22,17 @@ void CBoomerang::Update(DWORD dt)
 		return;
 	}
 
+	dx = vx * direction * dt;
+	dy = vy * dt;
+
 	if (GetTickCount() - fly_x > BOOMERANG_TIME_X && fly_x != 0)
 	{
 		vx = -vx;
 		flyBack = true;
 		fly_x = 0;
 	}
+	vy += BOOMERANG_GRAVITY * dt;
 
-	this->dt = dt;
-	dx = vx * direction * dt;
-	dy = vy * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -39,38 +41,6 @@ void CBoomerang::Update(DWORD dt)
 
 	x += dx;
 	y += dy;
-	//if (enable) CalcPotentialCollisions(coObjects, coEvents);
-
-	// No collision occured, proceed normally
-	//if (coEvents.size() == 0)
-	//{
-	//	x += dx;
-	//	y += dy;
-	//}
-	//else
-	//{
-	//	float min_tx, min_ty, nx = 0, ny;
-	//	float rdx = 0;
-	//	float rdy = 0;
-
-	//	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-	//	//
-	//	// Collision logic with other objects
-	//	//
-	//	for (UINT i = 0; i < coEventsResult.size(); i++)
-	//	{
-	//		LPCOLLISIONEVENT e = coEventsResult[i];
-	//		if (dynamic_cast<CGround*>(e->obj)) // if e->obj is Goomba 
-	//		{
-	//			x += min_tx * dx + nx * 0.2f;
-	//			y += min_ty * dy + ny * 0.2f;
-	//		}
-	//	}
-	//}
-
-	//// clean up collision events
-	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void CBoomerang::Render()

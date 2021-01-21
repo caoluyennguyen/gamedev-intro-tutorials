@@ -287,7 +287,7 @@ void CKoopas::SetState(int state)
 		vx = nx * 0.01f;
 		break;
 	case KOOPAS_STATE_WALKING:
-		vx = KOOPAS_WALKING_SPEED;
+		vx = -KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_FLY:
 		vx = -KOOPAS_WALKING_SPEED;

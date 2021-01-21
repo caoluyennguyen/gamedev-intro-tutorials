@@ -156,9 +156,9 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>* listObject, int camX, int camY)
 	}
 
 	LPCELL cell;
-	for (i = left; i < right; i++)
+	for (j = left; j < right; j++)
 	{
-		for (j = top; j < bottom; j++)
+		for (i = top; i < bottom; i++)
 		{
 			cell = &cells[i][j];
 			if (cell)

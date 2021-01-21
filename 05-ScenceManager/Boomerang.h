@@ -7,7 +7,9 @@
 #define BOOMERANG_BBOX_HEIGHT	16
 
 #define BOOMERANG_TIME_X	1000
-#define BOOMERANG_VELOCITY	0.1f
+#define BOOMERANG_VELOCITY_X	0.1f
+#define BOOMERANG_VELOCITY_Y	-0.1f
+#define BOOMERANG_GRAVITY	0.0002f
 
 class CBoomerang : public CGameObject
 {
@@ -23,7 +25,7 @@ public:
 
 	float GetPositionX() { return this->x; };
 	void StartFly() { fly_x = GetTickCount(); flyBack = false; }
-	void Reset() { fly_x = GetTickCount(); vx = BOOMERANG_VELOCITY; enable = false; }
+	void Reset() { fly_x = GetTickCount(); vx = BOOMERANG_VELOCITY_X; vy = BOOMERANG_VELOCITY_Y; enable = false; }
 	bool IsFlyBack() { return flyBack; }
 	void SetFlyBack(bool fly) { flyBack = fly; }
 

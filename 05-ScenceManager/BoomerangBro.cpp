@@ -49,13 +49,17 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CEnemy::Update(dt);
 
 	fBoomerang->Update(dt);
-	if (fBoomerang->y > y)
+	/*if (fBoomerang->y > y)
 	{
 		fBoomerang->y = y;
 	}
 	else if (fBoomerang->y < y - 20.0f)
 	{
 		fBoomerang->vy = -fBoomerang->vy;
+	}*/
+	if (fBoomerang->y > y)
+	{
+		fBoomerang->y = y;
 	}
 
 	vy += BOOMERANG_BRO_STATE_GRAVITY * dt;

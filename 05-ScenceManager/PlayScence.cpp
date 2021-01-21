@@ -63,6 +63,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define MAX_SCENE_LINE 1024
 
+#define SCENE_INTRO_ID		1
+#define SCENE_WORLDMAP_ID	2
+#define SCENE_1_1_ID		3
+#define SCENE_1_4_ID		4
 
 void CPlayScene::_ParseSection_TILEMAP(string line)
 {
@@ -408,7 +412,7 @@ void CPlayScene::Update(DWORD dt)
 		player->Update(dt);
 		if (player->y > 1000.0f)
 		{
-			CGame::GetInstance()->SwitchScene(1);
+			CGame::GetInstance()->SwitchScene(CGame::GetInstance()->GetCurrentIdScene());
 		}
 		return;
 	}
@@ -417,15 +421,17 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	grid->GetListObject(&coObjects, cx, cy);
+	// turn on grid
+	//grid->GetListObject(&coObjects, cx, cy);
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	/*for (size_t i = 1; i < objects.size(); i++)
+	// turn off grid
+	for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (objects[i]->IsEnable()) coObjects.push_back(objects[i]);
-	}*/
+	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -460,10 +466,13 @@ void CPlayScene::Render()
 	// Render make CPU higher
 	//tileMap->Render(CGame::GetInstance()->GetCamPos());
 	player->Render();
-	/*for (int i = 0; i < objects.size(); i++)
-		if (objects[i]->IsEnable()) objects[i]->Render();*/
-	for (int i = coObjects.size() - 1; i > -1; i--)
-		coObjects[i]->Render();
+	// turn off grid
+	for (int i = 0; i < objects.size(); i++)
+		if (objects[i]->IsEnable()) objects[i]->Render();
+
+	// turn on grid
+	/*for (int i = coObjects.size() - 1; i > -1; i--)
+		coObjects[i]->Render();*/
 
 	HUD::GetInstance()->Render();
 }
@@ -489,16 +498,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_F1:
-		CGame::GetInstance()->SwitchScene(3);
+		CGame::GetInstance()->SwitchScene(SCENE_INTRO_ID);
 		break;
 	case DIK_F2:
-		CGame::GetInstance()->SwitchScene(2);
+		CGame::GetInstance()->SwitchScene(SCENE_WORLDMAP_ID);
 		break;
 	case DIK_F3:
-		CGame::GetInstance()->SwitchScene(1);
+		CGame::GetInstance()->SwitchScene(SCENE_1_1_ID);
 		break;
 	case DIK_F4:
-		CGame::GetInstance()->SwitchScene(4);
+		CGame::GetInstance()->SwitchScene(SCENE_1_4_ID);
 		break;
 	}
 	if (mario->GetState() == MARIO_STATE_DIE) return;
