@@ -6,6 +6,7 @@
 class CEnemy : public CGameObject
 {
 	int hp;
+	int direction;
 	CEffect* effect;
 public:
 	CEnemy();

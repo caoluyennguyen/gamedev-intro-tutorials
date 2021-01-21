@@ -62,6 +62,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
+#define DEATH_AREA 1000.0f
 
 #define SCENE_INTRO_ID		1
 #define SCENE_WORLDMAP_ID	2
@@ -407,23 +408,20 @@ void CPlayScene::Update(DWORD dt)
 {
 	coObjects.clear();
 
+	// turn on grid
+	//grid->GetListObject(&coObjects, cx, cy);
+
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL || player->GetState() == MARIO_STATE_DIE)
+	if (player == NULL) return;
+	else if (player->y > DEATH_AREA)
 	{
-		player->Update(dt);
-		if (player->y > 1000.0f)
-		{
-			CGame::GetInstance()->SwitchScene(CGame::GetInstance()->GetCurrentIdScene());
-		}
+		CGame::GetInstance()->SwitchScene(2);
 		return;
 	}
 
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
-
-	// turn on grid
-	//grid->GetListObject(&coObjects, cx, cy);
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
@@ -438,6 +436,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
+	//player->Update(dt, &coObjects);
 
 	if (cx > 2808)
 	{

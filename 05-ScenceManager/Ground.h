@@ -16,5 +16,6 @@ public:
 	virtual void GetActiveBoundingBox(float& left, float& top, float& right, float& bottom) {};
 
 	int GetId() { return id; }
+	int GetWidth() { return width; }
 };
 

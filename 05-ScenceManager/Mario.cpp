@@ -91,7 +91,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				{
 					obj->SetState(KOOPAS_STATE_DIE_NGUA);
 				}
-				else if (isAbleToHoldObject)
+				else if (isAbleToHoldObject && obj->GetState() == KOOPAS_STATE_DIE && obj->GetState() == KOOPAS_STATE_DIE_NGUA)
 				{
 					isHoldObject = true;
 					//int direction = (x - kLeft) < 0 ? 1 : -1;

@@ -99,13 +99,13 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					else vy = 0;
 
-					if (e->obj->GetState() == GROUND_TYPE_JUMP_OVER)
+					if (ground->GetId() == GROUND_TYPE_JUMP_OVER)
 					{
 						vy = 0;
 						if (state == KOOPAS_STATE_WALKING)
 						{
-							if (x < e->obj->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
-							else if (x > e->obj->x + KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
+							if (x < ground->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
+							else if (x > ground->x + ground->GetWidth() - KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
 						}
 						else if (state == KOOPAS_STATE_DIE_NGUA)
 						{
@@ -189,17 +189,27 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CGoomba*>(e->obj))
 			{
+				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 				x += dx;
 				if (state == KOOPAS_STATE_FLY) y += dy;
 
-				if (state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA) e->obj->SetState(GOOMBA_STATE_DIE_NGUA);
+				if (state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA)
+				{
+					goomba->SetState(GOOMBA_STATE_DIE_NGUA);
+					goomba->ScoreUp();
+
+				}
 			}
 			else if (dynamic_cast<CKoopas*>(e->obj))
 			{
 				x += dx;
 				y += dy;
 
-				if (state == KOOPAS_STATE_WALKING && e->obj->GetState() == KOOPAS_STATE_ROLLING) this->SetState(KOOPAS_STATE_DIE_NGUA);
+				if (state == KOOPAS_STATE_WALKING && e->obj->GetState() == KOOPAS_STATE_ROLLING)
+				{
+					this->SetState(KOOPAS_STATE_DIE_NGUA);
+					ScoreUp();
+				}
 			}
 			else if (dynamic_cast<CVenus*>(e->obj))
 			{
@@ -301,10 +311,10 @@ void CKoopas::SetState(int state)
 		vx = -KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_ROLLING:
-		vx = nx * 0.4f;
+		vx = nx * KOOPAS_ROLLING_SPEED;
 		break;
 	case KOOPAS_STATE_ROLLING_NGUA:
-		vx = nx * 0.4f;
+		vx = nx * KOOPAS_ROLLING_SPEED;
 		break;
 	}
 }

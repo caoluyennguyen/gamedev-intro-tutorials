@@ -345,7 +345,7 @@ void CWorldMapSceneKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		CGame::GetInstance()->SwitchScene(2);
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	case DIK_F1:
 		CGame::GetInstance()->SwitchScene(SCENE_INTRO_ID);

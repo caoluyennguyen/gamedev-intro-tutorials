@@ -37,6 +37,7 @@
 #define KOOPAS_GRAVITY 0.0005f
 #define KOOPAS_GRAVITY_RED_FLY 0.0001f
 #define KOOPAS_FLY_MAX_VY 0.1f
+#define KOOPAS_ROLLING_SPEED 0.2f;
 
 class CKoopas : public CEnemy
 {

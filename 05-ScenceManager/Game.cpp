@@ -340,19 +340,19 @@ void CGame::_ParseSection_SCENES(string line)
 	{
 	case 1:
 		{
-			LPSCENE scene = new CWorldMapScene(id, path);
+			LPSCENE scene = new CIntroScene(id, path);
 			scenes[id] = scene;
 		}
 		break;
 	case 2:
 		{
-			LPSCENE scene = new CPlayScene(id, path);
+			LPSCENE scene = new CWorldMapScene(id, path);
 			scenes[id] = scene;
 		}
 		break;
 	case 3:
 		{
-			LPSCENE scene = new CIntroScene(id, path);
+			LPSCENE scene = new CPlayScene(id, path);
 			scenes[id] = scene;
 		}
 		break;
