@@ -16,6 +16,7 @@ class CBoomerang : public CGameObject
 	DWORD fly_x;
 	int direction;
 	bool flyBack;
+	bool isAbleToFly;
 public:
 	CBoomerang();
 	virtual void Update(DWORD dt);
@@ -30,5 +31,7 @@ public:
 	void SetFlyBack(bool fly) { flyBack = fly; }
 
 	void SetDirection(int direction) { this->direction = direction; }
+	void SetFly(bool fly) { isAbleToFly = fly; }
+	bool IsFly() { return isAbleToFly; }
 };
 

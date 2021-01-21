@@ -16,6 +16,8 @@
 #include "EndPoint.h"
 #include "Hud.h"
 #include "MovingWood.h"
+#include "Boomerang.h"
+#include "BoomerangBro.h"
 
 CMario* CMario::__instance = NULL;
 
@@ -448,6 +450,43 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
+			else if (dynamic_cast<CBoomerangBro *>(e->obj)) // if e->obj is Goomba 
+			{
+				//if (e->obj->GetState() == GOOMBA_STATE_DIE) continue;
+				CBoomerangBro* bro = dynamic_cast<CBoomerangBro*>(e->obj);
+
+				// jump on top >> kill Goomba and deflect a bit 
+				if (e->ny < 0)
+				{
+					if (bro->GetState() == BOOMERANG_BRO_STATE_WALKING)
+					{
+						bro->SetState(BOOMERANG_BRO_STATE_DIE);
+						bro->ScoreUp();
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					}
+					else
+					{
+						y += dy;
+					}
+				}
+				else if (e->nx != 0)
+				{
+					if (untouchable == 0)
+					{
+						if (bro->GetState()!= BOOMERANG_BRO_STATE_DIE)
+						{
+							if (level > MARIO_LEVEL_SMALL)
+							{
+								level = MARIO_LEVEL_SMALL;
+								StartUntouchable();
+								StartTransform();
+							}
+							else 
+								SetState(MARIO_STATE_DIE);
+						}
+					}
+				}
+			} // if Goomba
 			else if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			{
 				//if (e->obj->GetState() == GOOMBA_STATE_DIE) continue;
@@ -659,7 +698,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-			else if (dynamic_cast<CVenus *>(e->obj))
+			else if (dynamic_cast<CVenus *>(e->obj) || dynamic_cast<CBoomerang*>(e->obj))
 			{
 				x += dx;
 				y += dy;
@@ -718,21 +757,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
-	/*for (int i = 0; i < 2; i++)
-	{
-		if (abs(fireBalls[i]->GetPositionX() - this->x) > 200) {
-			fireBalls[i]->SetEnable(false);
-			isAbleToShoot = true;
-			fireBalls[i]->SetPosition(x, y);
-			countBall++;
-		}
-
-		if (fireBalls[i]->IsEnable())
-		{
-			fireBalls[i]->Update(dt, coObjects);
-		}
-	}*/
 
 	if (abs(fireball->GetPositionX() - this->x) > 200 || !fireball->IsEnable()) {
 		fireball->SetEnable(false);

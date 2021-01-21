@@ -17,7 +17,7 @@ CBoomerang::CBoomerang()
 
 void CBoomerang::Update(DWORD dt)
 {
-	if (!enable)
+	if (!isAbleToFly)
 	{
 		return;
 	}

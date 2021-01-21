@@ -19,5 +19,6 @@ public:
 	void LoseHp() { this->hp -= 1; }
 
 	void ScoreUp();
+	void SetEffect(int effect) { this->effect->SetState(effect); }
 };
 

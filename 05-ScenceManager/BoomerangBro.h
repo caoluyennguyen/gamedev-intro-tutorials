@@ -15,9 +15,9 @@
 #define BOOMERANG_BRO_STATE_GRAVITY		0.0002f
 #define BOOMERANG_BRO_STATE_VELOCITY	0.02f
 
-#define BOOMERANG_BRO_TIME_MOVE		2000
-#define BOOMERANG_BRO_TIME_FIRST_SHOOT	4000
-#define BOOMERANG_BRO_TIME_SECOND_SHOOT	4000
+#define BOOMERANG_BRO_TIME_MOVE			2000
+#define BOOMERANG_BRO_TIME_READY_SHOOT	4000
+#define BOOMERANG_BRO_TIME_SHOOT	200
 
 #define BOOMERANG_BRO_BBOX_WIDTH	16.0f
 #define BOOMERANG_BRO_BBOX_HEIGHT	24.0f
@@ -25,7 +25,10 @@
 class CBoomerangBro : public CEnemy
 {
 	DWORD changeDirection;
-	DWORD startShoot;
+	DWORD startFirstShoot;
+	DWORD startSecondShoot;
+	DWORD readyShoot;
+	DWORD readySecondShoot;
 	bool fShooting;
 	bool sShooting;
 	int direction;

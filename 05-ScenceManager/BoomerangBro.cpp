@@ -10,9 +10,13 @@ CBoomerangBro::CBoomerangBro() : CEnemy()
 	SetState(BOOMERANG_BRO_STATE_WALKING);
 
 	fBoomerang = new CBoomerang();
+	sBoomerang = new CBoomerang();
 
 	direction = 1;
-	startShoot = GetTickCount();
+	//startShoot = GetTickCount();
+	readyShoot = GetTickCount();
+	readySecondShoot = 0;
+	SetEffect(EFFECT_TYPE_SCORE_1000);
 }
 
 void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -49,17 +53,15 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CEnemy::Update(dt);
 
 	fBoomerang->Update(dt);
-	/*if (fBoomerang->y > y)
-	{
-		fBoomerang->y = y;
-	}
-	else if (fBoomerang->y < y - 20.0f)
-	{
-		fBoomerang->vy = -fBoomerang->vy;
-	}*/
+	sBoomerang->Update(dt);
+
 	if (fBoomerang->y > y)
 	{
 		fBoomerang->y = y;
+	}
+	if (sBoomerang->y > y)
+	{
+		sBoomerang->y = y;
 	}
 
 	vy += BOOMERANG_BRO_STATE_GRAVITY * dt;
@@ -77,14 +79,45 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		changeDirection = GetTickCount();
 	}
 
-	if (GetTickCount() - startShoot > BOOMERANG_BRO_TIME_FIRST_SHOOT && startShoot != 0)
+	if (GetTickCount() - readyShoot > BOOMERANG_BRO_TIME_READY_SHOOT && readyShoot != 0)
 	{
-		fBoomerang->SetPosition(x, y);
-		fBoomerang->StartFly();
-		fBoomerang->SetDirection(nx);
-		startShoot = 0;
-		fBoomerang->enable = true;
+		startFirstShoot = GetTickCount();
+		readyShoot = 0;
 	}
+	
+	if (startFirstShoot != 0)
+	{
+		fBoomerang->SetPosition(x, y - 10.0f); 
+		fBoomerang->enable = true;
+		if (GetTickCount() - startFirstShoot > BOOMERANG_BRO_TIME_SHOOT)
+		{
+			fBoomerang->SetFly(true);
+			fBoomerang->StartFly();
+			fBoomerang->SetDirection(nx);
+			startFirstShoot = 0;
+			if (!sBoomerang->IsFly()) readySecondShoot = GetTickCount();
+		}
+	}
+
+	if (GetTickCount() - readySecondShoot > BOOMERANG_BRO_TIME_SHOOT && readySecondShoot != 0)
+	{
+		startSecondShoot = GetTickCount();
+		readySecondShoot = 0;
+	}
+	
+	if (startSecondShoot != 0)
+	{
+		sBoomerang->SetPosition(x, y - 10.0f); 
+		sBoomerang->enable = true;
+		if (GetTickCount() - startSecondShoot > BOOMERANG_BRO_TIME_SHOOT)
+		{
+			sBoomerang->SetFly(true);
+			sBoomerang->StartFly();
+			sBoomerang->SetDirection(nx);
+			startSecondShoot = 0;
+		}
+	}
+	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -139,8 +172,12 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CBoomerang* boomerang = dynamic_cast<CBoomerang*>(e->obj);
 				if (e->nx != 0 && boomerang->IsFlyBack())
 				{
+					if (readySecondShoot == 0)
+					{
+						readyShoot = GetTickCount();
+					}
 					boomerang->Reset();
-					startShoot = GetTickCount();
+					boomerang->SetFly(false);
 				}
 			}
 		}
@@ -162,7 +199,7 @@ void CBoomerangBro::Render()
 	{
 		if (nx == 1)
 		{
-			if (startShoot == 0)
+			if (startFirstShoot == 0)
 			{
 				animation_set->at(BOOMERANG_BRO_ANI_SHOOTING_RIGHT)->Render(x, y);
 			}
@@ -170,7 +207,7 @@ void CBoomerangBro::Render()
 		}
 		else
 		{
-			if (startShoot == 0)
+			if (startFirstShoot == 0)
 			{
 				animation_set->at(BOOMERANG_BRO_ANI_WALKING_LEFT)->Render(x, y);
 			}
@@ -179,11 +216,9 @@ void CBoomerangBro::Render()
 	}
 
 	CEnemy::Render();
-	/*if (fBoomerang->enable)
-	{
-		fBoomerang->Render();
-	}*/
+
 	fBoomerang->Render();
+	sBoomerang->Render();
 }
 
 void CBoomerangBro::SetState(int state)
