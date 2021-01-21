@@ -401,12 +401,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += min_ty * dy + ny * 0.2f;
 						koopas->ScoreUp();
 					}
-					/*else if (koopas->GetState() == KOOPAS_STATE_ROLLING_NGUA)
+					else if (koopas->GetState() == KOOPAS_STATE_RED_FLY)
 					{
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
-						koopas->SetState(KOOPAS_STATE_DIE_NGUA);
+						koopas->SetState(KOOPAS_STATE_RED);
 						y += min_ty * dy + ny * 0.2f;
-					}*/
+					}
 					else
 					{
 						y += dy;

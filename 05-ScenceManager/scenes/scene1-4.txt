@@ -825,12 +825,13 @@ right
 
 # MARIO
 #0	10	300	1
-0	2120	300	1
+0	1940	300	1
 
 # KOOPAS
-# state: 100 = normal, 600 = fly
+# state: 100 = normal, 600 = fly, 700 = RED, 800 = RED FLY
 #3	100	200	4	100
 17	1950	312	4	100
+17	1868	292	4	800
 
 # END POINT
 16	2443	331	11

@@ -11,6 +11,7 @@ CKoopas::CKoopas(int state, int color) : CEnemy()
 {
 	SetState(state);
 	this->color = color;
+	direction = 1;
 }
 
 void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -36,7 +37,14 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (x < 0) vx = abs(vx);
 
-	vy += KOOPAS_GRAVITY * dt;
+	if (state == KOOPAS_STATE_RED_FLY)
+	{
+		if (vy > KOOPAS_FLY_MAX_VY) direction = -1;
+		else if (vy < -KOOPAS_FLY_MAX_VY) direction = 1;
+
+		vy += KOOPAS_GRAVITY_RED_FLY * dt * direction;
+	}
+	else vy += KOOPAS_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -255,7 +263,7 @@ void CKoopas::Render()
 		{
 			ani = KOOPAS_RED_ANI_ROLLING_NGUA;
 		}
-		else if (state == KOOPAS_STATE_FLY)
+		else if (state == KOOPAS_STATE_FLY || state == KOOPAS_STATE_RED_FLY)
 		{
 			if (vx > 0) ani = KOOPAS_RED_ANI_FLY_RIGHT;
 			else ani = KOOPAS_RED_ANI_FLY_LEFT;
