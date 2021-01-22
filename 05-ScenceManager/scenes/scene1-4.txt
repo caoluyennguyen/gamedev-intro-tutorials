@@ -830,8 +830,8 @@ right
 # 19 = Boomerang bro
 
 # MARIO
-#0	10	300	1
-0	645	238	1
+0	10	300	1
+#0	645	238	1
 
 # KOOPAS
 # state: 100 = normal, 600 = fly, 700 = RED, 800 = RED FLY
@@ -999,6 +999,7 @@ right
 
 # BOOMERANG BRO
 19	2120	289	3
+21	0	0	0
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

@@ -10,6 +10,7 @@
 #include "TileMap.h"
 #include "FireBall.h"
 #include "Grid.h"
+#include "CamCheck.h"
 
 class CPlayScene: public CScene
 {
@@ -17,6 +18,7 @@ protected:
 	CMario *player;					// A play scene has to have player, right? 
 	CTileMap* tileMap;
 	CGrid* grid;
+	CCamCheck* camCheck;
 
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> objects;

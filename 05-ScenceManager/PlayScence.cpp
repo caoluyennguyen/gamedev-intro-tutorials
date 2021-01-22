@@ -59,6 +59,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_MOVING_WOOD 18
 #define OBJECT_TYPE_BOOMERANG_BRO 19
 #define OBJECT_TYPE_MULTI_BRICK 20
+#define OBJECT_TYPE_CAM_CHECK 21
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -345,6 +346,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		objects.push_back(dynamic_cast<CBoomerangBro*>(obj)->sBoomerang);
 		break;
 	}
+	case OBJECT_TYPE_CAM_CHECK:
+	{
+		camCheck = new CCamCheck();
+		return;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -461,7 +467,12 @@ void CPlayScene::Update(DWORD dt)
 	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
 	else if (cx > MARIO_MAX_POSITION) cx = MARIO_MAX_POSITION;
-	if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
+	if (camCheck != NULL)
+	{
+		camCheck->Update(dt);
+		CGame::GetInstance()->SetCamPos(camCheck->GetX(), int(cy));
+	}
+	else if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{
 		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 		else if (cy > 380.0f ) CGame::GetInstance()->SetCamPos(2088, 432);
@@ -475,8 +486,8 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	// Render make CPU higher
-	//tileMap->Render(CGame::GetInstance()->GetCamPos());
-	player->Render();
+	tileMap->Render(CGame::GetInstance()->GetCamPos());
+	//player->Render();
 	// turn off grid
 	/*for (int i = 0; i < objects.size(); i++)
 		if (objects[i]->IsEnable()) objects[i]->Render();*/
