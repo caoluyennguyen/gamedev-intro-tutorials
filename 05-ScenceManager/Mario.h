@@ -216,6 +216,8 @@ class CMario : public CGameObject
 	bool isGoingIntoPipe;
 	bool moveEndScene;
 	bool moveCamera;
+	bool isWalking;
+	bool isOnWood;
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
@@ -265,6 +267,8 @@ public:
 	void SetNx(int nx) { this->nx = nx; }
 	void ResetBall() { countBall++ ; }
 	void SetMoveCamera(bool move) { this->moveCamera = move; }
+	void SetIsWalking(bool walking) { this->isWalking = walking; }
+	void SetIsOnWood(bool onWood) { this->isOnWood = onWood; }
 
 	static CMario* CMario::GetInstance();
 };

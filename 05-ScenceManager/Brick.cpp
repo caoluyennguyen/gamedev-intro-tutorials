@@ -48,6 +48,11 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy = 0;
 		if (state != BRICK_STATE_MULTI_COIN_AVAILABLE && item->GetState() != ITEM_TYPE_COIN) freeze = true;
 	}
+
+	if (item->effect->GetAppear())
+	{
+		item->Update(dt, NULL);
+	}
 }
 
 void CBrick::Render()
@@ -100,12 +105,13 @@ void CBrick::SetState(int state)
 	case BRICK_STATE_AVAILABLE:
 		break;
 	case BRICK_STATE_UNAVAILABLE:
-		vy = -0.2f;
-		item->SetEnable(true);
+		{
+			vy = -0.2f;
+			item->SetEnable(true);
 
-		if (item->GetState() == ITEM_TYPE_COIN) item->SetSpeedVy(-ITEM_COIN_VELOCITY);
-		else if (item->GetState() == ITEM_TYPE_LEAF) item->SetSpeedVy(-ITEM_LEAF_VELOCITY_Y);
-
+			if (item->GetState() == ITEM_TYPE_COIN) item->SetSpeedVy(-ITEM_COIN_VELOCITY);
+			else if (item->GetState() == ITEM_TYPE_LEAF) item->SetSpeedVy(-ITEM_LEAF_VELOCITY_Y);
+		}
 		break;
 	case BRICK_STATE_BREAKABLE:
 		InitPieces();

@@ -34,5 +34,6 @@ public:
 	void SetPosition(float x, float y) { this->x = x; this->y = y; }
 	void SetState(int state);
 	void SetAppear(bool appear) { this->appear = appear; }
+	bool GetAppear() { return this->appear; }
 };
 

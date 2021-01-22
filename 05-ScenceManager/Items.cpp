@@ -122,7 +122,6 @@ void CItems::SetPosition(float x, float y)
 {
 	CGameObject::SetPosition(x, y);
 	startY = y;
-	effect->SetPosition(x, y);
 }
 
 void CItems::CoinUpdate(DWORD dt)
@@ -135,6 +134,7 @@ void CItems::CoinUpdate(DWORD dt)
 		if (y > startY)
 		{
 			SetEnable(false);
+			effect->SetPosition(x, y);
 			effect->StartTimeAppear();
 			HUD::GetInstance()->AddCoin();
 		}

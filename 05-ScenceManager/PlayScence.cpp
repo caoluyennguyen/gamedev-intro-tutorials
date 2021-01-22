@@ -456,18 +456,17 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}*/
 
-
-	if (cx > 2808)
-	{
-		HUD::GetInstance()->SetEndScene(true);
-	}
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 3;
 
 	if (cy < 0) cy = 0;
 	if (cx < 0) cx = 0;
-	else if (cx > MARIO_MAX_POSITION) cx = MARIO_MAX_POSITION;
+	else if (cx > MARIO_MAX_POSITION)
+	{
+		HUD::GetInstance()->SetEndScene(true);
+		cx = MARIO_MAX_POSITION;
+	} 
 	if (camCheck != NULL)
 	{
 		camCheck->Update(dt);
@@ -621,9 +620,11 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	{
 	case DIK_RIGHT:
 		mario->SetState(MARIO_STATE_IDLE);
+		mario->SetIsWalking(false);
 		break;
 	case DIK_LEFT:
 		mario->SetState(MARIO_STATE_IDLE);
+		mario->SetIsWalking(false);
 		break;
 	case DIK_S:
 		mario->SetAbleToJump(false);
@@ -658,10 +659,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (game->IsKeyDown(DIK_RIGHT)) {
 		if (mario->IsAbleToRun()) mario->SetState(MARIO_STATE_RUN_RIGHT);
 		else mario->SetState(MARIO_STATE_WALKING_RIGHT);
+
+		mario->SetIsWalking(true);
 	}
 	else if (game->IsKeyDown(DIK_LEFT)) {
 		if (mario->IsAbleToRun()) mario->SetState(MARIO_STATE_RUN_LEFT);
 		else mario->SetState(MARIO_STATE_WALKING_LEFT);
+
+		mario->SetIsWalking(true);
 	}
 	else
 	{

@@ -163,9 +163,22 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 			{
 				float kLeft, kTop, kRight, kBottom;
 				obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+				float mLeft, mTop, mRight, mBottom;
+				GetBoundingBox(mLeft, mTop, mRight, mBottom);
 
-				if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y) {
-					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+				if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
+					if (kRight > mLeft && vx < 0)
+					{
+						x += 1.0f;
+					}
+					else if (kLeft < mRight && vx > 0)
+					{
+						x -= 1.0f;
+					}
+					else if (kBottom > mTop && vy > 0)
+					{
+						y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+					}
 				}
 			}
 		}
@@ -237,7 +250,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		hitting_start = 0;
 		hitting = 0;
-		this->tail->SetEnable(false);
+		if (GetTickCount() - hitting_start > MARIO_SHOOTING_TIME) this->tail->SetEnable(false);
 	}
 	// reset throwing timer if hitting time has passed
 	if (GetTickCount() - throwing_start > MARIO_THROWING_TIME)
@@ -280,7 +293,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else if (vx < -MARIO_MIN_WALKING_SPEED) vx += MARIO_ACCELERATION_WALK * dt;
 		else vx = 0;
 	}
-	else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
+	//else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
+	else if (isWalking && !isAbleToRun)
 	{
 		if (nx > 0)
 		{
@@ -296,7 +310,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else vx = -MARIO_MAX_WALKING_SPEED;
 		}
 	}
-	else if (state == MARIO_STATE_RUN_RIGHT || state == MARIO_STATE_RUN_LEFT)
+	else if (isWalking && isAbleToRun)
 	{
 		/*if (a < MARIO_ACCELERATION_RUN) a += 0.0001f * dt;
 		else a = MARIO_ACCELERATION_RUN;*/
@@ -417,9 +431,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += dy;
 					}
 				}
-				else y += dy;
+				else
+				{
+					y += dy;
+				}
 				
-				if (e->nx != 0 && !isAbleToHoldObject)
+				if ((e->nx != 0 || e->ny > 0) && !isAbleToHoldObject)
 				{
 					if (untouchable == 0 && hitting == 0)
 					{
@@ -520,7 +537,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += min_ty * dy + ny * 0.2f;
 					}
 				}
-				else if (e->nx != 0)
+				else if (e->nx != 0 || e->ny > 0)
 				{
 					if (untouchable == 0)
 					{
@@ -764,6 +781,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += min_ty * dy + ny * 0.2f;
 					wood->vx = 0;
 					wood->SetFallDown();
+					isOnWood = true;
 				}
 				else if (e->ny > 0)
 				{
@@ -1182,7 +1200,7 @@ void CMario::Render()
 				else {
 					if (vx == 0)
 					{
-						if (vy != 0 && !isAbleToJump && !moveEndScene)
+						if (vy != 0 && !isAbleToJump)
 						{
 							if (nx > 0) {
 								if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
@@ -1233,8 +1251,26 @@ void CMario::Render()
 								ani = MARIO_ANI_TAIL_HIT_LEFT;
 							}
 						}
+						else if (isSlowFall)
+						{
+							if (vy < MARIO_MIN_JUMP_SPEED)
+							{
+								if (nx > 0)
+								{
+									ani = MARIO_ANI_TAIL_SLOW_FALL_RIGHT;
+								}
+								else ani = MARIO_ANI_TAIL_SLOW_FALL_LEFT;
+							}
+							else {
+								if (nx > 0)
+								{
+									ani = MARIO_ANI_TAIL_JUMP_DOWN_RIGHT;
+								}
+								else ani = MARIO_ANI_TAIL_JUMP_DOWN_LEFT;
+							}
+						}
 						else {
-							if (vy != 0 && !isAbleToJump)
+							if (vy != 0 && !isAbleToJump && !moveEndScene)
 							{
 								if (nx > 0) {
 									if (vy < 0)
@@ -1512,14 +1548,18 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		if (isAbleToJump && vy == 0) {
+		if (vy == 0 || isOnWood) {
 			// mario can fly when can run and jump high
 			if (isAbleToJumpHigh && level != MARIO_LEVEL_TAIL)
 			{
 				vy = -MARIO_JUMP_HIGH_SPEED;
 			}
 			else
+			{
 				vy = -MARIO_JUMP_SPEED;
+			}
+
+			isOnWood = false;
 		}
 		break; 
 	case MARIO_STATE_IDLE:
