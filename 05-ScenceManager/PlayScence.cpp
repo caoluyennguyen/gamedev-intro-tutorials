@@ -349,6 +349,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CAM_CHECK:
 	{
 		camCheck = new CCamCheck();
+		camCheck->SetPlayer(player);
 		return;
 	}
 	default:
@@ -470,7 +471,7 @@ void CPlayScene::Update(DWORD dt)
 	if (camCheck != NULL)
 	{
 		camCheck->Update(dt);
-		CGame::GetInstance()->SetCamPos(camCheck->GetX(), int(cy));
+		CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), int(cy));
 	}
 	else if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{

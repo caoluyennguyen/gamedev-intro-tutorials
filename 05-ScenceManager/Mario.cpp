@@ -65,6 +65,7 @@ CMario::CMario() : CGameObject()
 	}*/
 
 	moveEndScene = false;
+	moveCamera = false;
 }
 
 void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
@@ -846,6 +847,10 @@ void CMario::Render()
 					}
 				}
 			}
+			else if (moveCamera)
+			{
+				ani = MARIO_ANI_BIG_WALKING_RIGHT;
+			}
 			else {
 				if (state == MARIO_STATE_SIT)
 				{
@@ -907,7 +912,7 @@ void CMario::Render()
 							}
 						}
 						else {
-							if (vy != 0 && !isAbleToJump)
+							if (vy != 0 && !isAbleToJump && !moveEndScene)
 							{
 								if (nx > 0) {
 									if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_RIGHT;
@@ -989,6 +994,10 @@ void CMario::Render()
 					if (isAbleToJumpHigh && isAbleToRun) ani = MARIO_ANI_SMALL_FLY_LEFT;
 					else ani = MARIO_ANI_SMALL_JUMP_LEFT;
 				}
+			}
+			else if (moveCamera)
+			{
+				ani = MARIO_ANI_SMALL_WALKING_RIGHT;
 			}
 			else {
 				if (vx == 0)
@@ -1160,6 +1169,10 @@ void CMario::Render()
 					this->tail->Render();
 				}
 			}
+			else if (moveCamera)
+			{
+				ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+			}
 			else {
 				if (state == MARIO_STATE_SIT)
 				{
@@ -1169,7 +1182,7 @@ void CMario::Render()
 				else {
 					if (vx == 0)
 					{
-						if (vy != 0 && !isAbleToJump)
+						if (vy != 0 && !isAbleToJump && !moveEndScene)
 						{
 							if (nx > 0) {
 								if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
@@ -1341,6 +1354,10 @@ void CMario::Render()
 					if (throwing == 1) ani = MARIO_ANI_FIRE_THROW_BALL_LEFT;
 					else ani = MARIO_ANI_FIRE_IDLE_LEFT;
 				}
+			}
+			else if (moveCamera)
+			{
+				ani = MARIO_ANI_FIRE_WALKING_RIGHT;
 			}
 			else {
 				if (state == MARIO_STATE_SIT)

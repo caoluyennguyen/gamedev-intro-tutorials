@@ -215,6 +215,7 @@ class CMario : public CGameObject
 	bool isAbleToGoUpPipe;
 	bool isGoingIntoPipe;
 	bool moveEndScene;
+	bool moveCamera;
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
@@ -263,6 +264,7 @@ public:
 	//void SetIsJumping(bool x) { isJumping = x; }
 	void SetNx(int nx) { this->nx = nx; }
 	void ResetBall() { countBall++ ; }
+	void SetMoveCamera(bool move) { this->moveCamera = move; }
 
 	static CMario* CMario::GetInstance();
 };
