@@ -29,7 +29,6 @@ class CBrick : public CGameObject
 	bool breakable;
 
 	CItems* item;
-	vector<CItems*> lsItem;
 	BrickPieces* pieces;
 
 	DWORD coin_start;

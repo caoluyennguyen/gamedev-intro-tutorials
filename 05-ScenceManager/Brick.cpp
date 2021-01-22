@@ -22,6 +22,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				delete pieces;
 				pieces = NULL;
+				this->enable = false;
 				return;
 			}
 
@@ -44,7 +45,8 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (y > initialPosY)
 	{
 		y = initialPosY;
-		if (state != BRICK_STATE_MULTI_COIN_AVAILABLE) freeze = true;
+		vy = 0;
+		if (state != BRICK_STATE_MULTI_COIN_AVAILABLE && item->GetState() != ITEM_TYPE_COIN) freeze = true;
 	}
 }
 
@@ -113,8 +115,9 @@ void CBrick::SetState(int state)
 		break;
 	case BRICK_STATE_MULTI_COIN_AVAILABLE:
 		vy = -0.2f;
-		item->SetPosition(initialPosX + ITEM_INITIAL_POS_X, initialPosY - ITEM_INITIAL_POS_Y);
 		item->SetEnable(true);
+
+		item->SetPosition(initialPosX + ITEM_INITIAL_POS_X, initialPosY - ITEM_INITIAL_POS_Y);
 		item->SetSpeedVy(-ITEM_COIN_VELOCITY);
 		break;
 	default:

@@ -84,18 +84,10 @@ void CTileMap::Render()
 void CTileMap::Render(int x)
 {
 	int start, finish;
-	/*if (Simon::GetInstance()->IsFightingBoss()) {
-		start = 23;
-		finish = 48;
-	}
-	else {
-		start = x / pixel - 12;
-		finish = start + 29;
-	}*/
 
 	// fix start and finish
 	start = x / pixel;
-	finish = start + 20;
+	finish = start + NUM_OF_COL;
 
 	if (start < 0)
 	{

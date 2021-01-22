@@ -132,6 +132,10 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 					SetLevel(MARIO_LEVEL_BIG);
 					obj->SetEnable(false);
 				}
+				else if (obj->GetState() == ITEM_TYPE_GREEN_MUSROOM)
+				{
+					obj->SetEnable(false);
+				}
 			}
 		}
 		else if (dynamic_cast<CBrick*>(obj)) {
@@ -580,25 +584,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						}
 						else if (brick->GetState() == BRICK_STATE_MULTI_COIN || brick->GetState() == BRICK_STATE_MULTI_COIN_AVAILABLE)
 						{
-							if (brick->count > 0)
-							{
-								brick->count--;
-								brick->SetState(BRICK_STATE_MULTI_COIN_AVAILABLE);
-							}
-							else
-							{
-								brick->SetState(BRICK_STATE_UNAVAILABLE);
-							}
-							/*brick->count--;
-							if (brick->count < 1)
+							if (brick->GetItem()->GetState() != ITEM_TYPE_COIN)
 							{
 								brick->SetState(BRICK_STATE_UNAVAILABLE);
 							}
 							else
 							{
-								brick->SetState(BRICK_STATE_MULTI_COIN);
-								brick->freeze = false;
-							}*/
+								if (brick->count > 0)
+								{
+									brick->count--;
+									brick->SetState(BRICK_STATE_MULTI_COIN_AVAILABLE);
+								}
+								else
+								{
+									brick->SetState(BRICK_STATE_UNAVAILABLE);
+								}
+							}
 						}
 					}
 				}
@@ -699,8 +700,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->obj->GetState() == ITEM_TYPE_COIN)
 				{
-					x += dx;
-					y += dy;
+					/*x += dx;
+					y += dy;*/
 					e->obj->SetEnable(false);
 
 					HUD::GetInstance()->AddCoin();

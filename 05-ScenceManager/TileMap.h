@@ -5,6 +5,8 @@
 #include "Utils.h"
 #include "Sprites.h"
 
+#define NUM_OF_COL 15
+
 class CTileMap
 {
 	//CTileMap* _instance;
