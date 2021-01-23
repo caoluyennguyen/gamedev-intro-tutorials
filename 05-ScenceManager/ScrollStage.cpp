@@ -2,7 +2,7 @@
 
 void CScrollStage::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (y < -MIN_Y) return;
+	if (y < -SCROLL_STAGE_MIN_Y) return;
 	y -= STAGE_VELOCITY;
 }
 

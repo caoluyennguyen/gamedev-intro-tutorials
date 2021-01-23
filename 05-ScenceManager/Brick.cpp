@@ -1,6 +1,6 @@
 #include "Brick.h"
 
-CBrick::CBrick(int initialPosX, int initialPosY, int itemType)
+CBrick::CBrick(float initialPosX, float initialPosY, int itemType)
 {
 	this->initialPosX = initialPosX;
 	this->initialPosY = initialPosY;
@@ -92,8 +92,16 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
 	l = x;
 	t = y;
-	r = x + BRICK_BBOX_WIDTH;
-	b = y + BRICK_BBOX_HEIGHT;
+	if (state == BRICK_STATE_BREAK)
+	{
+		r = x;
+		b = y;
+	}
+	else
+	{
+		r = x + BRICK_BBOX_WIDTH;
+		b = y + BRICK_BBOX_HEIGHT;
+	}
 }
 
 void CBrick::SetState(int state)

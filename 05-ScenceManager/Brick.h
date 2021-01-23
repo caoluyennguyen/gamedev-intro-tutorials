@@ -35,7 +35,7 @@ class CBrick : public CGameObject
 public:
 	int count;
 	bool freeze;
-	CBrick(int initialPosX, int initialPosY, int itemType = 0);
+	CBrick(float initialPosX, float initialPosY, int itemType = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);

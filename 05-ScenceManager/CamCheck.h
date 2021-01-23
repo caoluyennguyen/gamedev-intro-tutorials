@@ -7,11 +7,11 @@
 class CCamCheck
 {
 	bool available;
-	int maxX;
+	float maxX;
 	float x, vx;
 	CMario* mario;
 public:
-	CCamCheck(int x, int maxX);
+	CCamCheck(float x, float maxX);
 	void Update(DWORD dt);
 
 	float GetX() { return x; }

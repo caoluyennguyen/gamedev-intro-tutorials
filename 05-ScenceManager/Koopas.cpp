@@ -124,16 +124,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CGround* ground = dynamic_cast<CGround*>(e->obj);
 				if (e->nx != 0)
 				{
-					if (ground->GetId() == GROUND_TYPE_NORMAL)
-					{
-						vx = -vx;
-						x += min_tx * dx + nx * 0.5f;
-					}
-					else
-					{
-						x += dx;
-					}
+					vx = -vx;
+					x += min_tx * dx + nx * 0.5f;
 				}
+
 				if (e->ny < 0)
 				{
 					if (state == KOOPAS_STATE_FLY) vy = -0.2f;

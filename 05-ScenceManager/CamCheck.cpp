@@ -1,6 +1,6 @@
 #include "CamCheck.h"
 
-CCamCheck::CCamCheck(int x, int maxX) 
+CCamCheck::CCamCheck(float x, float maxX) 
 {
 	this->x = x;
 	this->maxX = maxX; 

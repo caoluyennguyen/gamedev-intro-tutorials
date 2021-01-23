@@ -202,10 +202,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
-	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
+	float x = float(atof(tokens[1].c_str()));
+	float y = float(atof(tokens[2].c_str()));
 
-	int ani_set_id = atoi(tokens[3].c_str());
+	int ani_set_id = int(atoi(tokens[3].c_str()));
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
@@ -227,35 +227,35 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA:
 		{
-			int state = atof(tokens[4].c_str());
+			int state = int(atof(tokens[4].c_str()));
 			obj = new CGoomba(state);
 			break;
 		}
 	case OBJECT_TYPE_BRICK:
 		{
-			int item_type = atof(tokens[4].c_str());
+			int item_type = int(atof(tokens[4].c_str()));
 			obj = new CBrick(x, y, item_type);
 			objects.push_back(((CBrick*)obj)->GetItem());
 			break;
 		}
 	case OBJECT_TYPE_KOOPAS:
 		{
-			int state = atof(tokens[4].c_str());
+			int state = int(atof(tokens[4].c_str()));
 			obj = new CKoopas(state);
 			break;
 		}
 	case OBJECT_TYPE_PORTAL:
 		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
+			float r = float(atof(tokens[4].c_str()));
+			float b = float(atof(tokens[5].c_str()));
+			int scene_id = int(atoi(tokens[6].c_str()));
 			obj = new CPortal(x, y, r, b, scene_id);
 		}
 		break;
 	case OBJECT_TYPE_GROUND:
 		{
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
+			float r = float(atof(tokens[4].c_str()));
+			float b = float(atof(tokens[5].c_str()));
 			id = atoi(tokens[6].c_str());
 			obj = new CGround(x, y, r, b, id);
 		}
@@ -274,7 +274,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_MULTI_BRICK:
 		{
-			int item_type = atof(tokens[4].c_str());
+			int item_type = int(atof(tokens[4].c_str()));
 			obj = new CBrick(x, y, item_type);
 			objects.push_back(((CBrick*)obj)->GetItem());
 			obj->SetState(BRICK_STATE_MULTI_COIN);
@@ -303,8 +303,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_PIPE_GREEN_DOWN:
 		{
-			float posX = atof(tokens[4].c_str());
-			float posY = atof(tokens[5].c_str());
+			float posX = float(atof(tokens[4].c_str()));
+			float posY = float(atof(tokens[5].c_str()));
 			obj = new CPipe(posX, posY);
 			obj->SetState(PIPE_STATE_SECRET_GREEN_DOWN);
 		}
@@ -336,7 +336,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_RED_KOOPAS:
 	{
-		int state = atof(tokens[4].c_str());
+		int state = int(atof(tokens[4].c_str()));
 		obj = new CKoopas(state, 1);
 		break;
 	}
@@ -468,9 +468,9 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cy < 0) cy = 0;
 	if (cx < minX) cx = minX;
-	else if (cx > maxX)
+	else if (player->x > maxX + game->GetScreenWidth())
 	{
-		HUD::GetInstance()->SetEndScene(true);
+		if (player->IsMoveEndScene()) HUD::GetInstance()->SetEndScene(true);
 		cx = maxX;
 	} 
 	
@@ -622,7 +622,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetPosition(1212.0f, 390.0f);
 		break;
 	case DIK_O:
-		mario->SetPosition(1710.0f, 369.0f);
+		mario->SetPosition(1950.0f, 369.0f);
 		break;
 	case DIK_P:
 		mario->SetPosition(2260.0f, 76.0f);

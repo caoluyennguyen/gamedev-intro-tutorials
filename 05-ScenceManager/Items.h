@@ -46,7 +46,7 @@
 
 class CItems : public CGameObject
 {
-	int startY;
+	float startY;
 	int ani;
 
 	bool appear;
@@ -60,7 +60,7 @@ public:
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	void SetStartY(int startY) { this->startY = startY; }
+	void SetStartY(float startY) { this->startY = startY; }
 	void SetPosition(float x, float y);
 
 	void CoinUpdate(DWORD dt);

@@ -35,8 +35,8 @@ class CGame
 
 	LPKEYEVENTHANDLER keyHandler;
 
-	float cam_x = 0.0f;
-	float cam_y = 0.0f;
+	int cam_x = 0;
+	int cam_y = 0;
 
 	int screen_width;
 	int screen_height; 
@@ -83,7 +83,7 @@ public:
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
 
-	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
+	void SetCamPos(int x, int y) { cam_x = x; cam_y = y; }
 	float GetCamPos() { return cam_x; }
 
 	static CGame * GetInstance();

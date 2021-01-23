@@ -14,10 +14,10 @@
 class CPipe : public CGameObject
 {
 public:
-	int posMoveX, posMoveY;
+	float posMoveX, posMoveY;
 
 	CPipe() {};
-	CPipe(int posMoveX, int posMoveY) { this->posMoveX = posMoveX; this->posMoveY = posMoveY; };
+	CPipe(float posMoveX, float posMoveY) { this->posMoveX = posMoveX; this->posMoveY = posMoveY; };
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {};
 	virtual void Render();
 	virtual void SetState(int state) { this->state = state; };

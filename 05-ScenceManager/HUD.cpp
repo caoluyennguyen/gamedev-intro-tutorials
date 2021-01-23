@@ -45,13 +45,13 @@ void HUD::UnLoadResource()
 void HUD::Update(DWORD dt)
 {
 	//gameTime += dt / 100;
-	gameTime -= 0.01f;
-	if (gameTime < 0) gameTime = 300;
+	gameTime -= TIME_UNIT;
+	if (gameTime < 0) gameTime = GAME_TIME;
 }
 
 void HUD::Render()
 {
-	CSprites::GetInstance()->Get(200)->Draw(0, 200, 255, 0);
+	CSprites::GetInstance()->Get(BACKGROUND_SPRITES_ID)->Draw(0, BACKGROUND_POS_Y, COLOR_CODE, 0);
 
 	RenderScore(score);
 	RenderTime(gameTime);
@@ -65,13 +65,13 @@ void HUD::Render()
 
 void HUD::RenderScore(int numScore)
 {
-	if (numScore > 9999999) return;
+	if (numScore > MAX_SCORE) return;
 
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < NUM_OF_SCORE; i++)
 	{
-		int k = numScore % 10;
-		number[i][k]->Draw(118 - i * 9, 223, 255, 0);
-		numScore = (numScore - k) / 10;
+		int k = numScore % NUMBER_UNIT;
+		number[i][k]->Draw(SCORE_POS_X - i * SCORE_POS_X_UNIT, SCORE_POS_Y, COLOR_CODE, 0);
+		numScore = (numScore - k) / NUMBER_UNIT;
 	}
 }
 
@@ -81,9 +81,9 @@ void HUD::RenderTime(int time)
 
 	for (int i = 0; i < 3; i++)
 	{
-		int k = time % 10;
-		number[i][k]->Draw(152 - i * 7, 223, 255, 0);
-		time = (time - k) / 10;
+		int k = time % NUMBER_UNIT;
+		number[i][k]->Draw(TIME_POS_X - i * TIME_POS_X_UNIT, TIME_POS_Y, COLOR_CODE, 0);
+		time = (time - k) / NUMBER_UNIT;
 	}
 }
 
@@ -91,11 +91,11 @@ void HUD::RenderCoin(int coin)
 {
 	if (coin < 0) return;
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < NUM_OF_COIN; i++)
 	{
-		int k = coin % 10;
-		number[i][k]->Draw(151 - i * 10, 214, 255, 0);
-		coin = (coin - k) / 10;
+		int k = coin % NUMBER_UNIT;
+		number[i][k]->Draw(COIN_POS_X - i * COIN_POS_X_UNIT, COIN_POS_Y, COLOR_CODE, 0);
+		coin = (coin - k) / NUMBER_UNIT;
 	}
 }
 
@@ -108,22 +108,22 @@ void HUD::RenderPower()
 
 	for (int i = 0; i < 6; i++)
 	{
-		speedDown->Draw(60 + i * 10, 214, 255, 0);
+		speedDown->Draw(POWER_POS_X + i * POWER_POS_X_UNIT, POWER_POS_Y, COLOR_CODE, 0);
 	}
 
 	for (int i = 0; i < marioPower; i++)
 	{
-		speedUp->Draw(60 + i * 10, 214, 255, 0);
+		speedUp->Draw(POWER_POS_X + i * POWER_POS_X_UNIT, POWER_POS_Y, COLOR_CODE, 0);
 	}
 
 	if (marioPower > 6)
 	{
 		marioPower = 7;
-		power->at(2)->Render(120, 214, 255, 0);
+		power->at(2)->Render(POWER_MAX_POS_X, POWER_POS_Y, COLOR_CODE, 0);
 	}
 	else
 	{
-		power->at(1)->Render(120, 214, 255, 0);
+		power->at(1)->Render(POWER_MAX_POS_X, POWER_POS_Y, COLOR_CODE, 0);
 	}
 
 }

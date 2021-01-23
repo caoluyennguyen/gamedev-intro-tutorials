@@ -6,8 +6,44 @@
 #include "PlayCard.h"
 #include "EndSceneTitle.h"
 
+#pragma region define
 #define TIME_PLAY 1000
 #define TIME_POWER 150
+#define TIME_UNIT 0.1f
+
+#define GAME_TIME 300.0f
+#define BACKGROUND_SPRITES_ID 200
+#define SPEED_UP_SPRITES_ID 201
+#define SPEED_DOWN_SPRITES_ID 202
+#define NUMBER_SPRITES_ID 1000
+#define POWER_ANIM_ID 8
+
+#define NUM_OF_COIN 2
+#define NUM_OF_TIME 3
+#define NUM_OF_SCORE 7
+#define NUM_OF_POINT 10
+#define BACKGROUND_POS_Y 200
+#define COLOR_CODE	255
+#define NUMBER_UNIT	10
+#define MAX_SCORE	9999999
+#define SCORE_POS_X	118.0f
+#define SCORE_POS_X_UNIT	9.0f
+#define SCORE_POS_Y	223.0f
+#define CARD_HUD_POS_X 172.0f
+#define CARD_HUD_POS_Y 207.0f
+#define TIME_POS_X	152.0f
+#define TIME_POS_X_UNIT	7.0f
+#define TIME_POS_Y	223.0f
+#define COIN_POS_X	151.0f
+#define COIN_POS_X_UNIT	10.0f
+#define COIN_POS_Y	214.0f
+#define POWER_POS_X	60.0f
+#define POWER_MAX_POS_X	120.0f
+#define POWER_POS_X_UNIT	10.0f
+#define POWER_POS_Y	214.0f
+#pragma endregion
+
+
 
 class HUD
 {

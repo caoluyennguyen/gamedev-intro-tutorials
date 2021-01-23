@@ -3,7 +3,7 @@
 #include "Mario.h"
 #include "PlayScence.h"
 
-CVenus::CVenus(int state, int start_y) : CEnemy()
+CVenus::CVenus(int state, float start_y) : CEnemy()
 {
 	this->start_y = start_y;
 

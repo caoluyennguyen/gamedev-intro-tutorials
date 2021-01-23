@@ -57,7 +57,7 @@ class CVenus : public CEnemy
 
 	FireBall* fireball;
 public:
-	CVenus(int state, int start_y = 0);
+	CVenus(int state, float start_y = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	virtual void SetState(int state);

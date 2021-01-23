@@ -17,7 +17,7 @@ class CGrid
 	void _ParseSection_OBJECTS(string line);
 public:
 	CGrid(LPCWSTR filePath, vector<LPGAMEOBJECT>* listObject);
-	void GetListObject(vector<LPGAMEOBJECT>* listObject, int camX, int camY);
+	void GetListObject(vector<LPGAMEOBJECT>* listObject, float camX, float camY);
 	void Load(LPCWSTR filePath, vector<LPGAMEOBJECT>* listObject);
 	void Unload();
 	bool CheckObjectId(vector<LPGAMEOBJECT>* listObjects, LPGAMEOBJECT obj);

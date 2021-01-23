@@ -31,10 +31,6 @@ void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			CCheckPoint* checkPoint = dynamic_cast<CCheckPoint*>(obj);
 
 			if (CheckCollision(a_left, a_top, a_right, a_bottom)) {
-				/*vx = vy = 0;
-
-				this->x += 0.1f * (checkPoint->right - checkPoint->left);
-				this->y += 0.1f * (checkPoint->bottom - checkPoint->top);*/
 				if (checkPoint->IsEnable())
 				{
 					if (vx > 0)

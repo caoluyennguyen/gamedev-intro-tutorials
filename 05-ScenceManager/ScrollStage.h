@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 #define STAGE_VELOCITY	0.6f
-#define MIN_Y	200
+#define SCROLL_STAGE_MIN_Y	200.0f
 
 class CScrollStage : public CGameObject
 {

@@ -116,7 +116,7 @@ void CGrid::Load(LPCWSTR filePath, vector<LPGAMEOBJECT>* listObject)
 	DebugOut(L"[INFO] Done loading scene resources %s\n", filePath);
 }
 
-void CGrid::GetListObject(vector<LPGAMEOBJECT>* listObject, int camX, int camY)
+void CGrid::GetListObject(vector<LPGAMEOBJECT>* listObject, float camX, float camY)
 {
 	listObject->clear();
 

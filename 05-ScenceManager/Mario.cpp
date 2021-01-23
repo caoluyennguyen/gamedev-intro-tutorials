@@ -144,6 +144,8 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 		else if (dynamic_cast<CBrick*>(obj)) {
 			float kLeft, kTop, kRight, kBottom;
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+			float mLeft, mTop, mRight, mBottom;
+			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 
 			if (obj->GetState() == BRICK_STATE_BREAKABLE && coin_start != 0)
 			{
@@ -154,8 +156,19 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				obj->SetState(BRICK_STATE_BREAKABLE);
 			}
 
-			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y && obj->GetState() != BRICK_STATE_BREAK && obj->GetState() != BRICK_STATE_COIN) {
-				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && obj->GetState() != BRICK_STATE_BREAK && obj->GetState() != BRICK_STATE_COIN) {
+				if (kRight > mLeft && vx < 0)
+				{
+					x += kRight - mLeft + 0.05f;
+				}
+				else if (kLeft < mRight && vx > 0)
+				{
+					x -= mRight - kLeft + 0.05f;
+				}
+				if (kBottom > mTop && vy > 0)
+				{
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.05f;
+				}
 			}
 		}
 		else if (dynamic_cast<CGround*>(obj)) {
@@ -169,13 +182,13 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				GetBoundingBox(mLeft, mTop, mRight, mBottom);
 
 				if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-					if (kRight > mLeft && vx < 0)
+					if (kRight > mLeft && vx < 0 && vy == 0)
 					{
-						x += 1.0f;
+						x += kRight - mLeft + 1.0f;
 					}
-					else if (kLeft < mRight && vx > 0)
+					else if (kLeft < mRight && vx > 0 && vy == 0)
 					{
-						x -= 1.0f;
+						x -= mRight - kLeft + 1.0f;
 					}
 					else if (kBottom > mTop && vy > 0)
 					{
@@ -566,8 +579,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->obj->GetState() == BRICK_STATE_COIN)
 				{
-					x += dx;
-					y += dy;
+					e->nx = 0;
+					e->ny = 0;
 
 					e->obj->SetEnable(false);
 				}
@@ -1336,7 +1349,7 @@ void CMario::Render()
 									else {
 										if (hitting == 1)
 										{
-											ani == MARIO_ANI_TAIL_HIT_TAIL_RIGHT;
+											ani = MARIO_ANI_TAIL_HIT_TAIL_RIGHT;
 										}
 										else
 										{
@@ -1361,7 +1374,7 @@ void CMario::Render()
 									else {
 										if (hitting == 1)
 										{
-											ani == MARIO_ANI_TAIL_HIT_TAIL_LEFT;
+											ani = MARIO_ANI_TAIL_HIT_TAIL_LEFT;
 										}
 										else
 										{
