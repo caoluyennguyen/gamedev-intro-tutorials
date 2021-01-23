@@ -28,6 +28,43 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 		bottom = y + KOOPAS_BBOX_HEIGHT;
 }
 
+void CKoopas::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
+{
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+
+		if (e->t > 0 && e->t <= 1.0f)
+			coEvents.push_back(e);
+		else
+			delete e;
+
+		// Check AABB collision
+		LPGAMEOBJECT obj = coObjects->at(i);
+
+		if (dynamic_cast<CBrick*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && kBottom > y && obj->GetState() != BRICK_STATE_BREAK && obj->GetState() != BRICK_STATE_COIN) {
+				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+			}
+		}
+		else if (dynamic_cast<CGround*>(obj)) {
+			CGround* ground = dynamic_cast<CGround*>(obj);
+
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
+				y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+			}
+		}
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+}
+
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	//
@@ -170,7 +207,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 				
-				if (e->ny != 0 && e->obj->GetState() != BRICK_STATE_BREAK)
+				if (e->ny != 0 && e->obj->GetState() != BRICK_STATE_BREAK && e->obj->GetState() != BRICK_STATE_COIN)
 				{
 					vy = 0;
 
@@ -184,6 +221,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						vx = 0;
 					}
+				}
+				else
+				{
+					y += dy;
 				}
 			}
 			else if (dynamic_cast<CMario*>(e->obj))

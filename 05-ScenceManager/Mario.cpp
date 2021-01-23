@@ -42,6 +42,7 @@ CMario::CMario() : CGameObject()
 	isAbleToGoDownPipe = false;
 	isAbleToGoUpPipe = false;
 	isGoingIntoPipe = false;
+	isInSecretRoom = false;
 
 	countBall = 1;
 	ani = -1;
@@ -214,10 +215,12 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				if (obj->GetState() == PIPE_STATE_SECRET_GREEN_UP)
 				{
 					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+					isInSecretRoom = false;
 				}
 				else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN)
 				{
 					y += MARIO_DIVING_SPEED * nx;
+					isInSecretRoom = true;
 				}
 			}
 		}

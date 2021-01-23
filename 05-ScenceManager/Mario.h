@@ -225,6 +225,7 @@ class CMario : public CGameObject
 	bool moveCamera;
 	bool isWalking;
 	bool isOnWood;
+	bool isInSecretRoom;
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
@@ -277,6 +278,8 @@ public:
 	void SetMoveCamera(bool move) { this->moveCamera = move; }
 	void SetIsWalking(bool walking) { this->isWalking = walking; }
 	void SetIsOnWood(bool onWood) { this->isOnWood = onWood; }
+	void SetIsInSecretRoom(bool inRoom) { this->isInSecretRoom = inRoom; }
+	bool IsInSecretRoom() { return isInSecretRoom; }
 
 	static CMario* CMario::GetInstance();
 };

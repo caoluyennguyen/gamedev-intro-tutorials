@@ -65,6 +65,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define MAX_SCENE_LINE 1024
 #define DEATH_AREA 1000.0f
+#define SECRET_ROOM_X 2080.0f
+#define SECRET_ROOM_Y 448.0f
 
 #define SCENE_INTRO_ID		1
 #define SCENE_WORLDMAP_ID	2
@@ -481,6 +483,10 @@ void CPlayScene::Update(DWORD dt)
 		}
 		else
 			CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), maxY);
+	}
+	else if (player->IsInSecretRoom())
+	{
+		CGame::GetInstance()->SetCamPos(int(SECRET_ROOM_X), int(SECRET_ROOM_Y));
 	}
 	else if (player->IsFlying())
 	{

@@ -39,7 +39,7 @@
 #define KOOPAS_FLY_MAX_VY 0.1f
 #define KOOPAS_ROLLING_SPEED 0.2f
 
-#define KOOPAS_TIME_ROLLING_UP 1000
+#define KOOPAS_TIME_ROLLING_UP 5000
 
 class CKoopas : public CEnemy
 {
@@ -49,6 +49,7 @@ class CKoopas : public CEnemy
 	int direction;
 public:
 	CKoopas(int state, int color = 0);
+	void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 	virtual void SetState(int state);
