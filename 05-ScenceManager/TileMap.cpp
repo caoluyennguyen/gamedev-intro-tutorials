@@ -86,7 +86,7 @@ void CTileMap::Render(int x)
 	int start, finish;
 
 	// fix start and finish
-	start = x / pixel;
+	start = CGame::GetInstance()->GetCamPos() / pixel;
 	finish = start + NUM_OF_COL;
 
 	if (start < 0)

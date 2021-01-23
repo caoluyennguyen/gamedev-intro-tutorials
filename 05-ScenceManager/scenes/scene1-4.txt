@@ -1,6 +1,6 @@
-#pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth
+#pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth	minX	maxX	minY	maxY
 [TILEMAP]
-16	scenes\map\1-4.png	scenes\map\1-4.txt	161	29	11	5	1	2576
+16	scenes\map\1-4.png	scenes\map\1-4.txt	161	29	11	5	1	2576	0	2296	220	220
 
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
@@ -999,7 +999,7 @@ right
 
 # BOOMERANG BRO
 19	2120	289	3
-21	0	0	0
+21	0	1768	0
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

@@ -107,6 +107,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							if (x < ground->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
 							else if (x > ground->x + ground->GetWidth() - KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
 						}
+						else if (state == KOOPAS_STATE_FLY) vy = -0.2f;
 						else if (state == KOOPAS_STATE_DIE_NGUA)
 						{
 							vx = 0;
@@ -207,14 +208,25 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CKoopas*>(e->obj))
 			{
-				x += dx;
-				y += dy;
+				if (e->nx != 0)
+				{
+					x += dx;
+					e->obj->SetState(KOOPAS_STATE_DIE_NGUA);
+					if (state == KOOPAS_STATE_WALKING)
+					{
+						ScoreUp();
+					}
+				}
+				if (e->ny != 0)
+				{
+					y += dy;
+				}
 
-				if (state == KOOPAS_STATE_WALKING && e->obj->GetState() == KOOPAS_STATE_ROLLING)
+				/*if (state == KOOPAS_STATE_WALKING && e->obj->GetState() == KOOPAS_STATE_ROLLING)
 				{
 					this->SetState(KOOPAS_STATE_DIE_NGUA);
 					ScoreUp();
-				}
+				}*/
 			}
 			else if (dynamic_cast<CVenus*>(e->obj))
 			{

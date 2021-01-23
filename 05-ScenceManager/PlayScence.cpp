@@ -86,6 +86,10 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 	int numRowToRead = atoi(tokens[6].c_str());
 	int idCell = atoi(tokens[7].c_str());
 	mapWidth = atoi(tokens[8].c_str());
+	minX = atoi(tokens[9].c_str());
+	maxX = atoi(tokens[10].c_str());
+	minY = atoi(tokens[11].c_str());
+	maxY = atoi(tokens[12].c_str());
 
 	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 	tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
@@ -348,7 +352,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_CAM_CHECK:
 	{
-		camCheck = new CCamCheck();
+		camCheck = new CCamCheck(atof(tokens[1].c_str()), atof(tokens[2].c_str()));
 		camCheck->SetPlayer(player);
 		return;
 	}
@@ -461,22 +465,36 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 3;
 
 	if (cy < 0) cy = 0;
-	if (cx < 0) cx = 0;
-	else if (cx > MARIO_MAX_POSITION)
+	if (cx < minX) cx = minX;
+	else if (cx > maxX)
 	{
 		HUD::GetInstance()->SetEndScene(true);
-		cx = MARIO_MAX_POSITION;
+		cx = maxX;
 	} 
-	if (camCheck != NULL)
+	if (camCheck != NULL && camCheck->IsAvalable())
 	{
 		camCheck->Update(dt);
-		CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), int(cy));
+		if (player->IsFlying())
+		{
+			CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), int(cy));
+		}
+		else
+			CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), maxY);
+	}
+	else if (player->IsFlying())
+	{
+		CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 	}
 	else if (player->GetState() != MARIO_STATE_DIE && !player->IsMoveEndScene())
 	{
-		if (cy < 150.0f) CGame::GetInstance()->SetCamPos(int(cx), int(cy));
-		else if (cy > 380.0f ) CGame::GetInstance()->SetCamPos(2088, 432);
-		else CGame::GetInstance()->SetCamPos(int(cx), 230);
+		if (player->y < minY)
+		{
+			cy = player->y - game->GetScreenHeight() / 2;
+			if (cy < 0) cy = 0;
+		}
+		else cy = maxY;
+
+		CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 	}
 	//CGame::GetInstance()->SetCamPos(int(cx), int(cy));
 
@@ -486,7 +504,7 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	// Render make CPU higher
-	tileMap->Render(CGame::GetInstance()->GetCamPos());
+	tileMap->Render(1);
 	//player->Render();
 	// turn off grid
 	/*for (int i = 0; i < objects.size(); i++)

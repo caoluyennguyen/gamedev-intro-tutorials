@@ -3,7 +3,7 @@
 #include "Effect.h"
 
 #define TAIL_BBOX_WIDTH		10
-#define TAIL_BBOX_HEIGHT	10
+#define TAIL_BBOX_HEIGHT	5
 
 class Tail : public CGameObject
 {

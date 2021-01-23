@@ -1,6 +1,6 @@
-#pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth
+#pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth	minX	maxX	minY	maxY
 [TILEMAP]
-16	scenes\map\1.png	scenes\map\1.txt	175	40	20	6	0	2808
+16	scenes\map\1.png	scenes\map\1.txt	175	40	20	6	0	2808	0	2536	210	220
 
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
@@ -169,8 +169,8 @@
 10059	300	874	324	902	0
 10131	359	874	384	902	0
 # jump left
-10060	122	874	144	902	0
-10132	63	874	87	902	0
+10060	115	874	144	902	0
+10132	56	874	87	902	0
 # idle hold object right
 10061	242	794	264	822	0
 # idle hold object left
@@ -878,7 +878,7 @@ right
 
 # MARIO
 #0	10	300	1
-0	1900	367	1
+0	1354	280	1
 # 0	2570	300	1
 
 # GOOMBA

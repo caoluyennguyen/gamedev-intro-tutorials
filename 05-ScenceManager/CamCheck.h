@@ -6,12 +6,17 @@
 
 class CCamCheck
 {
+	bool available;
+	int maxX;
 	float x, vx;
 	CMario* mario;
 public:
-	CCamCheck() { x = 0; vx = CAMERA_VELOCITY; }
+	CCamCheck(int x, int maxX);
 	void Update(DWORD dt);
 
 	float GetX() { return x; }
+	float GetMaxX() { return maxX; }
+	bool IsAvalable() { return available; }
 	void SetPlayer(CMario* mario) { this->mario = mario; }
+
 };

@@ -4,7 +4,7 @@
 #define MOVING_WOOD_WIDTH	48
 #define MOVING_WOOD_HEIGHT	16
 
-#define MOVING_WOOD_SPEED	0.1f
+#define MOVING_WOOD_SPEED	0.0005f
 #define MOVING_WOOD_GRAVITY		0.0002f
 
 class CMovingWood : public CGameObject

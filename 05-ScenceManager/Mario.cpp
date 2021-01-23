@@ -371,6 +371,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 
+	if (y < 0)
+	{
+		y = 0;
+	}
+
 	// No collision occured, proceed normally
 	if (coEvents.size()==0)
 	{
@@ -774,6 +779,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					x += min_tx * dx + nx * 0.2f;
 				}
+				else
+				{
+					x += dx;
+				}
 				if (e->ny < 0)
 				{
 					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
@@ -889,7 +898,7 @@ void CMario::Render()
 				else {
 					if (vx == 0)
 					{
-						if (vy != 0 && !isAbleToJump)
+						if (vy != 0 && !isAbleToJump && !isOnWood)
 						{
 							if (nx > 0) {
 								if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_RIGHT;
@@ -941,7 +950,7 @@ void CMario::Render()
 							}
 						}
 						else {
-							if (vy != 0 && !isAbleToJump && !moveEndScene)
+							if (vy != 0 && !isAbleToJump && !moveEndScene && !isOnWood)
 							{
 								if (nx > 0) {
 									if (vy < 0) ani = MARIO_ANI_BIG_JUMP_UP_RIGHT;
@@ -1031,7 +1040,7 @@ void CMario::Render()
 			else {
 				if (vx == 0)
 				{
-					if (vy != 0 && !isAbleToJump)
+					if (vy != 0 && !isAbleToJump && !isOnWood)
 					{
 						if (nx > 0) ani = MARIO_ANI_SMALL_JUMP_RIGHT;
 						else ani = MARIO_ANI_SMALL_JUMP_LEFT;
@@ -1070,7 +1079,7 @@ void CMario::Render()
 						}
 					}
 					else {
-						if (vy != 0 && !isAbleToJump && !moveEndScene)
+						if (vy != 0 && !isAbleToJump && !moveEndScene && !isOnWood)
 						{
 							if (nx > 0) ani = MARIO_ANI_SMALL_JUMP_RIGHT;
 							else ani = MARIO_ANI_SMALL_JUMP_LEFT;
@@ -1211,7 +1220,7 @@ void CMario::Render()
 				else {
 					if (vx == 0)
 					{
-						if (vy != 0 && !isAbleToJump)
+						if (vy != 0 && !isAbleToJump && !isOnWood)
 						{
 							if (nx > 0) {
 								if (vy < 0) ani = MARIO_ANI_TAIL_JUMP_UP_RIGHT;
@@ -1281,7 +1290,7 @@ void CMario::Render()
 							}
 						}
 						else {
-							if (vy != 0 && !isAbleToJump && !moveEndScene)
+							if (vy != 0 && !isAbleToJump && !moveEndScene && !isOnWood)
 							{
 								if (nx > 0) {
 									if (vy < 0)
@@ -1415,7 +1424,7 @@ void CMario::Render()
 				else {
 					if (vx == 0)
 					{
-						if (vy != 0 && !isAbleToJump)
+						if (vy != 0 && !isAbleToJump && !isOnWood)
 						{
 							if (nx > 0) {
 								if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
@@ -1467,7 +1476,7 @@ void CMario::Render()
 							}
 						}
 						else {
-							if (vy != 0 && !isAbleToJump)
+							if (vy != 0 && !isAbleToJump && !isOnWood)
 							{
 								if (nx > 0) {
 									if (vy < 0) ani = MARIO_ANI_FIRE_JUMP_UP_RIGHT;
@@ -1639,6 +1648,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
+		left = x + 7;
 		if (state == MARIO_STATE_SIT)
 		{
 			right = x + MARIO_SIT_BBOX_WIDTH;
@@ -1648,6 +1658,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = x + MARIO_BIG_BBOX_WIDTH;
 			bottom = y + MARIO_BIG_BBOX_HEIGHT;
 		}
+		if (nx > 0) right += 7;
 	}
 	else
 	{
