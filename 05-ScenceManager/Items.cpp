@@ -178,7 +178,11 @@ void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		return;
 	}
-	else appear = false;
+	else if (appear)
+	{
+		appear = false;
+		vy = 0;
+	}
 
 	vy += ITEM_LEAF_GRAVITY * dt;
 

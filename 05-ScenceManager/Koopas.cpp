@@ -12,6 +12,7 @@ CKoopas::CKoopas(int state, int color) : CEnemy()
 	SetState(state);
 	this->color = color;
 	direction = 1;
+	rollUp = 0;
 }
 
 void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -45,6 +46,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vy += KOOPAS_GRAVITY_RED_FLY * dt * direction;
 	}
 	else vy += KOOPAS_GRAVITY * dt;
+
+	if (GetTickCount() - rollUp > KOOPAS_TIME_ROLLING_UP && rollUp != 0)
+	{
+		rollUp = 0;
+		SetState(KOOPAS_STATE_WALKING);
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -203,19 +210,28 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					goomba->SetState(GOOMBA_STATE_DIE_NGUA);
 					goomba->ScoreUp();
-
+				}
+				else
+				{
+					vx = -vx;
 				}
 			}
 			else if (dynamic_cast<CKoopas*>(e->obj))
 			{
 				if (e->nx != 0)
 				{
+					vx = -vx;
+					e->obj->vx = -vx;
 					x += dx;
-					e->obj->SetState(KOOPAS_STATE_DIE_NGUA);
-					if (state == KOOPAS_STATE_WALKING)
+					if (state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA)
 					{
-						ScoreUp();
+						e->obj->SetState(KOOPAS_STATE_DIE_NGUA);
+						if (e->obj->state == KOOPAS_STATE_WALKING)
+						{
+							ScoreUp();
+						}
 					}
+					
 				}
 				if (e->ny != 0)
 				{
@@ -316,10 +332,12 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_DIE:
 		vx = 0;
 		vy = 0;
+		StartRollUp();
 		break;
 	case KOOPAS_STATE_DIE_NGUA:
 		vy = -0.2f;
 		vx = nx * 0.01f;
+		StartRollUp();
 		break;
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;

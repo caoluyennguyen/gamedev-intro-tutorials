@@ -37,11 +37,14 @@
 #define KOOPAS_GRAVITY 0.0005f
 #define KOOPAS_GRAVITY_RED_FLY 0.0001f
 #define KOOPAS_FLY_MAX_VY 0.1f
-#define KOOPAS_ROLLING_SPEED 0.2f;
+#define KOOPAS_ROLLING_SPEED 0.2f
+
+#define KOOPAS_TIME_ROLLING_UP 1000
 
 class CKoopas : public CEnemy
 {
 	DWORD jump;
+	DWORD rollUp;
 	int color;
 	int direction;
 public:
@@ -50,4 +53,6 @@ public:
 	virtual void Render();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+
+	void StartRollUp() { rollUp = GetTickCount(); }
 };

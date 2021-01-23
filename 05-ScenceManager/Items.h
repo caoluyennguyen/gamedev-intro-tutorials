@@ -40,7 +40,7 @@
 
 #define ITEM_INITIAL_POS_X	3.0f
 #define ITEM_INITIAL_POS_Y	16.0f
-#define MUSROOM_LIMIT_POS_Y		6.0f
+#define MUSROOM_LIMIT_POS_Y		3.0f
 #define MUSROOM_INITIAL_POS_Y	9.0f
 #pragma endregion
 

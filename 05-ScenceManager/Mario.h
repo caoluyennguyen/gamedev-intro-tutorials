@@ -166,13 +166,19 @@
 #define MARIO_SIT_BBOX_WIDTH  16
 #define MARIO_SIT_BBOX_HEIGHT 18
 
+#define MARIO_TAIL_LEFT_X 10
+#define MARIO_TAIL_RIGHT_X 20
+#define MARIO_TAIL_Y 20
+
 #define MARIO_UNTOUCHABLE_TIME	5000
 #define MARIO_HITTING_TIME		500
 #define MARIO_SHOOTING_TIME		200
 #define MARIO_THROWING_TIME		200
 #define MARIO_FLYING_TIME		4000
 #define MARIO_TRANSFORM_TIME	500
+#define MARIO_TAIL_TIME			50
 
+#define FIREBALL_MAX_POSITION	200
 #define MARIO_MAX_POSITION	2528
 #pragma endregion
 
@@ -238,7 +244,7 @@ public:
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void StartShootingObject() { shooting = 1; shooting_start = GetTickCount(); }
-	void StartHittingObject() { hitting = 1; hitting_start = GetTickCount();}
+	void StartHittingObject();
 	void StartThrowingObject() { throwing = 1; throwing_start = GetTickCount(); StartShoot(); }
 	void StartFly() { flying = true; flying_start = GetTickCount(); }
 	void StartTransform() { isTransform = true; transform_start = GetTickCount(); }

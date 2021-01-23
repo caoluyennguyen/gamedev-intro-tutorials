@@ -877,8 +877,8 @@ right
 # 15 = Pipe red up, 16 = End point
 
 # MARIO
-#0	10	300	1
-0	1354	280	1
+0	10	300	1
+#0	1354	300	1
 # 0	2570	300	1
 
 # GOOMBA

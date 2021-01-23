@@ -251,7 +251,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		hitting_start = 0;
 		hitting = 0;
-		if (GetTickCount() - hitting_start > MARIO_SHOOTING_TIME) this->tail->SetEnable(false);
 	}
 	// reset throwing timer if hitting time has passed
 	if (GetTickCount() - throwing_start > MARIO_THROWING_TIME)
@@ -333,12 +332,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (vx < 0) HUD::GetInstance()->PowerUp();
 		}
 	}
-
-	// Check power
-	/*if (!IsFlying() || state != MARIO_STATE_RUN_RIGHT || state != MARIO_STATE_RUN_LEFT)
-	{
-		HUD::GetInstance()->PowerDown();
-	}*/
 
 	if (state == MARIO_STATE_JUMP && isAbleToJump)
 	{
@@ -810,7 +803,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	if (abs(fireball->GetPositionX() - this->x) > 200 || !fireball->IsEnable()) {
+	if (abs(fireball->GetPositionX() - this->x) > FIREBALL_MAX_POSITION || !fireball->IsEnable()) {
 		fireball->SetEnable(false);
 		isAbleToShoot = true;
 	}
@@ -820,7 +813,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		fireball->Update(dt, coObjects);
 	}
 
-	if (abs(second_fireball->GetPositionX() - this->x) > 200 || !second_fireball->IsEnable()) {
+	if (abs(second_fireball->GetPositionX() - this->x) > FIREBALL_MAX_POSITION || !second_fireball->IsEnable()) {
 		second_fireball->SetEnable(false);
 		isAbleToShoot = true;
 	}
@@ -832,13 +825,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (tail->IsEnable())
 	{
+		if (GetTickCount() - hitting_start > MARIO_TAIL_TIME)
+		{
+			this->tail->SetEnable(false);
+		}
 		if (this->nx < 1)
 		{
-			tail->SetPosition(this->x - 10, this->y + 15);
+			tail->SetPosition(this->x, this->y + MARIO_TAIL_Y);
 		}
 		else
 		{
-			tail->SetPosition(this->x + 20, this->y + 15);
+			tail->SetPosition(this->x + MARIO_TAIL_RIGHT_X, this->y + MARIO_TAIL_Y);
 		}
 		tail->Update(dt, coObjects);
 	}
@@ -1542,11 +1539,6 @@ void CMario::Render()
 		second_fireball->Render();
 	}
 	
-	/*for (int i = 0; i < 2; i++)
-	{
-		if (fireBalls[i]->IsEnable())
-			fireBalls[i]->Render();
-	}*/
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -1702,16 +1694,15 @@ void CMario::StartShoot()
 		second_fireball->nx = this->nx;
 	}
 	else isAbleToShoot = false;
+}
 
-
-	/*if (countBall > 0)
+void CMario::StartHittingObject() 
+{
+	if (hitting != 1)
 	{
-		fireBalls[countBall]->SetEnable(true);
-		fireBalls[countBall]->SetPosition(this->x, this->y);
-		fireBalls[countBall]->nx = this->nx;
+		hitting = 1;
+		hitting_start = GetTickCount();
 	}
-	countBall--;
-	if (countBall < 0) isAbleToShoot = false;*/
 }
 
 void CMario::SetLevel(int l)
