@@ -429,11 +429,11 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
-	/*else if (player->y > DEATH_AREA)
+	else if (player->y > DEATH_AREA)
 	{
 		CGame::GetInstance()->SwitchScene(2);
 		return;
-	}*/
+	}
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -471,6 +471,7 @@ void CPlayScene::Update(DWORD dt)
 		HUD::GetInstance()->SetEndScene(true);
 		cx = maxX;
 	} 
+	
 	if (camCheck != NULL && camCheck->IsAvalable())
 	{
 		camCheck->Update(dt);

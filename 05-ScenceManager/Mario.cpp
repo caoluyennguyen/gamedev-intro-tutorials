@@ -776,6 +776,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					x += dx;
 				}
+
 				if (e->ny < 0)
 				{
 					if (state == MARIO_STATE_JUMP || state == MARIO_STATE_SLOW_FALL) SetState(MARIO_STATE_IDLE);
@@ -791,6 +792,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += min_ty * dy + ny * 0.2f;
 					vy += 0.1f;
 				}
+				else
+					y += dy;
 
 			}
 			else {
@@ -803,6 +806,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
+	// update mario skills
 	if (abs(fireball->GetPositionX() - this->x) > FIREBALL_MAX_POSITION || !fireball->IsEnable()) {
 		fireball->SetEnable(false);
 		isAbleToShoot = true;

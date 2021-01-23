@@ -3,7 +3,7 @@
 
 CMovingWood::CMovingWood()
 {
-	vx = -0.1f;
+	vx = -MOVING_WOOD_SPEED;
 	vy = 0;
 	fallDown = false;
 }

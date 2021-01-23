@@ -6,7 +6,7 @@ void CEndSceneTitle::LoadResource()
 	secondTitle = CSprites::GetInstance()->Get(SECOND_TITLE_ID);
 
 	card = new CPlayCard();
-	card->SetPosition(200, 70);
+	card->SetPosition(CARD_POS_X, CARD_POS_Y);
 
 	enable = true;
 	title_start = 0;
@@ -72,7 +72,7 @@ void CEndSceneTitle::Render()
 	{
 		if (GetTickCount() - change_scene_start > CHANGE_SCENE_TIME)
 		{
-			CGame::GetInstance()->SwitchScene(1);
+			CGame::GetInstance()->SwitchScene(2);
 		}
 	}
 }

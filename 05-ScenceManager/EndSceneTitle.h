@@ -12,6 +12,9 @@
 #define FIRST_TITLE_ID		250
 #define SECOND_TITLE_ID		251
 
+#define CARD_POS_X	200
+#define CARD_POS_Y	70
+
 class CEndSceneTitle
 {
 	LPSPRITE firstTitle;

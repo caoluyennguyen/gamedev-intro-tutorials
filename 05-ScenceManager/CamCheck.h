@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Mario.h"
 
-#define CAMERA_VELOCITY	0.02f
+#define CAMERA_VELOCITY	0.025f
 
 class CCamCheck
 {
