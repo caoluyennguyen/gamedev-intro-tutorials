@@ -56,6 +56,7 @@ CMario::CMario() : CGameObject()
 	this->y = y;*/ 
 
 	fireball = new FireBall();
+	second_fireball = new FireBall();
 	tail = new Tail();
 
 	/*for (int i = 0; i < 2; i++)
@@ -92,7 +93,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				{
 					obj->SetState(KOOPAS_STATE_DIE_NGUA);
 				}
-				else if (isAbleToHoldObject && obj->GetState() == KOOPAS_STATE_DIE && obj->GetState() == KOOPAS_STATE_DIE_NGUA)
+				else if (isAbleToHoldObject && (obj->GetState() == KOOPAS_STATE_DIE || obj->GetState() == KOOPAS_STATE_DIE_NGUA))
 				{
 					isHoldObject = true;
 					//int direction = (x - kLeft) < 0 ? 1 : -1;
@@ -240,7 +241,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		shooting = 0;
 	}
 	// reset flying timer if hitting time has passed
-	if (GetTickCount() - flying_start > MARIO_FLYING_TIME)
+	if (flying && GetTickCount() - flying_start > MARIO_FLYING_TIME)
 	{
 		flying_start = 0;
 		flying = false;
@@ -808,6 +809,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (fireball->IsEnable())
 	{
 		fireball->Update(dt, coObjects);
+	}
+
+	if (abs(second_fireball->GetPositionX() - this->x) > 200 || !second_fireball->IsEnable()) {
+		second_fireball->SetEnable(false);
+		isAbleToShoot = true;
+	}
+
+	if (second_fireball->IsEnable())
+	{
+		second_fireball->Update(dt, coObjects);
 	}
 
 	if (tail->IsEnable())
@@ -1517,6 +1528,10 @@ void CMario::Render()
 	{
 		fireball->Render();
 	}
+	if (second_fireball->IsEnable())
+	{
+		second_fireball->Render();
+	}
 	
 	/*for (int i = 0; i < 2; i++)
 	{
@@ -1663,10 +1678,21 @@ void CMario::Clear()
 
 void CMario::StartShoot()
 {
-	fireball->SetEnable(true);
-	fireball->SetPosition(this->x, this->y);
-	fireball->nx = this->nx;
-	isAbleToShoot = false;
+	if (!fireball->enable)
+	{
+		fireball->SetEnable(true);
+		fireball->SetPosition(this->x, this->y);
+		fireball->nx = this->nx;
+	}
+	else if (!second_fireball->enable)
+	{
+		second_fireball->SetEnable(true);
+		second_fireball->SetPosition(this->x, this->y);
+		second_fireball->nx = this->nx;
+	}
+	else isAbleToShoot = false;
+
+
 	/*if (countBall > 0)
 	{
 		fireBalls[countBall]->SetEnable(true);

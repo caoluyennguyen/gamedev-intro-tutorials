@@ -206,6 +206,7 @@ class CMario : public CGameObject
 	bool isAbleToRun;			// check if mario can run
 	bool isAbleToJumpHigh;		// check if mario can jump high
 	bool isAbleToShoot;			// check if mario can shoot
+	bool isAbleToSecondShoot;			// check if mario can shoot
 	bool isAbleToSlowFall;		// check if mario can fall slowloy
 	bool isAbleToFly;			// check if mario can fly
 	//bool isJumping;				// check if mario is in the air
@@ -221,6 +222,7 @@ class CMario : public CGameObject
 
 	vector<FireBall*> fireBalls;
 	FireBall* fireball;
+	FireBall* second_fireball;
 	Tail* tail;
 
 	static CMario* __instance;
