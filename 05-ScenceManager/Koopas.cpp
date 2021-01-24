@@ -84,7 +84,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else vy += KOOPAS_GRAVITY * dt;
 
-	if (GetTickCount() - rollUp > KOOPAS_TIME_ROLLING_UP && rollUp != 0)
+	if (GetTickCount() - rollUp > KOOPAS_TIME_ROLLING_UP && rollUp != 0 && (state != KOOPAS_STATE_ROLLING && state != KOOPAS_STATE_ROLLING))
 	{
 		rollUp = 0;
 		SetState(KOOPAS_STATE_WALKING);
@@ -255,16 +255,19 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->nx != 0)
 				{
-					vx = -vx;
-					e->obj->vx = -vx;
-					x += dx;
 					if (state == KOOPAS_STATE_ROLLING || state == KOOPAS_STATE_ROLLING_NGUA)
 					{
+						x += dx;
 						e->obj->SetState(KOOPAS_STATE_DIE_NGUA);
 						if (e->obj->state == KOOPAS_STATE_WALKING)
 						{
 							ScoreUp();
 						}
+					}
+					else
+					{
+						vx = -vx;
+						e->obj->vx = -vx;
 					}
 					
 				}

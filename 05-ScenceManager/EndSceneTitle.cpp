@@ -20,7 +20,7 @@ void CEndSceneTitle::LoadResource()
 
 void CEndSceneTitle::Render()
 {
-	firstTitle->Draw(50, 20, 255, 0);
+	firstTitle->Draw(FIRST_TITLE_POS_X, FIRST_TITLE_POS_Y, COLOR_CODE, 0);
 	if (title_start == 0)
 	{
 		title_start = GetTickCount();
@@ -29,7 +29,7 @@ void CEndSceneTitle::Render()
 	{
 		if (GetTickCount() - title_start > SHOW_TIME)
 		{
-			secondTitle->Draw(50, 70, 255, 0);
+			secondTitle->Draw(SECOND_TITLE_POS_X, SECOND_TITLE_POS_Y, COLOR_CODE, 0);
 			card->Render();
 			if (!effectStart)
 			{
@@ -52,21 +52,6 @@ void CEndSceneTitle::Render()
 			}
 		}
 	}
-	
-
-	//if (card_start != 0)
-	//{
-	//	if (GetTickCount() - card_start > SHOW_TIME)
-	//	{
-	//		//CGame::GetInstance()->SwitchScene(1);
-	//		card->Render();
-	//		if (!changeSceneStart)
-	//		{
-	//			change_scene_start = GetTickCount();
-	//			changeSceneStart = true;
-	//		}
-	//	}
-	//}
 
 	if (change_scene_start != 0)
 	{

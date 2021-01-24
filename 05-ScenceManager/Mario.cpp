@@ -1586,7 +1586,7 @@ void CMario::SetState(int state)
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		if (vy == 0 || isOnWood) {
 			// mario can fly when can run and jump high
-			if (isAbleToJumpHigh && level != MARIO_LEVEL_TAIL)
+			if (isAbleToJumpHigh)
 			{
 				vy = -MARIO_JUMP_HIGH_SPEED;
 			}
@@ -1614,10 +1614,10 @@ void CMario::SetState(int state)
 		nx = -1;
 		break;
 	case MARIO_STATE_FLY:
-		vy = -0.1f;
+		vy = MARIO_FLY_SPEED;
 		break;
 	case MARIO_STATE_SLOW_FALL:
-		vy = 0.01f;
+		vy = MARIO_SLOW_FALL_SPEED;
 		break;
 	case MARIO_STATE_HIT:
 		if (level == MARIO_LEVEL_TAIL)
@@ -1660,7 +1660,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
-		left = x + 7;
+		left = x + MARIO_TAIL_Y_UNIT;
 		if (state == MARIO_STATE_SIT)
 		{
 			right = x + MARIO_SIT_BBOX_WIDTH;
@@ -1670,7 +1670,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = x + MARIO_BIG_BBOX_WIDTH;
 			bottom = y + MARIO_BIG_BBOX_HEIGHT;
 		}
-		if (nx > 0) right += 7;
+		if (nx > 0) right += MARIO_TAIL_Y_UNIT;
 	}
 	else
 	{
@@ -1692,7 +1692,7 @@ void CMario::Reset()
 
 void CMario::Clear()
 {
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < MARIO_NUM_FIREBALL; i++)
 	{
 		delete fireBalls[i];
 	}

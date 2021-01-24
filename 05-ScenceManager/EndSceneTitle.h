@@ -15,6 +15,13 @@
 #define CARD_POS_X	200
 #define CARD_POS_Y	70
 
+#define COLOR_CODE	255
+#define FIRST_TITLE_POS_X	50.0f
+#define FIRST_TITLE_POS_Y	20.0f
+
+#define SECOND_TITLE_POS_X	50.0f
+#define SECOND_TITLE_POS_Y	70.0f
+
 class CEndSceneTitle
 {
 	LPSPRITE firstTitle;

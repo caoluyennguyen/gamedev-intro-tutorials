@@ -1,11 +1,12 @@
 #include "CheckPoint.h"
 
-CCheckPoint::CCheckPoint(int left, int top, int right, int bottom)
+CCheckPoint::CCheckPoint(int left, int top, int right, int bottom, int id)
 {
 	this->left = left;
 	this->right = right;
 	this->bottom = bottom;
 	this->top = top;
+	this->sceneId = id;
 
 	state = CHECKPOINT_STATE_NORMAL;
 }

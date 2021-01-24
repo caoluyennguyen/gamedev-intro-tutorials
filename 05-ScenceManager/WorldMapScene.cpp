@@ -178,8 +178,15 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 				int top = atoi(tokens[5].c_str());
 				int right = atoi(tokens[6].c_str());
 				int bottom = atoi(tokens[7].c_str());
-
-				obj = new CCheckPoint(left, top, right, bottom);
+				if (tokens.size() > 8)
+				{
+					int sceneId = atoi(tokens[8].c_str());
+					obj = new CCheckPoint(left, top, right, bottom, sceneId);
+				}
+				else
+				{
+					obj = new CCheckPoint(left, top, right, bottom);
+				}
 				obj->SetState(CHECKPOINT_STATE_NORMAL);
 				DebugOut(L"[ERR] Object type created: %d\n", object_type);
 			}
@@ -327,25 +334,12 @@ void CWorldMapSceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMarioWorldMap* mario = ((CWorldMapScene*)scence)->GetPlayer();
 
-	switch (KeyCode)
-	{
-	case DIK_S:
-		CGame::GetInstance()->SwitchScene(2);
-		break;
-	case DIK_F1:
-		CGame::GetInstance()->SwitchScene(2);
-		break;
-	case DIK_F2:
-		CGame::GetInstance()->SwitchScene(1);
-		break;
-	}
-
 	if (mario->IsMoving()) return;
 
 	switch (KeyCode)
 	{
 	case DIK_S:
-		CGame::GetInstance()->SwitchScene(3);
+		if (mario->GetSceneId() > 0) CGame::GetInstance()->SwitchScene(mario->GetSceneId());
 		break;
 	case DIK_F1:
 		CGame::GetInstance()->SwitchScene(SCENE_INTRO_ID);

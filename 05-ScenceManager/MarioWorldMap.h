@@ -9,7 +9,7 @@
 class CMarioWorldMap : public CGameObject
 {
 	bool isMoving;
-
+	int sceneId;
 public:
 	int moveLeft;
 	int moveUp;
@@ -26,4 +26,7 @@ public:
 
 	bool IsMoving() { return isMoving; }
 	void SetMoving(bool moving) { this->isMoving = moving; }
+
+	int GetSceneId() { return this->sceneId; }
+	void SetSceneId(int id) { this->sceneId = id; }
 };

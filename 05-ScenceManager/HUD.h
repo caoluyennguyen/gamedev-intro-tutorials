@@ -9,7 +9,7 @@
 #pragma region define
 #define TIME_PLAY 1000
 #define TIME_POWER 150
-#define TIME_UNIT 0.1f
+#define TIME_UNIT 0.01f
 
 #define GAME_TIME 300.0f
 #define BACKGROUND_SPRITES_ID 200
@@ -20,6 +20,8 @@
 
 #define NUM_OF_COIN 2
 #define NUM_OF_TIME 3
+#define NUM_OF_POWER 6
+#define NUM_OF_MAX_POWER 7
 #define NUM_OF_SCORE 7
 #define NUM_OF_POINT 10
 #define BACKGROUND_POS_Y 200

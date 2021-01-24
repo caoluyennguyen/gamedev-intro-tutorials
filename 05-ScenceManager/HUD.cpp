@@ -4,7 +4,7 @@ HUD* HUD::__instance = NULL;
 
 HUD::HUD()
 {
-	gameTime = 300.0f;
+	gameTime = GAME_TIME;
 	score = 0;
 	coin = 0;
 	marioPower = 0;
@@ -13,24 +13,24 @@ HUD::HUD()
 
 void HUD::LoadResource()
 {
-	speedUp = CSprites::GetInstance()->Get(201);
-	speedDown = CSprites::GetInstance()->Get(202);
-	power = CAnimationSets::GetInstance()->Get(8);
+	speedUp = CSprites::GetInstance()->Get(SPEED_UP_SPRITES_ID);
+	speedDown = CSprites::GetInstance()->Get(SPEED_DOWN_SPRITES_ID);
+	power = CAnimationSets::GetInstance()->Get(POWER_ANIM_ID);
 
 	vector<LPSPRITE> numbers;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < NUM_OF_POINT; i++)
 	{
-		numbers.push_back(CSprites::GetInstance()->Get(1000 + i));
+		numbers.push_back(CSprites::GetInstance()->Get(TIME_PLAY + i));
 	}
 
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < NUM_OF_SCORE; i++)
 	{
 		number.push_back(numbers);
 	}
 
 	card = new CPlayCard();
 	card->SetState(0);
-	card->SetPosition(172, 207);
+	card->SetPosition(CARD_HUD_POS_X, CARD_HUD_POS_Y);
 
 	endTitle = new CEndSceneTitle();
 	endTitle->LoadResource();
@@ -44,7 +44,6 @@ void HUD::UnLoadResource()
 
 void HUD::Update(DWORD dt)
 {
-	//gameTime += dt / 100;
 	gameTime -= TIME_UNIT;
 	if (gameTime < 0) gameTime = GAME_TIME;
 }
@@ -79,7 +78,7 @@ void HUD::RenderTime(int time)
 {
 	if (time < 0) return;
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < NUM_OF_TIME; i++)
 	{
 		int k = time % NUMBER_UNIT;
 		number[i][k]->Draw(TIME_POS_X - i * TIME_POS_X_UNIT, TIME_POS_Y, COLOR_CODE, 0);
@@ -106,7 +105,7 @@ void HUD::RenderPower()
 		marioPower = 0;
 	}
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < NUM_OF_POWER; i++)
 	{
 		speedDown->Draw(POWER_POS_X + i * POWER_POS_X_UNIT, POWER_POS_Y, COLOR_CODE, 0);
 	}
@@ -116,9 +115,9 @@ void HUD::RenderPower()
 		speedUp->Draw(POWER_POS_X + i * POWER_POS_X_UNIT, POWER_POS_Y, COLOR_CODE, 0);
 	}
 
-	if (marioPower > 6)
+	if (marioPower > NUM_OF_POWER)
 	{
-		marioPower = 7;
+		marioPower = NUM_OF_MAX_POWER;
 		power->at(2)->Render(POWER_MAX_POS_X, POWER_POS_Y, COLOR_CODE, 0);
 	}
 	else

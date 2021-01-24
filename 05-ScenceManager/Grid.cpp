@@ -125,10 +125,6 @@ void CGrid::GetListObject(vector<LPGAMEOBJECT>* listObject, float camX, float ca
 	
 	left = CGame::GetInstance()->GetCamPos() / cellWidth;
 	top = camY / cellWidth;
-	/*right = (int)(camX + 320) / cellWidth
-		+ ((int)(camX + 320) % cellWidth ? 1 : 0);
-	bottom = (int)(camY + 240) / cellWidth
-		+ ((int)(camY + 240) % cellWidth ? 1 : 0);*/
 	right = left + 1;
 	bottom = top + 1;
 

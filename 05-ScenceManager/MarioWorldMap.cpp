@@ -7,6 +7,7 @@ CMarioWorldMap::CMarioWorldMap()
 	LPANIMATION_SET ani_set = animation_sets->Get(0);*/
 
 	isMoving = false;
+	sceneId = 2;
 }
 
 void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -72,6 +73,7 @@ void CMarioWorldMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 
 				checkPoint->GetDirection(moveLeft, moveUp, moveRight, moveDown);
+				SetSceneId(checkPoint->GetSceneId());
 			}
 			else
 			{

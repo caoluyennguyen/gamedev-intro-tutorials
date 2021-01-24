@@ -160,11 +160,12 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CKoopas*>(e->obj) || dynamic_cast<CGoomba*>(e->obj))
 			{
 				x += dx;
-				if (e->obj->state != KOOPAS_STATE_ROLLING || e->obj->state != KOOPAS_STATE_ROLLING_NGUA)
+				if (e->obj->state != KOOPAS_STATE_ROLLING && e->obj->state != KOOPAS_STATE_ROLLING_NGUA)
 				{
 					vx = -vx;
 					e->obj->vx = -e->obj->vx;
 				}
+				//else SetState(GOOMBA_STATE_DIE_NGUA);
 				if (state == GOOMBA_STATE_FLY) y += dy;
 			}
 			else if (dynamic_cast<CMario*>(e->obj))
