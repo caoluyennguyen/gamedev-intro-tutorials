@@ -235,11 +235,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CMario*>(e->obj))
 			{
 				x += dx;
-				
-				if (e->nx != 0)
-				{
-					vx = -vx;
-				}
 
 				if (e->ny != 0)
 				{

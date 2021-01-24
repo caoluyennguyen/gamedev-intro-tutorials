@@ -67,7 +67,7 @@ public:
 	void SetPosition(float x, float y);
 
 	void CoinUpdate(DWORD dt);
-	void LeafUpdate(DWORD dt);
+	void LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void SwitchBlockUpdate(DWORD dt);
 };

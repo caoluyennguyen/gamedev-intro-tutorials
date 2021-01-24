@@ -1,4 +1,5 @@
 #include "Brick.h"
+#include "Koopas.h"
 
 CBrick::CBrick(float initialPosX, float initialPosY, int itemType)
 {
@@ -32,7 +33,22 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	CGameObject::Update(dt);
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
 
+		if (dynamic_cast<CKoopas*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
+			if (CheckCollision(kLeft, kTop, kRight, kBottom))
+			{
+				obj->SetState(KOOPAS_STATE_DIE_NGUA);
+				break;
+			}
+		}
+	}
 	if (!freeze)
 	{
 		y += dy;

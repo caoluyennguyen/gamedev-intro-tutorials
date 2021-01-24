@@ -74,9 +74,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define MARIO_X_3	2250.0f
 #define MARIO_X_4	2550.0f
 
-#define CAM_X_1	1212.0f
-#define CAM_X_2	1550.0f
-#define CAM_X_3	1750.0f
+#define CAM_X_1	880.0f
+#define CAM_X_2	1540.0f
+#define CAM_X_3	1780.0f
 
 #define SCENE_INTRO_ID		1
 #define SCENE_WORLDMAP_ID	2
@@ -644,7 +644,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_I:
 		if (camCheck)
 		{
-			camCheck->SetX(MARIO_X_1);
+			camCheck->SetX(CAM_X_1);
 		}
 		else
 		{

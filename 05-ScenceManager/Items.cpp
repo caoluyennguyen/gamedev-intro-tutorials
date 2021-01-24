@@ -57,7 +57,7 @@ void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (enable)
 	{
 		if (state == ITEM_TYPE_COIN) CoinUpdate(dt);
-		else if (state == ITEM_TYPE_LEAF) LeafUpdate(dt);
+		else if (state == ITEM_TYPE_LEAF) LeafUpdate(dt, coObjects);
 		else if (state == ITEM_TYPE_RED_MUSROOM || state == ITEM_TYPE_GREEN_MUSROOM) MusroomUpdate(dt, coObjects);
 		else SwitchBlockUpdate(dt);
 	}
@@ -142,7 +142,7 @@ void CItems::CoinUpdate(DWORD dt)
 	y += dy;
 }
 
-void CItems::LeafUpdate(DWORD dt)
+void CItems::LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 
@@ -157,8 +157,54 @@ void CItems::LeafUpdate(DWORD dt)
 		}
 	}
 
-	x += dx;
-	y += dy;
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	// turn off collision when die 
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	// No collision occured, proceed normally
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		//
+		// Collision logic with other objects
+		//
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CMario*>(e->obj))
+			{
+				CMario* mario = dynamic_cast<CMario*>(e->obj);
+				if (e->nx != 0 || e->ny != 0)
+				{
+					mario->SetLevel(MARIO_LEVEL_TAIL);
+					enable = false;
+				}
+			}
+			else
+			{
+				x += dx;
+				y += dy;
+			}
+		}
+	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

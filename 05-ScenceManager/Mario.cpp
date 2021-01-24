@@ -90,11 +90,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 
 			CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
 			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
-				if (level == MARIO_LEVEL_TAIL && hitting == 1)
-				{
-					obj->SetState(KOOPAS_STATE_DIE_NGUA);
-				}
-				else if (isAbleToHoldObject && (obj->GetState() == KOOPAS_STATE_DIE || obj->GetState() == KOOPAS_STATE_DIE_NGUA))
+				if (isAbleToHoldObject && (obj->GetState() == KOOPAS_STATE_DIE || obj->GetState() == KOOPAS_STATE_DIE_NGUA))
 				{
 					isHoldObject = true;
 					//int direction = (x - kLeft) < 0 ? 1 : -1;
@@ -311,6 +307,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (vx > MARIO_MIN_WALKING_SPEED) vx -= MARIO_ACCELERATION_WALK * dt;
 		else if (vx < -MARIO_MIN_WALKING_SPEED) vx += MARIO_ACCELERATION_WALK * dt;
 		else vx = 0;
+		HUD::GetInstance()->PowerDown();
 	}
 	//else if (state == MARIO_STATE_WALKING_LEFT || state == MARIO_STATE_WALKING_RIGHT)
 	else if (isWalking && !isAbleToRun)
@@ -453,7 +450,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += dy;
 				}
 
-				// wrong logic
 				if ((e->nx != 0 || e->ny > 0))
 				{
 					if (untouchable == 0 && hitting == 0 && !isAbleToHoldObject)
