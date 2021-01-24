@@ -9,6 +9,7 @@
 #define ITEM_TYPE_GREEN_MUSROOM	3
 #define ITEM_TYPE_SWITCH_BLOCK_UP	4
 #define ITEM_TYPE_SWITCH_BLOCK_DOWN	5
+#define ITEM_TYPE_FIRE_FLOWER	6
 
 #define ITEM_ANI_COIN			0
 #define ITEM_ANI_LEAF_LEFT		1
@@ -17,6 +18,7 @@
 #define ITEM_ANI_GREEN_MUSROOM	4
 #define ITEM_ANI_SWITCH_BLOCK_UP	5
 #define ITEM_ANI_SWITCH_BLOCK_DOWN	6
+#define ITEM_ANI_FIRE_FLOWER	7
 
 #define ITEM_COIN_GRAVITY		0.0005f
 #define ITEM_COIN_VELOCITY		0.2f
@@ -40,8 +42,9 @@
 
 #define ITEM_INITIAL_POS_X	3.0f
 #define ITEM_INITIAL_POS_Y	16.0f
-#define MUSROOM_LIMIT_POS_Y		3.0f
+#define MUSROOM_LIMIT_POS_Y		5.0f
 #define MUSROOM_INITIAL_POS_Y	9.0f
+#define MUSROOM_VELOCITY_Y	0.05f
 #pragma endregion
 
 class CItems : public CGameObject

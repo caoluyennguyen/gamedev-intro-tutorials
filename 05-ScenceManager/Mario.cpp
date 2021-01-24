@@ -165,7 +165,7 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				{
 					x -= mRight - kLeft + 0.1f;
 				}
-				if (kBottom > mTop && vy > 0)
+				if (kBottom > mTop && vy > 0.1f)
 				{
 					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.2f;
 				}
@@ -224,17 +224,20 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 						}
 					}
 				}
-
-				if (obj->GetState() == PIPE_STATE_SECRET_GREEN_UP)
+				else
 				{
-					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
-					isInSecretRoom = false;
+					if (obj->GetState() == PIPE_STATE_SECRET_GREEN_UP && vy )
+					{
+						y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+						isInSecretRoom = false;
+					}
+					else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN)
+					{
+						y += MARIO_DIVING_SPEED * nx;
+						isInSecretRoom = true;
+					}
 				}
-				else if (obj->GetState() == PIPE_STATE_SECRET_BLACK_DOWN)
-				{
-					y += MARIO_DIVING_SPEED * nx;
-					isInSecretRoom = true;
-				}
+				
 			}
 		}
 	}
@@ -325,11 +328,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else vx = -MARIO_MAX_WALKING_SPEED;
 		}
+		HUD::GetInstance()->PowerDown();
 	}
 	else if (isWalking && isAbleToRun)
 	{
-		/*if (a < MARIO_ACCELERATION_RUN) a += 0.0001f * dt;
-		else a = MARIO_ACCELERATION_RUN;*/
 		if (nx > 0)
 		{
 			if (vx < MARIO_MAX_RUN_SPEED) {
@@ -337,7 +339,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isAbleToJumpHigh = false;
 			}
 			else isAbleToJumpHigh = true;
-			if (vx > 0) HUD::GetInstance()->PowerUp();
+			if (vx > 0.1f) HUD::GetInstance()->PowerUp();
 		}
 		else {
 			if (vx > -MARIO_MAX_RUN_SPEED) {
@@ -345,7 +347,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isAbleToJumpHigh = false;
 			}
 			else isAbleToJumpHigh = true;
-			if (vx < 0) HUD::GetInstance()->PowerUp();
+			if (vx < 0.1f) HUD::GetInstance()->PowerUp();
 		}
 	}
 
@@ -758,6 +760,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					e->obj->SetEnable(false);
 
 					HUD::GetInstance()->AddCoin();
+				}
+				else if (e->obj->GetState() == ITEM_TYPE_FIRE_FLOWER)
+				{
+					e->obj->SetEnable(false);
+
+					SetLevel(MARIO_LEVEL_FIRE);
 				}
 				else if (e->obj->GetState() == ITEM_TYPE_SWITCH_BLOCK_UP)
 				{

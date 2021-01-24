@@ -18,5 +18,6 @@ public:
 	float GetMaxX() { return maxX; }
 	bool IsAvalable() { return available; }
 	void SetPlayer(CMario* mario) { this->mario = mario; }
+	void SetX(float x) { this->x = x; }
 
 };

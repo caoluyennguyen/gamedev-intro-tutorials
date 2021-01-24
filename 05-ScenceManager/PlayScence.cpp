@@ -68,6 +68,16 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SECRET_ROOM_X 2080.0f
 #define SECRET_ROOM_Y 448.0f
 
+#define MARIO_Y		300.0f
+#define MARIO_X_1	1212.0f
+#define MARIO_X_2	1950.0f
+#define MARIO_X_3	2250.0f
+#define MARIO_X_4	2550.0f
+
+#define CAM_X_1	1212.0f
+#define CAM_X_2	1550.0f
+#define CAM_X_3	1750.0f
+
 #define SCENE_INTRO_ID		1
 #define SCENE_WORLDMAP_ID	2
 #define SCENE_1_1_ID		3
@@ -313,6 +323,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			obj = new CPipe();
 			obj->SetState(PIPE_STATE_SECRET_GREEN_UP);
+			if (tokens.size() > 4)
+			{
+				minSceneBossX = float(atof(tokens[4].c_str()));
+				maxSceneBossX = float(atof(tokens[5].c_str()));
+			}
 		}
 		break;
 	case OBJECT_TYPE_PIPE_BLACK_DOWN:
@@ -468,10 +483,18 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cy < 0) cy = 0;
 	if (cx < minX) cx = minX;
-	else if (player->x > maxX + game->GetScreenWidth())
+	//else if (player->x > maxX + game->GetScreenWidth())
+	else if (cx > maxX)
 	{
 		if (player->IsMoveEndScene()) HUD::GetInstance()->SetEndScene(true);
+		else if (player->x > maxX + game->GetScreenWidth())
+		{
+			minX = minSceneBossX;
+			maxX = maxSceneBossX;
+		}
 		cx = maxX;
+		/*if (player->IsMoveEndScene()) HUD::GetInstance()->SetEndScene(true);
+		cx = maxX;*/
 	} 
 	
 	if (camCheck != NULL && camCheck->IsAvalable())
@@ -542,6 +565,7 @@ void CPlayScene::Unload()
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	CCamCheck *camCheck = ((CPlayScene*)scence)->GetCamCheck();
 	switch (KeyCode)
 	{
 	case DIK_F1:
@@ -604,7 +628,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		{
 			if (mario->IsAbleToShoot())
 			{
-				//mario->StartShoot();
 				mario->SetState(MARIO_STATE_HIT);
 			}
 		}
@@ -619,19 +642,37 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_GO_UP_PIPE);
 		break;
 	case DIK_I:
-		mario->SetPosition(1212.0f, 390.0f);
+		if (camCheck)
+		{
+			camCheck->SetX(MARIO_X_1);
+		}
+		else
+		{
+			mario->SetPosition(MARIO_X_1, MARIO_Y);
+		}
 		break;
 	case DIK_O:
-		mario->SetPosition(1950.0f, 369.0f);
+		if (camCheck)
+		{
+			camCheck->SetX(CAM_X_2);
+		}
+		else
+		{
+			mario->SetPosition(MARIO_X_2, MARIO_Y);
+		}
 		break;
 	case DIK_P:
-		mario->SetPosition(2260.0f, 76.0f);
-		break;
-	case DIK_J:
-		mario->SetPosition(2106.0f, 564.0f);
+		if (camCheck)
+		{
+			camCheck->SetX(CAM_X_3);
+		}
+		else
+		{
+			mario->SetPosition(MARIO_X_3, MARIO_Y);
+		}
 		break;
 	case DIK_K:
-		mario->SetPosition(2498.0f, 300.0f);
+		mario->SetPosition(MARIO_X_4, MARIO_Y);
 		break;
 	}
 }

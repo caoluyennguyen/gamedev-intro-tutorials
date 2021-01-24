@@ -23,7 +23,7 @@ protected:
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> objects;
 
-	float minX, maxX, minY, maxY;
+	float minX, maxX, minY, maxY, minSceneBossX, maxSceneBossX;
 
 	void _ParseSection_TILEMAP(string line);
 	void _ParseSection_TEXTURES(string line);
@@ -42,6 +42,7 @@ public:
 	virtual void Unload();
 
 	CMario * GetPlayer() { return player; } 
+	CCamCheck* GetCamCheck() { return camCheck; }
 
 	//friend class CPlayScenceKeyHandler;
 };

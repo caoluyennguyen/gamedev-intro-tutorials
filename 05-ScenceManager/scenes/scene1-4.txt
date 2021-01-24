@@ -1,6 +1,6 @@
 #pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth	minX	maxX	minY	maxY
 [TILEMAP]
-16	scenes\map\1-4.png	scenes\map\1-4.txt	161	29	11	5	1	2576	0	2296	220	220
+16	scenes\map\1-4.png	scenes\map\1-4.txt	161	29	11	5	1	2576	0	1780	220	220
 
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
@@ -849,7 +849,7 @@ right
 #11	1792	384	10
 #14	2096	464	10
 #15	2320	464	10	2325	410
-13	2192	384	10
+13	2192	384	10	2064	2576
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -948,7 +948,7 @@ right
 4	2000	416	0	2576	500	0
 
 4	1920	398	0	2047	432	0
-4	1936	375	0	1965	398	0
+4	1936	375	0	1965	700	0
 4	2032	239	0	2046	398	0
 
 4	1970	368	0	2010	369	1

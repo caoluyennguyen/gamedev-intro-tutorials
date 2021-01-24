@@ -1,6 +1,6 @@
 #pixel	img_path			file_path	numCol	numRow	numColToRead	numRowToRead	idCell	mapWidth	minX	maxX	minY	maxY
 [TILEMAP]
-16	scenes\map\1.png	scenes\map\1.txt	175	40	20	6	0	2808	0	2536	210	220
+16	scenes\map\1.png	scenes\map\1.txt	175	40	20	6	0	2808	0	2688	210	220
 
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
@@ -414,6 +414,8 @@
 #SWITCH DOWN
 70010	200	144	216	160	60
 21	0	0	0	0	0
+#FLOWER FIRE
+70011	336	189	352	205	20
 
 #EFFECT
 #SCORE 100
@@ -757,6 +759,8 @@
 906	70008	100	70009	100
 # SWITCH DOWN
 907	70010	0
+# FLOWER FIRE
+908	70011	0
 
 # === EFFECT ===
 101	80001	0
@@ -856,7 +860,7 @@ right
 # FIREBALL
 5	603	604
 # ITEM
-6	901	902	903	904	905	906	907
+6	901	902	903	904	905	906	907	908
 # EFFECT
 7	101	218	102	117	116	115	118	124
 # POWER
@@ -920,7 +924,7 @@ right
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # item: 0 = coin, 1 = leaf, 2 = red musroom, 3 = green musroom, 4 = switch block
-1	176	352	22	0
+1	176	352	22	6
 1	192	352	22	0
 1	224	304	22	0
 1	240	304	22	2
@@ -934,7 +938,7 @@ right
 7	1984	368	22	0
 7	2000	368	22	0
 7	2016	368	22	0
-1	2032	368	22	4
+20	2032	368	22	4
 7	1968	384	22	0
 7	1984	384	22	0
 7	2000	384	22	0
@@ -961,7 +965,7 @@ right
 4	1600	369	0	1615	384	0
 4	1664	368	0	1680	383	0
 4	1664	401	0	1711	415	0
-4	1655	416	0	2240	500	0
+4	1655	416	0	2240	450	0
 4	1792	384	0	1822	415	0
 4	1856	368	0	1887	415	0
 4	2256	368	0	2286	430	0

@@ -88,14 +88,14 @@ void CItems::Render()
 		else if (state == ITEM_TYPE_SWITCH_BLOCK_DOWN) {
 			ani = ITEM_ANI_SWITCH_BLOCK_DOWN;
 		}
+		else if (state == ITEM_TYPE_FIRE_FLOWER) {
+			ani = ITEM_ANI_FIRE_FLOWER;
+		}
 
 		animation_set->at(ani)->Render(x, y);
 	}
 
-	if (state == ITEM_TYPE_SWITCH_BLOCK_UP) {
-		effect->RenderOneTime();
-	}
-	else effect->Render();
+	effect->Render();
 }
 
 void CItems::SetState(int state)
@@ -164,8 +164,35 @@ void CItems::LeafUpdate(DWORD dt)
 void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
 
-	if (appear && y > startY - MUSROOM_LIMIT_POS_Y)
+		if (dynamic_cast<CBrick*>(obj)) {
+			float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom))
+			{
+				if (kTop < y + ITEM_MUSROOM_BBOX_HEIGHT)
+				{
+					y -= MUSROOM_VELOCITY_Y;
+					return;
+				}
+			}
+		}
+	}
+	if (appear)
+	{
+		CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+		if (x > mario->x) vx = ITEM_MUSROOM_VELOCITY_X;
+		else vx = -ITEM_MUSROOM_VELOCITY_X;
+		appear = false;
+
+		return;
+	}
+	/*if (appear && y > startY - MUSROOM_LIMIT_POS_Y)
 	{
 		CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
@@ -181,7 +208,8 @@ void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		appear = false;
 		vy = 0;
-	}
+		dy = 0;
+	}*/
 
 	vy += ITEM_LEAF_GRAVITY * dt;
 

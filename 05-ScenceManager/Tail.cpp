@@ -60,7 +60,7 @@ void Tail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (CheckCollision(kLeft, kTop, kRight, kBottom))
 			{
-				if (obj->GetState() == BRICK_STATE_AVAILABLE)
+				if (obj->GetState() == BRICK_STATE_AVAILABLE || obj->GetState() == BRICK_STATE_MULTI_COIN)
 				{
 					obj->SetState(BRICK_STATE_UNAVAILABLE);
 				}
