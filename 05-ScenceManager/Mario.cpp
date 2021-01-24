@@ -454,7 +454,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				// wrong logic
 				if ((e->nx != 0 || e->ny > 0))
 				{
-					if (untouchable == 0 && hitting == 0)
+					if (untouchable == 0 && hitting == 0 && !isAbleToHoldObject)
 					{
 						if ((koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA) ||
 							((koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA) && koopas->GetSpeedVx() != 0))
@@ -483,6 +483,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 								StartShootingObject();
 								koopas->nx = this->nx;
 								koopas->SetState(KOOPAS_STATE_ROLLING_NGUA);
+							}
+						}
+					}
+					else
+					{
+						if (koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA  && koopas->GetSpeedVx() == 0)
+						{
+							x += dx;
+							y += dy;
+							if (level > MARIO_LEVEL_SMALL)
+							{
+								level = MARIO_LEVEL_SMALL;
+								StartUntouchable();
+								StartTransform();
+							}
+							else {
+								SetState(MARIO_STATE_DIE);
 							}
 						}
 					}
@@ -577,6 +594,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					x += dx;
 					y += dy;
+					e->nx = 0;
+					e->ny = 0;
 				}
 				else if (e->obj->GetState() == BRICK_STATE_COIN)
 				{
@@ -1664,14 +1683,14 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		left = x + MARIO_TAIL_Y_UNIT;
 		if (state == MARIO_STATE_SIT)
 		{
-			right = x + MARIO_SIT_BBOX_WIDTH;
+			right = left + MARIO_SIT_BBOX_WIDTH;
 			bottom = y + MARIO_SIT_BBOX_HEIGHT;
 		}
 		else {
-			right = x + MARIO_BIG_BBOX_WIDTH;
+			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = y + MARIO_BIG_BBOX_HEIGHT;
 		}
-		if (nx > 0) right += MARIO_TAIL_Y_UNIT;
+		//if (nx > 0) right += MARIO_TAIL_Y_UNIT;
 	}
 	else
 	{

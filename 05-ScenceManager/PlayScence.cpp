@@ -79,7 +79,7 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 
 	if (tokens.size() < 5) return; // skip invalid lines
 
-	int pixel = atoi(tokens[0].c_str());
+	float pixel = float(atof(tokens[0].c_str()));
 	wstring img_path = ToWSTR(tokens[1]);
 	wstring file_path = ToWSTR(tokens[2]);
 	int numCol = atoi(tokens[3].c_str());
@@ -88,10 +88,10 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 	int numRowToRead = atoi(tokens[6].c_str());
 	int idCell = atoi(tokens[7].c_str());
 	mapWidth = atoi(tokens[8].c_str());
-	minX = atof(tokens[9].c_str());
-	maxX = atof(tokens[10].c_str());
-	minY = atof(tokens[11].c_str());
-	maxY = atof(tokens[12].c_str());
+	minX = float(atof(tokens[9].c_str()));
+	maxX = float(atof(tokens[10].c_str()));
+	minY = float(atof(tokens[11].c_str()));
+	maxY = float(atof(tokens[12].c_str()));
 
 	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 	tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
@@ -482,7 +482,7 @@ void CPlayScene::Update(DWORD dt)
 			CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), int(cy));
 		}
 		else
-			CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), maxY);
+			CGame::GetInstance()->SetCamPos(int(camCheck->GetX()), int(maxY));
 	}
 	else if (player->IsInSecretRoom())
 	{
@@ -665,7 +665,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);
-		mario->y += MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
+		mario->y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
 		break;
 	/*case DIK_LSHIFT:
 		break;*/
@@ -687,16 +687,17 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		else mario->SetState(MARIO_STATE_WALKING_RIGHT);
 
 		mario->SetIsWalking(true);
+		if (mario->IsFlying() == false && mario->IsAbleToRun() == false && mario->vy < MARIO_MAX_WALKING_SPEED)
+		{
+			HUD::GetInstance()->PowerDown();
+		}
 	}
 	else if (game->IsKeyDown(DIK_LEFT)) {
 		if (mario->IsAbleToRun()) mario->SetState(MARIO_STATE_RUN_LEFT);
 		else mario->SetState(MARIO_STATE_WALKING_LEFT);
 
 		mario->SetIsWalking(true);
-	}
-	else
-	{
-		if (mario->IsFlying() == false && mario->IsAbleToRun() == false)
+		if (mario->IsFlying() == false && mario->IsAbleToRun() == false && mario->vy < MARIO_MAX_WALKING_SPEED)
 		{
 			HUD::GetInstance()->PowerDown();
 		}

@@ -150,8 +150,8 @@ void CWorldMapScene::_ParseSection_OBJECTS(string line)
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
-	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
+	float x = float(atof(tokens[1].c_str()));
+	float y = float(atof(tokens[2].c_str()));
 
 	int ani_set_id = atoi(tokens[3].c_str());
 

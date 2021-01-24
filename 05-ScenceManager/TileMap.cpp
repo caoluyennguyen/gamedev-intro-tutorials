@@ -7,7 +7,7 @@
 
 using namespace std;
 
-CTileMap::CTileMap(int pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol, int numRow, int numColToRead, int numRowToRead, int idCell)
+CTileMap::CTileMap(float pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol, int numRow, int numColToRead, int numRowToRead, int idCell)
 {
 	sprites = CSprites::GetInstance();
 	this->pixel = pixel;
@@ -42,7 +42,7 @@ void CTileMap::LoadMap()
 	{
 		for (int j = 0; j < numColToRead; j++)
 		{
-			sprites->Add(idCell, pixel * j, pixel * i, pixel + pixel * j, pixel + pixel * i, texTileMap);
+			sprites->Add(idCell, int(pixel * j), int(pixel * i), int(pixel + pixel * j), int(pixel + pixel * i), texTileMap);
 			idCell++;
 		}
 	}
@@ -51,7 +51,6 @@ void CTileMap::LoadMap()
 	f.open(filePath);
 
 	// current resource section flag
-	int value;
 	char str[1024];
 	while (f.getline(str, 1024))
 	{
@@ -76,8 +75,6 @@ void CTileMap::Render()
 {
 	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(textureId);
 
-	float l, t, r, b;
-
 	CGame::GetInstance()->Draw(0, 0, bbox, this->left, this->top, this->right, this->bottom);
 }
 
@@ -86,7 +83,7 @@ void CTileMap::Render(int x)
 	int start, finish;
 
 	// fix start and finish
-	start = CGame::GetInstance()->GetCamPos() / pixel;
+	start = CGame::GetInstance()->GetCamPos() / int(pixel);
 	finish = start + NUM_OF_COL;
 
 	if (start < 0)

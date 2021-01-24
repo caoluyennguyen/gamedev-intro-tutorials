@@ -165,7 +165,7 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 14
 
-#define MARIO_SIT_BBOX_WIDTH  16
+#define MARIO_SIT_BBOX_WIDTH  14
 #define MARIO_SIT_BBOX_HEIGHT 18
 
 #define MARIO_NUM_FIREBALL 2
@@ -272,6 +272,7 @@ public:
 	bool IsAbleToGoUpPipe() { return isAbleToGoUpPipe; }
 	bool IsFlying() { return flying; }
 	bool IsMoveEndScene() { return moveEndScene; }
+	bool IsTransForm() { return isTransform; }
 	void SetAbleToJump(bool x) { isAbleToJump = x; }
 	void SetAbleToHoldObject(bool x) { isAbleToHoldObject = x; }
 	void SetAbleToRun(bool x) { isAbleToRun = x; }

@@ -11,7 +11,7 @@ class CTileMap
 {
 	//CTileMap* _instance;
 
-	int pixel;
+	float pixel;
 	int idCell;
 	int x;				// toa do x cua sprite dau tien tren cung
 	int y;				// toa do y cua sprite dau tien tren cung
@@ -39,7 +39,7 @@ class CTileMap
 public:
 	CTileMap() {};
 	CTileMap(int textureId, int left, int top, int right, int bottom);
-	CTileMap(int pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol, int numRow, int numColToRead, int numRowToRead, int idCell);
+	CTileMap(float pixel, LPCWSTR bgImagePath, LPCWSTR filePath, int numCol, int numRow, int numColToRead, int numRowToRead, int idCell);
 	void LoadMap();
 	void Render();
 	void Render(int x);

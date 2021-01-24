@@ -154,6 +154,10 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				if (e->ny != 0)
 				{
+					if (e->obj->vy != 0)
+					{
+						SetState(GOOMBA_STATE_DIE_NGUA);
+					}
 					vy = 0;
 				}
 			}
