@@ -88,10 +88,10 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 	int numRowToRead = atoi(tokens[6].c_str());
 	int idCell = atoi(tokens[7].c_str());
 	mapWidth = atoi(tokens[8].c_str());
-	minX = atoi(tokens[9].c_str());
-	maxX = atoi(tokens[10].c_str());
-	minY = atoi(tokens[11].c_str());
-	maxY = atoi(tokens[12].c_str());
+	minX = atof(tokens[9].c_str());
+	maxX = atof(tokens[10].c_str());
+	minY = atof(tokens[11].c_str());
+	maxY = atof(tokens[12].c_str());
 
 	//CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 	tileMap = new CTileMap(pixel, img_path.c_str(), file_path.c_str(), numCol, numRow, numColToRead, numRowToRead, idCell);
@@ -323,8 +323,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_PIPE_BLACK_UP:
 		{
-			float posX = atof(tokens[4].c_str());
-			float posY = atof(tokens[5].c_str());
+			float posX = float(atof(tokens[4].c_str()));
+			float posY = float(atof(tokens[5].c_str()));
 			obj = new CPipe(posX, posY);
 			obj->SetState(PIPE_STATE_SECRET_BLACK_UP);
 		}
@@ -354,7 +354,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_CAM_CHECK:
 	{
-		camCheck = new CCamCheck(atof(tokens[1].c_str()), atof(tokens[2].c_str()));
+		camCheck = new CCamCheck(float(atof(tokens[1].c_str())), float(atof(tokens[2].c_str())));
 		camCheck->SetPlayer(player);
 		return;
 	}
@@ -665,6 +665,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_IDLE);
+		mario->y += MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
 		break;
 	/*case DIK_LSHIFT:
 		break;*/

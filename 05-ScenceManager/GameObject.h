@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Animations.h"
 
+#define COLLISION_UNIT 0.5f
 
 using namespace std;
 

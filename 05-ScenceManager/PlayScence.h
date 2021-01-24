@@ -23,7 +23,7 @@ protected:
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> objects;
 
-	int minX, maxX, minY, maxY;
+	float minX, maxX, minY, maxY;
 
 	void _ParseSection_TILEMAP(string line);
 	void _ParseSection_TEXTURES(string line);

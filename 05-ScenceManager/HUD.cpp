@@ -82,7 +82,7 @@ void HUD::RenderTime(int time)
 	{
 		int k = time % NUMBER_UNIT;
 		number[i][k]->Draw(TIME_POS_X - i * TIME_POS_X_UNIT, TIME_POS_Y, COLOR_CODE, 0);
-		time = (time - k) / NUMBER_UNIT;
+		time = int((time - k) / NUMBER_UNIT);
 	}
 }
 

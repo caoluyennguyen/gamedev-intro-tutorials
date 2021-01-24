@@ -136,7 +136,7 @@ void CGameObject::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;*/
 
-	CGame::GetInstance()->Draw(x, y, bbox, l, t, r, b, 32);
+	CGame::GetInstance()->Draw(x, y, bbox, int(l), int(t), int(r), int(b), 32);
 }
 
 bool CGameObject::CheckCollision(float left_a, float top_a, float right_a, float bottom_a)

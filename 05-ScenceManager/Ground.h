@@ -6,8 +6,8 @@
 
 class CGround : public CGameObject
 {
-	int width;
-	int height;
+	float width;
+	float height;
 	int id;
 public:
 	CGround(float l, float t, float r, float b, int id);
@@ -16,6 +16,6 @@ public:
 	virtual void GetActiveBoundingBox(float& left, float& top, float& right, float& bottom) {};
 
 	int GetId() { return id; }
-	int GetWidth() { return width; }
+	float GetWidth() { return width; }
 };
 

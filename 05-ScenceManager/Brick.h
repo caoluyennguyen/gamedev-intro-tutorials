@@ -24,8 +24,8 @@
 
 class CBrick : public CGameObject
 {
-	int initialPosX;
-	int initialPosY;
+	float initialPosX;
+	float initialPosY;
 	bool breakable;
 
 	CItems* item;

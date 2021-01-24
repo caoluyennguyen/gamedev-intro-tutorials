@@ -159,15 +159,15 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 			if (CheckCollision(kLeft, kTop, kRight, kBottom) && obj->GetState() != BRICK_STATE_BREAK && obj->GetState() != BRICK_STATE_COIN) {
 				if (kRight > mLeft && vx < 0)
 				{
-					x += kRight - mLeft + 0.05f;
+					x += kRight - mLeft + 0.1f;
 				}
 				else if (kLeft < mRight && vx > 0)
 				{
-					x -= mRight - kLeft + 0.05f;
+					x -= mRight - kLeft + 0.1f;
 				}
 				if (kBottom > mTop && vy > 0)
 				{
-					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.05f;
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.2f;
 				}
 			}
 		}
@@ -450,13 +450,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					y += dy;
 				}
-				
-				if ((e->nx != 0 || e->ny > 0) && !isAbleToHoldObject)
+
+				// wrong logic
+				if ((e->nx != 0 || e->ny > 0))
 				{
 					if (untouchable == 0 && hitting == 0)
 					{
 						if ((koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA) ||
-							(koopas->GetState() == KOOPAS_STATE_DIE && koopas->GetSpeedVx() != 0))
+							((koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA) && koopas->GetSpeedVx() != 0))
 						{
 							if (level > MARIO_LEVEL_SMALL)
 							{
@@ -586,8 +587,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else
 				{
-					x += min_tx * dx + nx * 0.2f;
-					y += min_ty * dy + ny * 0.2f;
+					x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
 
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
@@ -610,6 +611,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						if (brick->GetState() == BRICK_STATE_AVAILABLE)
 						{
 							brick->SetState(BRICK_STATE_UNAVAILABLE);
+							HUD::GetInstance()->AddCoin();
 						}
 						else if (brick->GetState() == BRICK_STATE_BREAKABLE)
 						{
@@ -633,6 +635,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 									brick->SetState(BRICK_STATE_UNAVAILABLE);
 								}
 							}
+							HUD::GetInstance()->AddCoin();
 						}
 					}
 				}
@@ -733,8 +736,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->obj->GetState() == ITEM_TYPE_COIN)
 				{
-					/*x += dx;
-					y += dy;*/
 					e->obj->SetEnable(false);
 
 					HUD::GetInstance()->AddCoin();

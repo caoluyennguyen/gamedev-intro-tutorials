@@ -136,7 +136,6 @@ void CItems::CoinUpdate(DWORD dt)
 			SetEnable(false);
 			effect->SetPosition(x, y);
 			effect->StartTimeAppear();
-			HUD::GetInstance()->AddCoin();
 		}
 	}
 
@@ -222,6 +221,29 @@ void CItems::MusroomUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					vx = -vx;
 				}
+			}
+			else if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
+			{
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
+
+				if (e->nx != 0)
+				{
+					vx = -vx;
+					e->obj->vx *= -1;
+				}
+			}
+			else if (dynamic_cast<CMario*>(e->obj)) // if e->obj is Goomba 
+			{
+				CMario* mario = dynamic_cast<CMario*>(e->obj);
+				enable = false;
+
+				if (state == ITEM_TYPE_LEAF)
+				{
+					mario->StartTransform();
+					mario->SetLevel(MARIO_LEVEL_TAIL);
+				}
+
 			}
 			else
 			{
