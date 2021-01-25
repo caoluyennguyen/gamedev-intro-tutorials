@@ -169,7 +169,7 @@
 #define MARIO_SIT_BBOX_HEIGHT 18
 
 #define MARIO_NUM_FIREBALL 2
-#define MARIO_TAIL_Y_UNIT 7
+#define MARIO_TAIL_Y_UNIT 9
 #define MARIO_TAIL_LEFT_X 10
 #define MARIO_TAIL_RIGHT_X 20
 #define MARIO_TAIL_Y 16
@@ -186,6 +186,12 @@
 #define MARIO_CODE_COLOR_UNTOUCHABLE	128
 #define FIREBALL_MAX_POSITION			200
 #define MARIO_MAX_POSITION				2528
+
+#define MARIO_KOOPAS_POS_X			10.0f
+#define MARIO_KOOPAS_POS_Y			10.0f
+#define MARIO_TAIL_KOOPAS_POS_X		10.0f
+#define MARIO_SMALL_KOOPAS_POS_Y	2.0f
+
 #pragma endregion
 
 class CMario : public CGameObject

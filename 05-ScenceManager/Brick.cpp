@@ -42,13 +42,15 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
 			CKoopas* koopas = dynamic_cast<CKoopas*>(obj);
-			if (CheckCollision(kLeft, kTop, kRight, kBottom))
+			if (CheckCollision(kLeft, kTop, kRight, kBottom) && vy != 0 && koopas->GetState() != KOOPAS_STATE_ROLLING 
+				&& koopas->GetState() != KOOPAS_STATE_ROLLING_NGUA)
 			{
 				obj->SetState(KOOPAS_STATE_DIE_NGUA);
 				break;
 			}
 		}
 	}
+
 	if (!freeze)
 	{
 		y += dy;
@@ -144,7 +146,7 @@ void CBrick::SetState(int state)
 	case BRICK_STATE_BREAK:
 		break;
 	case BRICK_STATE_MULTI_COIN_AVAILABLE:
-		vy = -0.2f;
+		vy = BRICK_HIT_VELOCITY;
 		item->SetEnable(true);
 
 		item->SetPosition(initialPosX + ITEM_INITIAL_POS_X, initialPosY - ITEM_INITIAL_POS_Y);

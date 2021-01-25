@@ -191,6 +191,7 @@ void CItems::LeafUpdate(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CMario* mario = dynamic_cast<CMario*>(e->obj);
 				if (e->nx != 0 || e->ny != 0)
 				{
+					mario->StartTransform();
 					mario->SetLevel(MARIO_LEVEL_TAIL);
 					enable = false;
 				}

@@ -94,12 +94,23 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				{
 					isHoldObject = true;
 					//int direction = (x - kLeft) < 0 ? 1 : -1;
-					if (level > MARIO_LEVEL_SMALL)
+					if (level == MARIO_LEVEL_SMALL)
 					{
-						obj->SetPosition(this->x + this->nx * 10.0f, this->y + 10.0f);
+						obj->SetPosition(this->x + this->nx * MARIO_KOOPAS_POS_X, this->y - MARIO_SMALL_KOOPAS_POS_Y);
 					}
-					else {
-						obj->SetPosition(this->x + this->nx * 10.0f, this->y);
+					else if (level != MARIO_LEVEL_TAIL) {
+						obj->SetPosition(this->x + this->nx * MARIO_KOOPAS_POS_X, this->y + MARIO_KOOPAS_POS_Y);
+					}
+					else
+					{
+						if (nx > 0)
+						{
+							obj->SetPosition(this->x + this->nx * MARIO_KOOPAS_POS_X, this->y + MARIO_KOOPAS_POS_Y);
+						}
+						else
+						{
+							obj->SetPosition(this->x, this->y + MARIO_KOOPAS_POS_Y);
+						}
 					}
 				}
 				else {
@@ -165,6 +176,10 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 				{
 					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.2f;
 				}
+				else
+				{
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.2f;
+				}
 			}
 		}
 		else if (dynamic_cast<CGround*>(obj)) {
@@ -190,8 +205,48 @@ void CMario::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPC
 					{
 						y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
 					}
+					else
+					{
+						y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.2f;
+					}
 				}
 			}
+			else
+			{
+				float kLeft, kTop, kRight, kBottom;
+				obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+				float mLeft, mTop, mRight, mBottom;
+				GetBoundingBox(mLeft, mTop, mRight, mBottom);
+
+				if (CheckCollision(kLeft, kTop, kRight, kBottom) && isOnWood) {
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + COLLISION_UNIT;
+				}
+			}
+			/*float kLeft, kTop, kRight, kBottom;
+			obj->GetBoundingBox(kLeft, kTop, kRight, kBottom);
+			float mLeft, mTop, mRight, mBottom;
+			GetBoundingBox(mLeft, mTop, mRight, mBottom);
+
+			if (CheckCollision(kLeft, kTop, kRight, kBottom)) {
+				if (ground->GetId() == GROUND_TYPE_JUMP_OVER && !isOnWood) continue;
+				if (kRight > mLeft && vx < 0 && vy == 0)
+				{
+					x += kRight - mLeft + 1.0f;
+				}
+				else if (kLeft < mRight && vx > 0 && vy == 0)
+				{
+					x -= mRight - kLeft + 1.0f;
+				}
+				else if (kBottom > mTop && vy > 0)
+				{
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 1.0f;
+				}
+				else
+				{
+					y -= y + MARIO_BIG_BBOX_HEIGHT - kTop + 0.2f;
+				}
+			}*/
+
 		}
 		else if (dynamic_cast<CPipe*>(obj)) {
 			float kLeft, kTop, kRight, kBottom;
@@ -445,14 +500,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += dy;
 					}
 				}
-				else
+				else if (e->ny > 0)
 				{
 					y += dy;
 				}
 
-				if ((e->nx != 0 || e->ny > 0))
+				if (e->nx != 0)
 				{
-					if (untouchable == 0 && hitting == 0 && !isAbleToHoldObject)
+					if (untouchable == 0 && hitting == 0 && !isAbleToHoldObject )
 					{
 						if ((koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA) ||
 							((koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA) && koopas->GetSpeedVx() != 0))
@@ -484,12 +539,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							}
 						}
 					}
-					else
+					/*else 
 					{
-						if (koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA  && koopas->GetSpeedVx() == 0)
+						if ((koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_DIE_NGUA) ||
+							((koopas->GetState() == KOOPAS_STATE_DIE || koopas->GetState() == KOOPAS_STATE_DIE_NGUA) && koopas->vx != 0))
 						{
 							x += dx;
-							y += dy;
 							if (level > MARIO_LEVEL_SMALL)
 							{
 								level = MARIO_LEVEL_SMALL;
@@ -500,7 +555,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 								SetState(MARIO_STATE_DIE);
 							}
 						}
-					}
+					}*/
 				}
 			}
 			else if (dynamic_cast<CBoomerangBro *>(e->obj)) // if e->obj is Goomba 
@@ -1591,7 +1646,7 @@ void CMario::Render()
 	
 	animation_set->at(ani)->Render(x, y, alpha);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMario::SetState(int state)

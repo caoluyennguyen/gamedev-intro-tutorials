@@ -42,19 +42,19 @@ void CKoopas::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LP
 		// Check AABB collision
 		LPGAMEOBJECT obj = coObjects->at(i);
 
-		/*if (dynamic_cast<CGround*>(obj)) {
+		if (dynamic_cast<CGround*>(obj)) {
 			CGround* ground = dynamic_cast<CGround*>(obj);
-			if (ground->GetId() == 1) continue;
 
 			float oLeft, oTop, oRight, oBottom;
 			obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
 			float kLeft, kTop, kRight, kBottom;
 			GetBoundingBox(kLeft, kTop, kRight, kBottom);
 
-			if (CheckCollision(kLeft, kTop, kRight, kBottom) && vy != 0) {
-				y -= kBottom - oTop;
+			if (CheckCollision(oLeft, oTop, oRight, oBottom) && state != KOOPAS_STATE_ROLLING
+				&& state != KOOPAS_STATE_ROLLING_NGUA && ground->GetId() != GROUND_TYPE_JUMP_OVER) {
+				y -= COLLISION_UNIT;
 			}
-		}*/
+		}
 	}
 
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
@@ -118,50 +118,39 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CGround*>(e->obj))
 			{
 				CGround* ground = dynamic_cast<CGround*>(e->obj);
-				if (e->nx != 0 && ground->GetId() != 1)
+				if (e->nx != 0 && ground->GetId() != GROUND_TYPE_JUMP_OVER)
 				{
 					vx = -vx;
-					x += min_tx * dx + nx * COLLISION_UNIT;
 				}
 				else x += dx;
 
-				if (dynamic_cast<CGround*>(e->obj))
+				if (e->ny < 0)
 				{
-					CGround* ground = dynamic_cast<CGround*>(e->obj);
-					if (e->nx != 0)
+					if (state == KOOPAS_STATE_FLY) vy = -0.2f;
+					else if (state == KOOPAS_STATE_DIE_NGUA)
 					{
-						vx = -vx;
-						x += min_tx * dx + nx * 0.5f;
+						vx = 0;
 					}
+					else vy = 0;
 
-					if (e->ny < 0)
+					if (ground->GetId() == GROUND_TYPE_JUMP_OVER)
 					{
-						if (state == KOOPAS_STATE_FLY) vy = -0.2f;
+						vy = 0;
+						if (state == KOOPAS_STATE_WALKING)
+						{
+							if (x < ground->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
+							else if (x > ground->x + ground->GetWidth() - KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
+						}
+						else if (state == KOOPAS_STATE_FLY) vy = -0.2f;
 						else if (state == KOOPAS_STATE_DIE_NGUA)
 						{
 							vx = 0;
 						}
-						else vy = 0;
-
-						if (ground->GetId() == GROUND_TYPE_JUMP_OVER)
-						{
-							vy = 0;
-							if (state == KOOPAS_STATE_WALKING)
-							{
-								if (x < ground->x - KOOPAS_BBOX_WIDTH / 2) vx = KOOPAS_WALKING_SPEED
-								else if (x > ground->x + ground->GetWidth() - KOOPAS_BBOX_WIDTH / 2) vx = -KOOPAS_WALKING_SPEED;
-							}
-							else if (state == KOOPAS_STATE_FLY) vy = -0.2f;
-							else if (state == KOOPAS_STATE_DIE_NGUA)
-							{
-								vx = 0;
-							}
-						}
 					}
-					else if (e->ny > 0)
-					{
-						y += dy;
-					}
+				}
+				else if (e->ny > 0)
+				{
+					y += dy;
 				}
 			}
 			else if (dynamic_cast<CPipe*>(e->obj))
@@ -208,12 +197,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 				
-				if (e->ny != 0 && e->obj->GetState() != BRICK_STATE_BREAK && e->obj->GetState() != BRICK_STATE_COIN)
+				if (e->ny > 0 && e->obj->GetState() != BRICK_STATE_BREAK && e->obj->GetState() != BRICK_STATE_COIN)
 				{
-					if (e->obj->vy != 0)
-					{
-						SetState(KOOPAS_STATE_DIE_NGUA);
-					}
 					vy = 0;
 
 					if (state == KOOPAS_STATE_FLY) vy = KOOPAS_FLY_SPEED;
@@ -231,6 +216,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					y += dy;
 				}
+
+				x += min_tx * dx + nx * COLLISION_UNIT;
+				y += min_ty * dy + ny * COLLISION_UNIT;
 			}
 			else if (dynamic_cast<CMario*>(e->obj))
 			{

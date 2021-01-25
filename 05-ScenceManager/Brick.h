@@ -20,6 +20,7 @@
 #define BRICK_ANI_COIN 4
 
 #define BRICK_GRAVITY 0.001f
+#define BRICK_HIT_VELOCITY -0.2f
 #define BRICK_COIN_TIME 5000
 
 class CBrick : public CGameObject
